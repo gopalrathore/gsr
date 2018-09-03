@@ -1,0 +1,18 @@
+#saveInvoice form {
+    width: 100%;
+    padding: 10px;
+}
+
+.email-confirmation {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.alert {
+    z-index: 999998 !important;
+}
+
+#saveInvoice .modal-body {
+    padding: 0;
+}

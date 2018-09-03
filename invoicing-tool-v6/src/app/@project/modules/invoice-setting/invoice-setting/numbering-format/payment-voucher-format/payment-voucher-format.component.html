@@ -1,0 +1,30 @@
+<div class="card-header">
+  <h5 class="card-title">Payment Voucher Format</h5>
+</div>
+<form #paymentVoucherFormat="ngForm" (ngSubmit)="updatePaymentNumberFormat(paymentVoucherFormat.valid)" [ngClass]="{submitted:paymentVoucherFormat.submitted}">
+  <div class="row">
+
+    <div class="form-group col-md-6">
+      <label class="required-star">Prefix</label>
+      <input type="text" class="form-control" name="prefix" [(ngModel)]="paymentVoucherNumberFormat.prefix" [attr.maxlength]="10"
+        [attr.permitAlphabets]="true" [attr.permitSpace]="false" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+        [attr.defaultValue]="" [attr.permitSpecial]="true" required>
+    </div>
+    <div class="form-group col-md-6">
+      <label class="required-star">Suffix</label>
+      <input type="text" class="form-control" name="suffix" [(ngModel)]="paymentVoucherNumberFormat.suffix" [attr.maxlength]="10"
+        [attr.permitAlphabets]="true" [attr.permitSpace]="false" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+        [attr.defaultValue]="" [attr.permitSpecial]="true">
+    </div>
+    <div class="form-group col-md-6">
+      <label class="required-star">Starting Number</label>
+      <input type="text" class="form-control" name="starting_number" [attr.min]="1" [attr.max]="99999" [attr.precision]="0" [attr.defaultValue]="1"
+        required [(ngModel)]="paymentVoucherNumberFormat.starting_number">
+    </div>
+    <div class="col-md-12">
+      <button [disabled]="!putCallable" type="submit" class="btn btn-fill btn-success btn-wd btn-loader">{{ !putCallable ? 'Updating' : 'Update' }}
+        <i class="fa fa-circle-o-notch fa-spin" *ngIf="!putCallable"></i>
+      </button>
+    </div>
+  </div>
+</form>

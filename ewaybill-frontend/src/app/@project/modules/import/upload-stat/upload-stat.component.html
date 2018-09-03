@@ -1,0 +1,124 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="title">Bulk Import Documents</h4>
+        <p class="category"></p>
+        <br>
+        <div class="card">
+          <div class="card-content">
+            <h4 class="card-title text-right">
+              <!-- <a rel="tooltip" title="Upload invoices again after corrections." class="btn btn-warning btn-fill btn-wd" (click)="importAgain()">Import Again</a> -->
+              <div rel="tooltip" title="Upload invoices again after corrections." class="file-upload">
+                <label for="upload" class="btn btn-warning btn-fill btn-wd">Import Again</label>
+                <input class="btn btn-success btn-fill btn-wd file-upload__input" type="file" (change)="fileChange($event)" placeholder="Upload file"
+                  accept=".xlsx">
+              </div>
+              <span rel="tooltip" title="JSON will be generated only for passed documents.">
+                <a class="btn btn-info btn-fill btn-wd" (click)="alleway()">Continue</a>
+              </span>
+            </h4>
+
+            <div class="nav-tabs-navigation">
+              <div class="nav-tabs-wrapper">
+                <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                  <li class="active">
+                    <a href="#passed" data-toggle="tab">Documents Passed ({{stats.valid}})</a>
+                  </li>
+                  <li rel="tooltip" title="Please check the failed invoice rows for errors">
+                    <a href="#failed" data-toggle="tab">Documents Failed ({{stats.invalid}})</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div id="my-tab-content" class="tab-content text-center">
+              <div class="tab-pane active" id="passed">
+                <h4>All Passed Documents</h4>
+                <div class="ewaybill-table">
+
+                  <p-dataTable [value]="jsonData" scrollable="true" frozenWidth="120px" unfrozenWidth="calc(100% - 150px)" [paginator]="true"
+                    [rows]="10" scrollHeight="200px" #dt>
+                    <p-header></p-header>
+                    <p-column field="docNo" header="Document Number" [style]="{'width':'50px'}" frozen="true" [filter]="true" filterPlaceholder="Search"></p-column>
+                    <p-column field="supplyType" header="Supply Type" [style]="{'width':'100px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+                    <p-column field="subSupplyType" header="Sub Supply Type" [style]="{'width':'100px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+                    <p-column field="docType" header="Document type" [style]="{'width':'140px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+                    <p-column field="docDate" header="Document Date" [style]="{'width':'100px'}"></p-column>
+                    <p-column field="toTrdname" header="To Trader Name" [style]="{'width':'250px'}"></p-column>
+                    <p-column field="toGstin" header="To GSTIN" [style]="{'width':'180px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+                    <p-column field="toAddr1" header="To Address 1" [style]="{'width':'250px'}"></p-column>
+                    <p-column field="toAddr2" header="To Address 2" [style]="{'width':'250px'}"></p-column>
+                    <p-column field="toPlace" header="To Place" [style]="{'width':'120px'}"></p-column>
+                    <p-column field="toPincode" header="To pincode" [style]="{'width':'100px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+                    <p-column field="toStateCode" header="To State Name" [style]="{'width':'150px'}"></p-column>
+                    <p-column field="actToStateCode" header="actToStateCode" [style]="{'width':'150px'}"></p-column>
+                    <p-column field="productName" header="Product name" [style]="{'width':'250px'}"></p-column>
+                    <p-column field="productDesc" header="Product Description" [style]="{'width':'250px'}"></p-column>
+                    <p-column field="hsnCode" header="HSN Code" [style]="{'width':'100px'}"></p-column>
+                    <p-column field="quantity" header="Quantity" [style]="{'width':'100px'}"></p-column>
+                    <p-column field="qtyUnit" header="Unit" [style]="{'width':'150px'}"></p-column>
+                    <p-column field="taxableAmount" header="Taxable Amount" [style]="{'width':'100px'}"></p-column>
+                    <p-column field="cgstValue" header="CGST Value" [style]="{'width':'100px'}"></p-column>
+                    <p-column field="sgstValue" header="SGST Value" [style]="{'width':'100px'}"></p-column>
+                    <p-column field="igstValue" header="IGST Value" [style]="{'width':'100px'}"></p-column>
+                    <p-column field="cessValue" header="CESS Value" [style]="{'width':'100px'}"></p-column>
+                    <p-column field="cgstRate" header="CGST Rate" [style]="{'width':'100px'}"></p-column>
+                    <p-column field="sgstRate" header="SGST Rate" [style]="{'width':'100px'}"></p-column>
+                    <p-column field="igstRate" header="IGST Rate" [style]="{'width':'100px'}"></p-column>
+
+                    <p-column field="cessRate" header="CESS Rate" [style]="{'width':'100px'}"></p-column>
+                    <p-column field="fromTrdName" header="From Trade Name" [style]="{'width':'250px'}"></p-column>
+                    <p-column field="fromGstin" header="From GSTIN" [style]="{'width':'180px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+                    <p-column field="fromAddr1" header="From Address 1" [style]="{'width':'250px'}"></p-column>
+                    <p-column field="fromAddr2" header="From Address 2" [style]="{'width':'250px'}"></p-column>
+                    <p-column field="fromPlace" header="From Place" [style]="{'width':'150px'}"></p-column>
+                    <p-column field="fromPincode" header="From Pincode" [style]="{'width':'100px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+                    <p-column field="fromStateCode" header="From State name" [style]="{'width':'150px'}"></p-column>
+                    <p-column field="actualFromStateCode" header="actualFromStateCode" [style]="{'width':'150px'}"></p-column>
+                    <p-column field="transMode" header="Transport Mode" [style]="{'width':'100px'}"></p-column>
+                    <p-column field="transporterId" header="Transporter ID" [style]="{'width':'150px'}"></p-column>
+                    <p-column field="transporterName" header="Transporter Name" [style]="{'width':'250px'}"></p-column>
+                    <p-column field="transDocNo" header="Transporter Doc No" [style]="{'width':'100px'}"></p-column>
+                    <p-column field="transDocDate" header="Transporter Doc Date" [style]="{'width':'100px'}"></p-column>
+                    <p-column field="transDistance" header="Distance" [style]="{'width':'100px'}"></p-column>
+                    <p-column field="vehicleNo" header="Vehicle Number" [style]="{'width':'150px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+                  </p-dataTable>
+
+                </div>
+              </div>
+              <div class="tab-pane" id="failed">
+                <div class="row">
+                  <div class="col-md-9 center-block">
+                    <h4>Documents Failed Validation</h4>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <p>Total rows processed:
+                          <strong>{{stats.total}}</strong>
+                        </p>
+                        <p>Total rows passed:
+                          <strong>{{stats.valid}}</strong>
+                        </p>
+                        <p>Total rows failed:
+                          <strong>{{stats.invalid}}</strong>
+                        </p>
+                      </div>
+                      <div class="col-md-6 right-div">
+                        <h5 class="small-bold">Download Error Report</h5>
+                        <p>Please fix the errors and import again</p>
+                        <a *ngIf="downloadErrorFile" class="btn btn-info btn-fill" [href]="errorFileLink" target="_blank">Download Excel</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end content-->
+        </div>
+        <!--  end card  -->
+      </div>
+      <!-- end col-md-12 -->
+    </div>
+    <!-- end row -->
+  </div>
+</div>

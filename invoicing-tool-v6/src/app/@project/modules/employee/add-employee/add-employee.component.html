@@ -1,0 +1,542 @@
+<div class="main-content">
+  <div style="font-size: 24px;  margin: 0px 3px 15px 15px; font-weight: bold;">
+    <a [routerLink]="['./../']">
+      <span class="ti-back-left"> Back</span>
+    </a>
+  </div>
+  <form #addEmployee="ngForm" (ngSubmit)="employeeSubmit(addEmployee.valid)" class="validateForm" [ngClass]="{submitted:addEmployee.submitted}">
+    <div class="container-fluid card">
+      <div class="card-header">
+        <h4 class="card-title">Personal Information</h4>
+        <p class="category"></p>
+      </div>
+
+      <div class="card-content">
+        <!-- <div class="col-md-6">
+          <div class="employee-profile">
+            <img src="./../../../../../assets/img/avatar.jpg" class="img-responsive employee-avatar" alt="">
+            <app-file-upload [path]="path" [link]="uploadedFileLink" (fileUploaded)="fileUploaded($event)"></app-file-upload>
+          </div>
+        </div> -->
+        <div class="col-md-12" style="padding:0">
+          <label class="required-star col-md-12">Name</label>
+          <div class="col-md-2 form-group">
+            <select name="employee_salutation" [(ngModel)]="employee.employee_salutation" style="padding:0" class="form-control">
+              <option value="Mr.">Mr.</option>
+              <option value="Ms.">Ms.</option>
+              <option value="Mrs.">Mrs.</option>
+              <option value="Dr.">Dr.</option>
+            </select>
+          </div>
+          <div class="col-md-5 form-group">
+            <input placeholder="First Name" type="text" name="employee_first_name" [(ngModel)]="employee.employee_first_name" class="form-control"
+              autocomplete="off" required #employeeFirstnameRef="ngModel" [attr.maxlength]="100" [attr.permitAlphabets]="true"
+              [attr.permitSpace]="true" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false"
+              [attr.defaultValue]="" [attr.permitSpecial]="false">
+            <div class="form-error-msg" [hidden]="employeeFirstnameRef.pristine && employeeFirstnameRef.untouched">
+              <p [hidden]="!addEmployee.hasError('required' , 'employee_first_name' )"> Cannot be empty </p>
+            </div>
+          </div>
+          <div class="col-md-5 form-group">
+            <input type="text" name="employee_last_name" placeholder="Last Name" [(ngModel)]="employee.employee_last_name" class="form-control"
+              autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="false"
+              [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false">
+            <div class="form-error-msg" [hidden]="employeeFirstnameRef.pristine && employeeFirstnameRef.untouched">
+              <p [hidden]="!addEmployee.hasError('pattern' , 'employee_last_name' )"> Invalid Input </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6" style="padding:0">
+          <div class="col-md-12 form-group">
+            <label class="required-star">Address:</label>
+            <input type="text" placeholder="Flat / House No. / Floor / Building" name="employee_address" [(ngModel)]="employee.employee_address"
+              class="form-control" autocomplete="off" #employeeAddressRef="ngModel" required [attr.maxlength]="100" [attr.permitAlphabets]="true"
+              [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+              [attr.defaultValue]="" [attr.permitSpecial]="true">
+            <div class="form-error-msg" [hidden]="employeeAddressRef.pristine && employeeAddressRef.untouched">
+              <p [hidden]="!addEmployee.hasError('required' , 'employee_address' )"> Cannot be empty </p>
+            </div>
+          </div>
+          <div class="col-md-12 form-group">
+            <input type="text" placeholder="Colony / Street / Locality" name="employee_address_2" [(ngModel)]="employee.employee_address_2"
+              class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+              [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+          </div>
+          <div class="col-md-6 form-group">
+            <input type="text" placeholder="City" #employeeAddress3Ref="ngModel" name="employee_address_3" [(ngModel)]="employee.employee_address_3"
+              class="form-control" autocomplete="off" maxlength="100" [attr.maxlength]="100" [attr.permitAlphabets]="true"
+              [attr.permitSpace]="true" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false"
+              [attr.defaultValue]="" [attr.permitSpecial]="false" required>
+            <div class="form-error-msg" [hidden]="employeeAddress3Ref.pristine && employeeAddress3Ref.untouched">
+              <p [hidden]="!addEmployee.hasError('required', 'employee_address_3')"> Cannot be empty </p>
+            </div>
+          </div>
+          <div class="col-md-6 form-group">
+            <input type="text" placeholder="PIN Code" name="employee_address_4" [(ngModel)]="employee.employee_address_4" class="form-control"
+              autocomplete="off" pattern="^[1-9][0-9]{5}$" #employeePin="ngModel" [attr.maxlength]="6" [attr.permitAlphabets]="false"
+              [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true"
+              [attr.defaultValue]="" [attr.permitSpecial]="false" required>
+            <div class="form-error-msg" [hidden]="employeePin.pristine && employeePin.untouched">
+              <p [hidden]="!addEmployee.hasError('pattern', 'employee_address_4')"> Invalid Pin Code </p>
+              <p [hidden]="!addEmployee.hasError('required', 'employee_address_4')"> Cannot be empty </p>
+            </div>
+          </div>
+          <div class="col-md-6 form-group">
+            <label class="required-star">Country:</label>
+            <select name="employee_country" [(ngModel)]="employee.employee_country" class="form-control">
+              <option *ngFor="let country of countries.data" [value]="country.country_name">{{country.country_name}}</option>
+            </select>
+          </div>
+          <div class="col-md-6 form-group" *ngIf="employee.employee_country=='India'">
+            <label class="required-star">State:</label>
+            <select name="employee_state_code" #employeeStateCodeRef="ngModel" required [(ngModel)]="employee.employee_state_code" class="form-control">
+              <option value="">Please Select State</option>
+              <option *ngFor="let state of state.data" [value]="state.state_code">{{state.state_name}}</option>
+            </select>
+            <div class="form-error-msg" [hidden]="employeeStateCodeRef.pristine && employeeStateCodeRef.untouched">
+              <p [hidden]="!addEmployee.hasError('required', 'employee_state_code')"> Cannot be empty </p>
+            </div>
+          </div>
+          <div class="col-md-6 form-group" *ngIf="employee.employee_country!=='India'">
+            <label class="required-star">State:</label>
+            <input type="text" name="employee_state_name" #employeeStateNameRef="ngModel" [(ngModel)]="employee.employee_state_name"
+              class="form-control" autocomplete="off" required [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+              [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]=""
+              [attr.permitSpecial]="false">
+            <div class="form-error-msg" [hidden]="employeeStateNameRef.pristine && employeeStateNameRef.untouched">
+              <p [hidden]="!addEmployee.hasError('required', 'employee_state_name')"> Cannot be empty </p>
+            </div>
+          </div>
+          <div class="col-md-6 form-group">
+            <label class="required-star">Email:</label>
+            <input type="text" name="employee_email" placeholder="Email" [(ngModel)]="employee.employee_email" class="form-control" autocomplete="off"
+              pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #employeeEmailRef="ngModel" required [attr.maxlength]="100"
+              [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true"
+              [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+            <div class="form-error-msg" [hidden]="employeeEmailRef.pristine && employeeEmailRef.untouched">
+              <p [hidden]="!addEmployee.hasError('required' , 'employee_email')"> Cannot be empty </p>
+              <p [hidden]="!addEmployee.hasError('pattern' , 'employee_email')"> Invalid Email </p>
+            </div>
+          </div>
+
+          <div class="col-md-6 form-group">
+            <label>Contact No:</label>
+            <input type="text" name="employee_mobile" placeholder="Contact No" [(ngModel)]="employee.employee_mobile" class="form-control"
+              autocomplete="off" #employeeMobileRef="ngModel" [attr.maxlength]="16" [attr.permitAlphabets]="false" [attr.permitSpace]="false"
+              [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]=""
+              [attr.permitSpecial]="false">
+          </div>
+
+        </div>
+        <div class="col-md-6" style="padding:0">
+
+
+          <div class="col-md-6 form-group">
+            <label>Date of Birth:</label>
+            <p-calendar name="employee_dob" dateFormat="dd/mm/yy" placeholder="Date of Birth" #employeeDobRef="ngModel" [monthNavigator]="true"
+              [yearNavigator]="true" yearRange="1948:2118" [(ngModel)]="employee.employee_dob"></p-calendar>
+
+            <!-- <div class="form-error-msg" [hidden]="employeeDobRef.pristine && employeeDobRef.untouched">
+              <p [hidden]="!addEmployee.hasError('required' , 'employee_dob')"> Cannot be empty </p>
+            </div> -->
+          </div>
+          <div class="col-md-6 form-group">
+            <label class="">Marital Status:</label>
+            <select [(ngModel)]="employee.employee_marital_status" name="employee_marital_status" style="padding:0" class="form-control">
+              <option value="M">Married</option>
+              <option value="U">Unmarried</option>
+              <option value="S">Separated</option>
+              <option value="W">Widow</option>
+            </select>
+          </div>
+
+          <div class="col-md-6 form-group" *ngIf="employee.employee_marital_status=='M'">
+            <label class="">Salutation:</label>
+            <select name="employee_spouses_salutation" [(ngModel)]="employee.employee_spouses_salutation" class="form-control">
+              <option value="Mr.">Mr.</option>
+              <option value="Ms.">Ms.</option>
+              <option value="Mrs.">Mrs.</option>
+              <option value="Dr.">Dr.</option>
+            </select>
+          </div>
+
+          <div class="col-md-6 form-group" *ngIf="employee.employee_marital_status=='M'">
+            <label class="">Spouses Name:</label>
+            <input type="text" placeholder="Spouses Name" name="employee_spouses_first_name" [(ngModel)]="employee.employee_spouses_first_name"
+              class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+              [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]=""
+              [attr.permitSpecial]="false">
+          </div>
+          <div class="col-md-6 form-group" *ngIf="employee.employee_marital_status=='M'">
+            <label class="">Spouses Employer:</label>
+            <input type="text" placeholder="Spouses Employer" name="employee_spouses_employer" [(ngModel)]="employee.employee_spouses_employer"
+              class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+              [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]=""
+              [attr.permitSpecial]="false">
+          </div>
+          <div class="col-md-6 form-group">
+            <label class="">PAN:</label>
+            <input type="text" placeholder="PAN" name="employee_pan" [(ngModel)]="employee.employee_pan" class="form-control uppercase"
+              autocomplete="off" maxlength="10" pattern="([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}" #employeePanRef="ngModel" [attr.maxlength]="10"
+              [attr.permitAlphabets]="true" [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false"
+              [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+            <div class="form-error-msg" [hidden]="employeePanRef.pristine && employeePanRef.untouched">
+              <p [hidden]="!addEmployee.hasError('pattern' , 'employee_pan' )"> Invalid PAN </p>
+            </div>
+          </div>
+          <div class="col-md-6 form-group">
+            <label class="">Aadhaar No:</label>
+            <input type="text" placeholder="Aadhaar No" name="employee_aadhar" [(ngModel)]="employee.employee_aadhar" [attr.maxlength]="12"
+              [attr.permitAlphabets]="false" [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false"
+              [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false" class="form-control" autocomplete="off"
+              #employeeAadhaarRef="ngModel" pattern="^(\+\d{1,3}[- ]?)?\d{12}$">
+            <div class="form-error-msg" [hidden]="employeeAadhaarRef.pristine && employeeAadhaarRef.untouched">
+              <p [hidden]="!addEmployee.hasError('pattern' , 'employee_aadhar' )"> Invalid Aadhaar No. </p>
+            </div>
+          </div>
+          <div class="col-md-6 form-group">
+            <label class="">Home Phone:</label>
+            <input type="text" placeholder="Home Phone" name="employee_work_mobile" class="form-control" [(ngModel)]="employee.employee_work_mobile"
+              autocomplete="off" #employeeHomePhoneRef="ngModel" [attr.maxlength]="16" [attr.permitAlphabets]="false" [attr.permitSpace]="false"
+              [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]=""
+              [attr.permitSpecial]="false">
+            <div class="form-error-msg" [hidden]="employeeHomePhoneRef.pristine && employeeHomePhoneRef.untouched">
+              <p [hidden]="!addEmployee.hasError('pattern' , 'employee_work_mobile' )"> Invalid Input </p>
+            </div>
+          </div>
+          <div class="col-md-6 form-group">
+            <label class="">Qualification:</label>
+            <input type="text" placeholder="Qualification" name="employee_qualification" [(ngModel)]="employee.employee_qualification"
+              class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+              [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+          </div>
+
+          <div class="col-md-12 col-sm-12 col-xs-12 form-group inline-fields" style="flex-wrap:nowrap; margin-top:0px;">
+            <input type="text" class="form-control inline" placeholder="Custom Label" name="employee_custom_label_1" [(ngModel)]="employee.employee_custom_label_1"
+              autocomplete="off" [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+              [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+            <span class="seperator">:</span>
+            <input type="text" class="form-control inline" placeholder="Custom Value" name="employee_custom_value_1" [(ngModel)]="employee.employee_custom_value_1"
+              autocomplete="off" [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+              [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+          </div>
+          <div class="col-md-12 col-sm-12 col-xs-12 form-group inline-fields" style="flex-wrap:nowrap; margin-top:0px;">
+            <input type="text" class="form-control inline" placeholder="Custom Label" name="employee_custom_label_2" [(ngModel)]="employee.employee_custom_label_2"
+              autocomplete="off" [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+              [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+            <span class="seperator">:</span>
+            <input type="text" class="form-control inline" placeholder="Custom Value" name="employee_custom_value_2" [(ngModel)]="employee.employee_custom_value_2"
+              autocomplete="off" [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+              [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid card">
+      <div class="card-header">
+        <h4 class="card-title">Job Information</h4>
+        <p class="category"></p>
+      </div>
+      <div class="card-content">
+        <div class="col-md-4 col-sm-6 col-xs-12 form-group">
+          <label>Title:</label>
+          <input type="text" name="employee_job_title" placeholder="Title" [(ngModel)]="employee.employee_job_title" class="form-control"
+            ngModel autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+            [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12 form-group">
+          <label>Employee ID:</label>
+          <input type="text" name="employee_job_employee_id" placeholder="Employee ID" [(ngModel)]="employee.employee_job_employee_id"
+            class="form-control" ngModel autocomplete="off" #employeeIdRef="ngModel" [attr.maxlength]="25" [attr.permitAlphabets]="false"
+            [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true"
+            [attr.defaultValue]="" [attr.permitSpecial]="false">
+          <div class="form-error-msg" [hidden]="employeeIdRef.pristine && employeeIdRef.untouched">
+            <p [hidden]="!addEmployee.hasError('required' , 'employee_job_employee_id')"> Cannot be empty </p>
+          </div>
+        </div>
+        <div class="col-md-4 form-group">
+          <label>ID Card Number:</label>
+          <input type="text" name="employee_card" placeholder="Card Number" [(ngModel)]="employee.employee_card" class="form-control"
+            autocomplete="off" #employeeCardNoRef="ngModel" [attr.maxlength]="100" [attr.permitAlphabets]="false" [attr.permitSpace]="false"
+            [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+          <div class="form-error-msg" [hidden]="employeeCardNoRef.pristine && employeeCardNoRef.untouched">
+            <p [hidden]="!addEmployee.hasError('required' , 'employee_card')"> Cannot be empty </p>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12 form-group">
+          <label>Supervisor:</label>
+          <input type="text" name="employee_job_supervisor" placeholder="Supervisor" [(ngModel)]="employee.employee_job_supervisor"
+            class="form-control" ngModel autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+            [attr.permitUnderscore]="false" [attr.permitDash]="true" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false">
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12 form-group">
+          <label>Department:</label>
+          <input type="text" name="employee_job_department" placeholder="Department" [(ngModel)]="employee.employee_job_department"
+            class="form-control" ngModel [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+            [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12 form-group">
+          <label>Work Location:</label>
+          <input type="text" name="employee_job_work_location" placeholder="Work Location" [(ngModel)]="employee.employee_job_work_location"
+            class="form-control" ngModel autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+            [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false">
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12 form-group">
+          <label>Email:</label>
+          <input type="text" name="employee_job_email" placeholder="Email" [(ngModel)]="employee.employee_job_email" class="form-control"
+            ngModel #employeeJobEmailRef="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" autocomplete="off"
+            [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true"
+            [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+          <div class="form-error-msg" [hidden]="employeeJobEmailRef.pristine && employeeJobEmailRef.untouched">
+            <p [hidden]="!addEmployee.hasError('required' , 'employee_job_email')"> Cannot be empty </p>
+            <p [hidden]="!addEmployee.hasError('pattern' , 'employee_job_email')"> Invalid Email </p>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12 form-group">
+          <label>Work Phone:</label>
+          <input type="text" name="employee_job_work_phone" placeholder="Work Phone" [(ngModel)]="employee.employee_job_work_phone"
+            class="form-control" ngModel [attr.maxlength]="16" [attr.permitAlphabets]="false" [attr.permitSpace]="false" [attr.permitUnderscore]="false"
+            [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12 form-group">
+          <label>Cell Phone:</label>
+          <input type="text" name="employee_job_cell_phone" placeholder="Cell Phone" [(ngModel)]="employee.employee_job_cell_phone"
+            class="form-control" ngModel [attr.maxlength]="16" [attr.permitAlphabets]="false" [attr.permitSpace]="false" [attr.permitUnderscore]="false"
+            [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12 form-group">
+          <label>Hire Date:</label>
+          <p-calendar name="employee_job_hire_date" placeholder="Date of Hiring" dateFormat="dd/mm/yy" [monthNavigator]="true" [yearNavigator]="true"
+            yearRange="1947:3030" [(ngModel)]="employee.employee_job_hire_date"></p-calendar>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12 form-group">
+          <label>Salary:</label>
+          <input type="text" name="employee_job_salary" placeholder="Salary" [(ngModel)]="employee.employee_job_salary" class="form-control"
+            ngModel autocomplete="off" #employeeSalaryRef="ngModel" [attr.min]="0.00" [attr.max]="999999999999" [attr.precision]="2"
+            [attr.defaultValue]="0.00">
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12 form-group">
+          <label class="required-star">Status:</label>
+          <select name="employee_job_status" [(ngModel)]="employee.employee_job_status" class="form-control">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12 form-group" *ngIf="employee.employee_job_status=='Inactive'">
+            <label>End Date:</label>
+            <p-calendar name="employee_job_end_date" placeholder="Date of End" dateFormat="dd/mm/yy" [monthNavigator]="true" [yearNavigator]="true"
+              yearRange="1947:3030" [(ngModel)]="employee.employee_job_end_date"></p-calendar>
+          </div>
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group inline-fields" style="flex-wrap:nowrap">
+          <input type="text" class="form-control inline" placeholder="Custom Label" name="employee_job_custom_label_1" [(ngModel)]="employee.employee_job_custom_label_1"
+            autocomplete="off" [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+            [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+          <span class="seperator">:</span>
+          <input type="text" class="form-control inline" placeholder="Custom Value" name="employee_job_custom_value_1" [(ngModel)]="employee.employee_job_custom_value_1"
+            autocomplete="off" [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+            [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group inline-fields" style="flex-wrap:nowrap">
+          <input type="text" class="form-control inline" placeholder="Custom Label" name="employee_job_custom_label_2" [(ngModel)]="employee.employee_job_custom_label_2"
+            autocomplete="off" [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+            [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+          <span class="seperator">:</span>
+          <input type="text" class="form-control inline" placeholder="Custom Value" name="employee_job_custom_value_2" [(ngModel)]="employee.employee_job_custom_value_2"
+            autocomplete="off" [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+            [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+          <label>Remarks: </label>
+          <textarea name="employee_job_remarks" placeholder="Remarks" [(ngModel)]="employee.employee_job_remarks" data-gramm_editor="false"
+            class="form-control" ngModel maxlength="200" autocomplete="off" rows="3" spellcheck="false" [attr.maxlength]="250"
+            [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true"
+            [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true"></textarea>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <app-file-upload [path]="path" [link]="uploadedFileLink" (fileUploaded)="fileUploaded($event)"></app-file-upload>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid card">
+      <div class="card-header">
+        <h4 class="card-title">Bank Details</h4>
+        <p class="category"></p>
+      </div>
+
+      <div class="card-content">
+        <div class="col-md-3 col-sm-6 col-xs-12 form-group">
+          <label class="required-star">IFSC Code:</label>
+          <input type="text" name="employee_bank_ifsc" placeholder="eg:- BKID000061" class="form-control uppercase" [(ngModel)]="employee.employee_bank_ifsc"
+            (ngModelChange)="checkIFSC()" pattern="[A-Za-z]{4}[a-zA-Z0-9]{7}" #ifscRef="ngModel" ngModel autocomplete="off"
+            [attr.maxlength]="11" [attr.permitAlphabets]="true" [attr.permitSpace]="false" [attr.permitUnderscore]="false"
+            [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+          <div class="form-error-msg" [hidden]="ifscRef.pristine && ifscRef.untouched">
+            <p *ngIf="!ifscValid && (employee.employee_bank_ifsc!=null && employee.employee_bank_ifsc.length>0)"> Invalid IFSC Code </p>
+
+          </div>
+        </div>
+        <div class="col-md-5 col-sm-6 col-xs-12 form-group" *ngIf="ifscValid">
+          <label>Bank Name:</label>
+          <input type="text" name="employee_bank_name" placeholder="Name of Bank" [(ngModel)]="employee.employee_bank_name" class="form-control validate-off"
+            ngModel readonly>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12 form-group" *ngIf="ifscValid">
+          <label>Branch Name:</label>
+          <input type="text" class="form-control validate-off" name="employee_bank_branch_name" placeholder="Name of Branch" [(ngModel)]="employee.employee_bank_branch_name"
+            ngModel readonly>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-4 col-sm-6 col-xs-12 form-group">
+          <label>Account Holder's Name:</label>
+          <input type="text" name="employee_bank_account_holder_name" placeholder="Account Name" [(ngModel)]="employee.employee_bank_account_holder_name"
+            class="form-control" ngModel autocomplete="off" [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+            [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false">
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12 form-group">
+          <label class="required-star">Account Number:</label>
+          <input type="text" name="employee_bank_account_number" placeholder="Account Number" class="form-control" [(ngModel)]="employee.employee_bank_account_number"
+            #employeeAccountNumRef="ngModel" pattern="^([0-9]{1,9})[,]*([0-9]{3,3})*[,]*([0-9]{1,3})*[.]*([0-9]{2,2})*$" autocomplete="off"
+            ngModel [attr.maxlength]="25" [attr.permitAlphabets]="false" [attr.permitSpace]="false" [attr.permitUnderscore]="false"
+            [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+          <div class="form-error-msg" [hidden]="employeeAccountNumRef.pristine && employeeAccountNumRef.untouched">
+            <p [hidden]="!addEmployee.hasError('pattern' , 'employee_bank_account_number')"> Invalid Input </p>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12 form-group">
+          <label class="">Account Type:</label>
+          <select class="form-control" name="employee_bank_account_type" [(ngModel)]="employee.employee_bank_account_type" ngModel>
+            <option value="S">Saving</option>
+            <option value="C">Current</option>
+            <option value="OD">Over Draft</option>
+            <option value="CC">Cash Credit</option>
+            <option value="NER">NER</option>
+            <option value="CCD">Credit Card</option>
+            <option value="L">Loan</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid card">
+      <div class="card-header">
+        <h4 class="card-title">Emergency Contact</h4>
+        <p class="category"></p>
+      </div>
+      <div class="card-content">
+        <div class="col-md-2 col-sm-4 col-xs-12 form-group">
+          <label>First Name:</label>
+          <select name="employee_emergency_person_salutation" [(ngModel)]="employee.employee_emergency_person_salutation" class="form-control">
+            <option value="Mr.">Mr.</option>
+            <option value="Mrs.">Mrs.</option>
+            <option value="Dr.">Dr.</option>
+          </select>
+        </div>
+
+        <div class="col-md-5 col-sm-4 col-xs-12 form-group">
+          <label>First Name:</label>
+          <input type="text" name="employee_emergency_person_first_name" placeholder="First Name" [(ngModel)]="employee.employee_emergency_person_first_name"
+            class="form-control" ngModel autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+            [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false">
+        </div>
+        <div class="col-md-5 col-sm-4 col-xs-12 form-group">
+          <label>Last Name:</label>
+          <input type="text" name="employee_emergency_person_last_name" placeholder="Last Name" [(ngModel)]="employee.employee_emergency_person_last_name"
+            class="form-control" ngModel autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+            [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false">
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+          <label>Relationship:</label>
+          <input type="text" name="employee_emergency_person_relation" placeholder="Relationship" [(ngModel)]="employee.employee_emergency_person_relation"
+            class="form-control" autocomplete="off" ngModel [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+            [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false">
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group" style="padding:0">
+          <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <label>Primary Phone:</label>
+            <input type="text" name="employee_emergency_person_mobile" placeholder="Primary Contact " [(ngModel)]="employee.employee_emergency_person_mobile"
+              class="form-control" [attr.maxlength]="16" [attr.permitAlphabets]="false" [attr.permitSpace]="false" [attr.permitUnderscore]="false"
+              [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false" ngModel>
+          </div>
+          <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <label>Alternate Phone:</label>
+            <input type="text" name="employee_emergency_person_alt_mobile" placeholder="Alternate Contact" [(ngModel)]="employee.employee_emergency_person_alt_mobile"
+              class="form-control" ngModel #employeeEmergencyAltPhoneRef="ngModel" [attr.maxlength]="16" [attr.permitAlphabets]="false"
+              [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true"
+              [attr.defaultValue]="" [attr.permitSpecial]="false">
+          </div>
+
+        </div>
+        <div class="col-md-6" style="padding:0">
+          <div class="col-md-12 form-group">
+            <label>Address:</label>
+            <input type="text" placeholder="Flat / House No. / Floor / Building" name="employee_emergency_person_address" [(ngModel)]="employee.employee_emergency_person_address"
+              class="form-control" autocomplete="off" #employeeAddRef="ngModel" [attr.maxlength]="100" [attr.permitAlphabets]="true"
+              [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+              [attr.defaultValue]="" [attr.permitSpecial]="true">
+            <div class="form-error-msg" [hidden]="employeeAddRef.pristine && employeeAddRef.untouched">
+              <p [hidden]="!addEmployee.hasError('required' , 'employee_emergency_person_address')"> Cannot be empty </p>
+            </div>
+          </div>
+          <div class="col-md-12 form-group">
+            <input type="text" placeholder="Colony / Street / Locality" name="employee_emergency_person_address_2" [(ngModel)]="employee.employee_emergency_person_address_2"
+              class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+              [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+          </div>
+          <div class="col-md-6 form-group">
+            <input type="text" placeholder="City" name="employee_emergency_person_address_3" [(ngModel)]="employee.employee_emergency_person_address_3"
+              class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+              [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]=""
+              [attr.permitSpecial]="false">
+          </div>
+          <div class="col-md-6 form-group">
+            <input type="text" placeholder="PIN Code" name="employee_emergency_person_address_4" [(ngModel)]="employee.employee_emergency_person_address_4"
+              class="form-control" autocomplete="off" pattern="^[1-9][0-9]{5}$" placeholder="PIN Code" class="form-control numericInput"
+              autocomplete="off" #clientPin="ngModel" [attr.maxlength]="6" [attr.permitAlphabets]="false" [attr.permitSpace]="false"
+              [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]=""
+              [attr.permitSpecial]="false">
+            <div class="form-error-msg" [hidden]="clientPin.pristine && clientPin.untouched">
+              <p [hidden]="!addEmployee.hasError('pattern' , 'employee_emergency_person_address_4')">Invalid Input</p>
+            </div>
+          </div>
+          <div class="col-md-6 form-group">
+            <label>Country:</label>
+            <select name="employee_emergency_person_country" [(ngModel)]="employee.employee_emergency_person_country" class="form-control">
+              <option *ngFor="let country of countries.data" [value]="country.country_name">{{country.country_name}}</option>
+            </select>
+          </div>
+          <div class="col-md-6 form-group" *ngIf="employee.employee_emergency_person_country=='India'">
+            <label>State:</label>
+            <select name="employee_emergency_person_state_code" [(ngModel)]="employee.employee_emergency_person_state_code" class="form-control">
+              <option value="">Please Select State</option>
+              <option *ngFor="let state of state.data" [value]="state.state_code">{{state.state_name}}</option>
+
+            </select>
+          </div>
+          <div class="col-md-6 form-group" *ngIf="employee.employee_emergency_person_country!=='India'">
+            <label>State:</label>
+            <input type="text" name="employee_emergency_person_state_name" [(ngModel)]="employee.employee_emergency_person_state_name"
+              class="form-control" autocomplete="off" [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+              [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]=""
+              [attr.permitSpecial]="false">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-right">
+      <button [disabled]="!putCallable || !patchCallable" type="submit" class="btn btn-success btn-fill btn-wd btn-loader">{{!(putCallable && patchCallable)?'Saving':'Save'}}
+        <i class="fa fa-circle-o-notch fa-spin" *ngIf="!putCallable || !patchCallable"></i>
+      </button>
+    </div>
+
+
+  </form>
+</div>

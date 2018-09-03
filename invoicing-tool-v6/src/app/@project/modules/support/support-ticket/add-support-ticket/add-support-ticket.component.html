@@ -1,0 +1,73 @@
+<div id="newTicket" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" (click)="addTicket.reset()" data-dismiss="modal">&times;</button> -->
+        <h4 class="modal-title">Add New Ticket</h4>
+      </div>
+      <div class="modal-body">
+        <form #addTicket="ngForm" (ngSubmit)="ticketSubmit(addTicket)" [ngClass]="{submitted:addTicket.submitted}">
+          <div class="row">
+            <div class="col-md-4 form-group">
+              <label>Folow up email</label>
+              <input class="form-control" #ticketEmail="ngModel" type="email" name="followup_email" placeholder="Folow up email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                [(ngModel)]="ticket.followup_email">
+              <div class="form-error-msg" [hidden]="ticketEmail.pristine && ticketEmail.untouched">
+                <!-- <p [hidden]="!addTicket.hasError('required' , 'followup_email' )"> Cannot be empty </p> -->
+                <p [hidden]="!addTicket.hasError('pattern' ,  'followup_email' )"> Invalid Email </p>
+              </div>
+            </div>
+            <div class="col-md-4 form-group">
+              <label>Folow up mobile number</label>
+              <input class="form-control" #ticketMobile="ngModel" type="number" name="followup_mobile" placeholder="Folow up mobile number"
+                [(ngModel)]="ticket.followup_mobile" onKeyPress="if(this.value.length==12) return false;">
+              <div class="form-error-msg" [hidden]="ticketMobile.pristine && ticketMobile.untouched">
+                <!-- <p [hidden]="!addTicket.hasError('required' , 'followup_mobile' )"> Cannot be empty </p> -->
+              </div>
+            </div>
+            <div class="col-md-4 form-group">
+              <label>Type</label>
+              <select name="type" class="form-control" required [(ngModel)]="ticket.type">
+                <option value="Support">Support</option>
+                <option value="Request for Customisation">Request for Customisation</option>
+                <option value="Want to know more about products and features">Want to know more about products and features</option>
+                <option value="Others">Others</option>
+              </select>
+
+              <!-- <input class="form-control" #ticketMobile="ngModel" type="number" name="followup_mobile" placeholder="Folow up mobile number" [(ngModel)]="ticket.followup_mobile" onKeyPress="if(this.value.length==12) return false;"> -->
+              <div class="form-error-msg" [hidden]="ticketMobile.pristine && ticketMobile.untouched">
+                <!-- <p [hidden]="!addTicket.hasError('required' , 'followup_mobile' )"> Cannot be empty </p> -->
+              </div>
+            </div>
+            <div class="col-md-12 form-group">
+              <label class="required-star">Topic</label>
+              <input class="form-control" #ticketTopic="ngModel" type="text" placeholder="Subject" name="subject" [(ngModel)]="ticket.subject"
+                required>
+              <div class="form-error-msg" [hidden]="ticketTopic.pristine && ticketTopic.untouched">
+                <p [hidden]="!addTicket.hasError('required' , 'subject' )"> Cannot be empty </p>
+              </div>
+            </div>
+            <div class="col-md-12 form-group">
+              <label class="required-star">Problem</label>
+              <textarea spellcheck="false" class="form-control" #ticketProblem="ngModel" name="body" rows="4" placeholder="Share your bugs and problem here!"
+                [(ngModel)]="ticket.body" required></textarea>
+              <div class="form-error-msg" [hidden]="ticketProblem.pristine && ticketProblem.untouched">
+                <p [hidden]="!addTicket.hasError('required' , 'body' )"> Cannot be empty </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning btn-fill" (click)="close(addTicket)">Close</button>
+            <button type="button" class="btn btn-success btn-fill">Submit</button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+</div>

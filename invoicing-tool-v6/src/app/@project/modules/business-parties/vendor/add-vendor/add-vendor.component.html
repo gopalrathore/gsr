@@ -1,0 +1,519 @@
+<div class="main-content add-vendor">
+  <div style="font-size: 24px; margin: 0px 3px 15px 15px; font-weight: bold;">
+    <a [routerLink]="['./../']">
+      <span class="ti-back-left"> Back</span>
+    </a>
+  </div>
+  <form #addVendor="ngForm" class="validateForm" (ngSubmit)="vendorSubmit(addVendor.valid,addVendor.value)" [ngClass]="{submitted:addVendor.submitted}">
+    <div class="container-fluid card">
+      <div class="card-header">
+        <h4 class="card-title">{{componentName}}</h4>
+        <p class="category"></p>
+      </div>
+      <div class="card-content">
+        <div class="row">
+          <div class="col-md-6" style="padding:0">
+            <div class="col-md-4 form-group">
+              <label class="required-star">GST Registered:</label>
+              <select name="vendor_registered" [(ngModel)]="vendor.vendor_registered" class="form-control" (change)="setCountry(vendor.vendor_registered);vendor.vendor_gsttreatment=vendor.vendor_registered==1?'Regular':'Unregistered'"
+                required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+            </div>
+            <div class="col-md-8 form-group" *ngIf="vendor.vendor_registered==1">
+              <label class="required-star">GSTIN:</label>
+              <input type="text" name="vendor_gst_id" #gstPanRef="ngModel" [ngModel]="vendor.vendor_gst_id | uppercase" (ngModelChange)="vendor.vendor_gst_id=$event"
+                class="form-control" pattern="[0-9]{2}[A-Za-z]{3}[C,P,H,F,A,T,B,L,J,G,c,p,h,f,a,t,b,l,j,g]{1}[A-Za-z]{1}[0-9]{4}[A-Za-z]{1}[0-9]{1}[A-Za-z0-9]{1}[A-Z0-9a-z]{1}"
+                (keyup)="select_vendor_type(vendor.vendor_gst_id)" autocomplete="off" placeholder="GST Number" required [attr.maxlength]="15"
+                [attr.permitAlphabets]="true" [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false"
+                [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+              <p class="pan">{{vendor.vendor_pan}}</p>
+              <div class="form-error-msg gstin-error" [hidden]="gstPanRef.pristine && gstPanRef.untouched">
+                <p [hidden]="!addVendor.hasError('required', 'vendor_gst_id')"> Cannot be empty </p>
+                <p [hidden]="!addVendor.hasError('pattern', 'vendor_gst_id')"> Invalid GSTIN </p>
+              </div>
+            </div>
+            <div [class.hidden]="vendor.vendor_registered==1" class="col-md-6 form-group">
+              <label>PAN:</label>
+              <input type="text" #panRef="ngModel" name="vendor_pan" [(ngModel)]="vendor.vendor_pan" [readonly]="vendor.vendor_registered==1"
+                class="form-control uppercase" pattern="([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}" autocomplete="off" placeholder="Permanent Account Number"
+                [attr.maxlength]="10" [attr.permitAlphabets]="true" [attr.permitSpace]="false" [attr.permitUnderscore]="false"
+                [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+              <div class="form-error-msg" [hidden]="panRef.pristine && panRef.untouched">
+                <p [hidden]="!addVendor.hasError('pattern', 'vendor_pan')"> Invalid PAN </p>
+              </div>
+            </div>
+            <div class="col-md-4 form-group">
+              <label>Vendor Code:</label>
+              <input type="text" name="vendor_code" [(ngModel)]="vendor.vendor_code" placeholder="Unique Identification Number" class="form-control"
+                autocomplete="off" [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+            </div>
+            <div class="col-md-8 form-group">
+              <label class="required-star">Search Name:</label>
+              <input type="text" name="vendor_company_nickname" [(ngModel)]="vendor.vendor_company_nickname" placeholder="Search Name"
+                class="form-control" #vendorNickNameRef="ngModel" autocomplete="off" required [attr.maxlength]="50" [attr.permitAlphabets]="true"
+                [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+                [attr.defaultValue]="" [attr.permitSpecial]="true">
+              <div class="form-error-msg" [hidden]="vendorNickNameRef.pristine && vendorNickNameRef.untouched">
+                <p [hidden]="!addVendor.hasError('required' , 'vendor_company_nickname')"> Cannot be empty </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Email:</label>
+                <input type="text" name="vendor_email" [(ngModel)]="vendor.vendor_email" placeholder="Company Email" class="form-control"
+                  pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #vendorEmail="ngModel" autocomplete="off" [attr.maxlength]="100"
+                  [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true"
+                  [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                <div class="form-error-msg" [hidden]="vendorEmail.pristine && vendorEmail.untouched">
+                  <p [hidden]="!addVendor.hasError('pattern' , 'vendor_email')">Invalid Email</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label>Contact Number</label>
+              <input type="text" placeholder="Contact Number" name="vendor_mobile" [(ngModel)]="vendor.vendor_mobile" class="form-control "
+                autocomplete="off" #vendorContactBilling="ngModel" [attr.maxlength]="16" [attr.permitAlphabets]="false" [attr.permitSpace]="false"
+                [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                [attr.permitSpecial]="false">
+              <div class="form-error-msg" [hidden]="vendorContactBilling.pristine && vendorContactBilling.untouched">
+                <p [hidden]="!addVendor.hasError('pattern' , 'vendor_mobile')">Invalid Input</p>
+              </div>
+            </div>
+            <div class="col-md-6 form-group">
+              <label>Website:</label>
+              <input type="text" name="vendor_website" [(ngModel)]="vendor.vendor_website" class="form-control" autocomplete="off" #websiteRef="ngModel"
+                pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
+                placeholder="domain.com" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+              <div class="form-error-msg" [hidden]="websiteRef.pristine && websiteRef.untouched">
+                <p [hidden]="!addVendor.hasError('pattern' , 'vendor_website')"> Invalid URL </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" style="padding:0">
+
+            <div class="col-md-12 form-group">
+              <label class="required-star">Company Name:</label>
+              <input type="text" name="vendor_company" [(ngModel)]="vendor.vendor_company" placeholder="Name of the company" class="form-control"
+                (keyup)="vendor.vendor_company_nickname=vendor.vendor_company" #vendorCompanyRef="ngModel" autocomplete="off"
+                required [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+              <div class="form-error-msg" [hidden]="vendorCompanyRef.pristine && vendorCompanyRef.untouched">
+                <p [hidden]="!addVendor.hasError('required' , 'vendor_company')"> Cannot be empty </p>
+              </div>
+            </div>
+            <div class="col-md-12 form-group">
+              <label class="required-star">Billing Address:</label>
+              <input type="text" placeholder="Flat / House No. / Floor / Building" name="vendor_address" [(ngModel)]="vendor.vendor_address"
+                class="form-control" #vendorAddRef="ngModel" autocomplete="off" required [attr.maxlength]="100" [attr.permitAlphabets]="true"
+                [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+                [attr.defaultValue]="" [attr.permitSpecial]="true">
+              <div class="form-error-msg" [hidden]="vendorAddRef.pristine && vendorAddRef.untouched">
+                <p [hidden]="!addVendor.hasError('required' , 'vendor_address')"> Cannot be empty </p>
+              </div>
+            </div>
+            <div class="col-md-12 form-group">
+              <input type="text" placeholder="Colony / Street / Locality" name="vendor_address_2" [(ngModel)]="vendor.vendor_address_2"
+                class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+                [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                [attr.permitSpecial]="true">
+            </div>
+            <div class="col-md-6 form-group">
+              <input type="text" placeholder="City" name="vendor_address_3" #vendorAdd2Ref="ngModel" [(ngModel)]="vendor.vendor_address_3"
+                class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+                [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]=""
+                [attr.permitSpecial]="false" required>
+              <div class="form-error-msg" [hidden]="vendorAdd2Ref.pristine && vendorAdd2Ref.untouched">
+                <p [hidden]="!addVendor.hasError('required' , 'vendor_address_3')"> Cannot be empty </p>
+              </div>
+            </div>
+            <div class="col-md-6 form-group">
+              <input type="text" placeholder="PIN Code" name="vendor_address_4" [(ngModel)]="vendor.vendor_address_4" class="form-control"
+                autocomplete="off" #vendorBillingPin="ngModel" pattern="^[1-9][0-9]{5}$" [attr.maxlength]="6" [attr.permitAlphabets]="false"
+                [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true"
+                [attr.defaultValue]="" [attr.permitSpecial]="false" required>
+              <div class="form-error-msg" [hidden]="vendorBillingPin.pristine && vendorBillingPin.untouched">
+                <p [hidden]="!addVendor.hasError('pattern' , 'vendor_address_4')">Invalid PIN Code</p>
+                <p [hidden]="!addVendor.hasError('required' , 'vendor_address_4')"> Cannot be empty </p>
+              </div>
+            </div>
+            <div class="col-md-6 form-group">
+              <label class="required-star">Country:</label>
+              <select name="vendor_country" [(ngModel)]="vendor.vendor_country" #vendorCountryAddRef="ngModel" class="form-control" required>
+                <option *ngFor="let country of countries.data" [value]="country.country_name">{{country.country_name}}</option>
+              </select>
+              <div class="form-error-msg" [hidden]="vendorCountryAddRef.pristine && vendorCountryAddRef.untouched">
+                <p [hidden]="!addVendor.hasError('required' , 'vendor_country')"> Cannot be empty </p>
+              </div>
+            </div>
+            <div class="col-md-6 form-group" *ngIf="vendor.vendor_country=='India'">
+              <label class="required-star">State:</label>
+              <select name="vendor_state_code" [(ngModel)]="vendor.vendor_state_code" #vendorStateCodeAddRef="ngModel" class="form-control"
+                required>
+                <option value="">Please Select State</option>
+                <option *ngFor="let state of state.data" [value]="state.state_code">{{state.state_name}}</option>
+              </select>
+              <div class="form-error-msg" [hidden]="vendorStateCodeAddRef.pristine && vendorStateCodeAddRef.untouched">
+                <p [hidden]="!addVendor.hasError('required' , 'vendor_state_code')"> Cannot be empty </p>
+              </div>
+            </div>
+            <div class="col-md-6 form-group" *ngIf="vendor.vendor_country!='India'">
+              <label class="required-star">State:</label>
+              <input type="text" name="vendor_state_name" [(ngModel)]="vendor.vendor_state_name" #vendorStateAddRef="ngModel" class="form-control"
+                autocomplete="off" required [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="false"
+                [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false">
+              <div class="form-error-msg" [hidden]="vendorStateAddRef.pristine && vendorStateAddRef.untouched">
+                <p [hidden]="!addVendor.hasError('required' , 'vendor_state_name')"> Cannot be empty </p>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="col-md-6" style="padding:0">
+
+
+
+
+
+
+          </div>
+          <div class="col-md-6" style="padding:0">
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid card">
+      <div class="card-header">
+        <h4 class="card-title flex-inline">Vendor Primary Contact Details </h4>
+      </div>
+      <div class="card-content">
+        <div class="row">
+          <div class="col-md-6" style="padding:0px;">
+            <label class="col-md-12">Vendor Name:</label>
+            <div class="col-md-2 form-group">
+              <select [(ngModel)]="vendor.vendor_primary_contact_salutation" name="vendor_primary_contact_salutation" style="padding:0"
+                class="form-control">
+                <option value="Mr.">Mr.</option>
+                <option value="Ms.">Ms.</option>
+                <option value="Mrs.">Mrs.</option>
+                <option value="Dr.">Dr.</option>
+              </select>
+            </div>
+            <div class="col-md-5 form-group">
+              <input placeholder="First Name" type="text" name="vendor_primary_contact_first_name" [(ngModel)]="vendor.vendor_primary_contact_first_name"
+                class="form-control" #firstNameRef="ngModel" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true"
+                [attr.permitSpace]="true" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false"
+                [attr.defaultValue]="" [attr.permitSpecial]="false">
+              <div class="form-error-msg" [hidden]="firstNameRef.pristine && firstNameRef.untouched">
+                <p [hidden]="!addVendor.hasError('required' , 'vendor_primary_contact_first_name')"> Cannot be empty </p>
+              </div>
+            </div>
+            <div class="col-md-5 form-group">
+              <input type="text" name="vendor_primary_contact_last_name" placeholder="Last Name" [(ngModel)]="vendor.vendor_primary_contact_last_name"
+                class="form-control" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="false"
+                [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false">
+            </div>
+          </div>
+          <div class="col-md-3 form-group">
+            <label class="">Mobile Number:</label>
+            <input type="text" name="vendor_primary_contact_mobile" [(ngModel)]="vendor.vendor_primary_contact_mobile" class="form-control"
+              autocomplete="off" placeholder="Mobile Number" #vendorPrimaryMobile="ngModel" [attr.maxlength]="16" [attr.permitAlphabets]="false"
+              [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true"
+              [attr.defaultValue]="" [attr.permitSpecial]="false">
+            <div class="form-error-msg" [hidden]="vendorPrimaryMobile.pristine && vendorPrimaryMobile.untouched">
+              <p [hidden]="!addVendor.hasError('pattern' , 'vendor_primary_contact_mobile')">Invalid Input</p>
+            </div>
+          </div>
+          <div class="col-md-3 form-group">
+            <label>Work Mobile Number:</label>
+            <input type="text" name="vendor_primary_contact_work_number" [(ngModel)]="vendor.vendor_primary_contact_work_number" class="form-control"
+              autocomplete="off" placeholder="Work Mobile Number" #vendorPrimaryWorkMobile="ngModel" [attr.maxlength]="16"
+              [attr.permitAlphabets]="false" [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false"
+              [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+            <div class="form-error-msg" [hidden]="vendorPrimaryWorkMobile.pristine && vendorPrimaryWorkMobile.untouched">
+              <p [hidden]="!addVendor.hasError('pattern' , 'vendor_primary_contact_work_number')">Invalid Input</p>
+            </div>
+          </div>
+          <div class="col-md-3 form-group">
+            <label [class.required-star]="vendor.vendor_primary_contact_email_marking=='Yes'">Email:</label>
+            <input type="text" name="vendor_primary_contact_email" #vendorEmailRef="ngModel" [(ngModel)]="vendor.vendor_primary_contact_email"
+              [required]="vendor.vendor_primary_contact_email_marking=='Yes'" class="form-control" autocomplete="off" placeholder="youremail@domain.com"
+              pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [attr.maxlength]="100" [attr.permitAlphabets]="true"
+              [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+              [attr.defaultValue]="" [attr.permitSpecial]="true">
+            <div class="form-error-msg" [hidden]="vendorEmailRef.pristine && vendorEmailRef.untouched">
+              <p [hidden]="!addVendor.hasError('required' , 'vendor_primary_contact_email')"> Cannot be empty </p>
+              <p [hidden]="!addVendor.hasError('pattern' , 'vendor_primary_contact_email')"> Invalid Email </p>
+            </div>
+          </div>
+          <div class="col-md-3 form-group">
+            <label>Email Marking:</label>
+            <select class="form-control" [(ngModel)]="vendor.vendor_primary_contact_email_marking" name="vendor_primary_contact_email_marking">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          <div class="col-md-3 form-group">
+            <label> Department:</label>
+            <input type="text" name="vendor_primary_contact_department" [(ngModel)]="vendor.vendor_primary_contact_department" class="form-control"
+              autocomplete="off" placeholder="Department Name" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+              [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+          </div>
+          <div class="col-md-3 form-group">
+            <label> Designation:</label>
+            <input type="text" name="vendor_primary_contact_designation" [(ngModel)]="vendor.vendor_primary_contact_designation" class="form-control"
+              autocomplete="off" placeholder="Designation" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+              [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+          </div>
+          <div class="col-md-12 form-group">
+            <label>Remark:</label>
+            <textarea placeholder="Remark (for internal use only)" name="vendor_primary_contact_remark" [(ngModel)]="vendor.vendor_primary_contact_remark"
+              class="form-control" rows="3" spellcheck="false" data-gramm_editor="false" [attr.maxlength]="250" [attr.permitAlphabets]="true"
+              [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+              [attr.defaultValue]="" [attr.permitSpecial]="true"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid card">
+      <div class="card-header">
+        <h4 class="card-title">Bank Details</h4>
+        <p class="category"></p>
+      </div>
+      <div class="card-content">
+        <div class="row">
+          <div class="col-md-4 col-sm-6 col-xs-12 form-group">
+            <label class="">IFSC Code:</label>
+            <input type="text" name="vendor_bank_ifsc" placeholder="eg:- BKID000061" class="form-control uppercase" [(ngModel)]="vendor.vendor_bank_ifsc"
+              autocomplete="off" (ngModelChange)="checkIFSC()" pattern="[A-Za-z]{4}[a-zA-Z0-9]{7}" #ifscRef="ngModel" ngModel
+              [attr.maxlength]="11" [attr.permitAlphabets]="true" [attr.permitSpace]="false" [attr.permitUnderscore]="false"
+              [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+            <div class="form-error-msg" [hidden]="ifscRef.pristine && ifscRef.untouched">
+              <p *ngIf="!ifscValid && (vendor.vendor_bank_ifsc!=null && vendor.vendor_bank_ifsc.length>0)"> Invalid IFSC Code </p>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6 col-xs-12 form-group" *ngIf="ifscValid">
+            <label>Bank Name:</label>
+            <input type="text" name="vendor_bank_name" placeholder="Name of Bank" [(ngModel)]="vendor.vendor_bank_name" class="form-control validate-off"
+              ngModel readonly>
+          </div>
+          <div class="col-md-4 col-sm-6 col-xs-12 form-group" *ngIf="ifscValid">
+            <label>Branch Name:</label>
+            <input type="text" class="form-control validate-off" name="vendor_bank_branch_name" placeholder="Name of Branch" [(ngModel)]="vendor.vendor_bank_branch_name"
+              ngModel readonly>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 col-sm-6 col-xs-12 form-group">
+            <label class="">Account Number:</label>
+            <input type="text" name="vendor_bank_account_number" placeholder="Account Number" class="form-control" [(ngModel)]="vendor.vendor_bank_account_number"
+              #employeeAccountNumRef="ngModel" ngModel [attr.maxlength]="25" [attr.permitAlphabets]="false" [attr.permitSpace]="false"
+              [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]=""
+              [attr.permitSpecial]="false">
+          </div>
+          <div class="col-md-4 col-sm-6 col-xs-12 form-group">
+            <label class="">Account Type:</label>
+            <select class="form-control" name="vendor_bank_account_type" [(ngModel)]="vendor.vendor_bank_account_type" ngModel>
+              <option value="S">Saving</option>
+              <option value="C">Current</option>
+              <option value="OD">Over Draft</option>
+              <option value="CC">Cash Credit</option>
+              <option value="NER">NER</option>
+              <option value="CCD">Credit Card</option>
+              <option value="L">Loan</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid card card-contact">
+      <div class="card-header">
+        <h4 class="card-title">Contact Book
+          <a type="button" (click)="addMoreItem()" rel="tooltip" title="Add new Contact Book" class="btn btn-success btnAddContactBook">Add + </a>
+        </h4>
+      </div>
+      <div class="card-content">
+        <div class="row">
+          <div class="col-md-12 panel" *ngFor="let contact of vendor.contact_person;let i = index">
+            <div class="panel-group">
+              <div class="panel-default">
+                <div class="panel-heading" (click)="toggleContactBookItem(i+1)">
+                  <h4 class="panel-title shipping-address">
+                    <a>
+                      <span class="ti-angle-double-down"></span> Name: {{contact.first_name+' '+contact.last_name}}</a>
+                    <a rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs" (click)="removeMoreItem(i)">
+                      <i class="ti-close"></i>
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapse{{i+1}}">
+                  <div class="col-md-6 card-person-name">
+                    <label class="col-md-12 required-star">Name</label>
+                    <div class="col-md-2 form-group">
+                      <select [(ngModel)]="contact.salutation" [name]="'contact_person___'+i+'___salutation'" [attr.name]="'contact_person___'+i+'___salutation'"
+                        style="padding:0" class="form-control">
+                        <option value="Mr.">Mr.</option>
+                        <option value="Ms.">Ms.</option>
+                        <option value="Mrs.">Mrs.</option>
+                        <option value="Dr.">Dr.</option>
+                      </select>
+                    </div>
+                    <div class="col-md-5 form-group">
+                      <input placeholder="First Name" type="text" [name]="'contact_person___'+i+'___first_name'" [attr.name]="'contact_person___'+i+'___first_name'"
+                        [(ngModel)]="contact.first_name" class="form-control" autocomplete="off" required #contactbookFirstnameRef="ngModel"
+                        [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="false"
+                        [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false">
+                      <div class="form-error-msg" [hidden]="contactbookFirstnameRef.pristine && contactbookFirstnameRef.untouched">
+                        <p [hidden]="!addVendor.hasError('required' , 'contact_person___'+i+'___first_name' )"> Cannot be empty </p>
+                      </div>
+                    </div>
+                    <div class="col-md-5 form-group">
+                      <input type="text" [name]="'contact_person___'+i+'___last_name'" [attr.name]="'contact_person___'+i+'___last_name'" placeholder="Last Name"
+                        [(ngModel)]="contact.last_name" class="form-control" autocomplete="off" [attr.maxlength]="50" [attr.permitAlphabets]="true"
+                        [attr.permitSpace]="true" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false"
+                        [attr.defaultValue]="" [attr.permitSpecial]="false">
+                    </div>
+                    <div class="col-md-6 form-group">
+                      <label class="required-star">Mobile Number:</label>
+                      <input type="text" [name]="'contact_person___'+i+'___mobile_number'" [attr.name]="'contact_person___'+i+'___mobile_number'"
+                        [(ngModel)]="contact.mobile_number" class="form-control" [attr.maxlength]="16" [attr.permitAlphabets]="false"
+                        [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true"
+                        [attr.defaultValue]="" [attr.permitSpecial]="false" autocomplete="off" required placeholder="Mobile Number"
+                        #contactbookMobileRef="ngModel">
+                      <div class="form-error-msg" [hidden]="contactbookMobileRef.pristine && contactbookMobileRef.untouched">
+                        <p [hidden]="!addVendor.hasError('required' , 'contact_person___'+i+'___mobile_number' )"> Cannot be empty </p>
+                        <p [hidden]="!addVendor.hasError('pattern' , 'contact_person___'+i+'___mobile_number' )"> Invalid Input </p>
+                      </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                      <label>Work Mobile Number:</label>
+                      <input type="text" [name]="'contact_person___'+i+'___work_number'" [attr.name]="'contact_person___'+i+'___work_number'" [(ngModel)]="contact.work_number"
+                        class="form-control" autocomplete="off" placeholder="Work Mobile Number" #contactbookwork="ngModel"
+                        [attr.maxlength]="16" [attr.permitAlphabets]="false" [attr.permitSpace]="false" [attr.permitUnderscore]="false"
+                        [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+                      <div class="form-error-msg" [hidden]="contactbookwork.pristine && contactbookwork.untouched">
+                        <p [hidden]="!addVendor.hasError('pattern' , 'contact_person___'+i+'___work_number' )"> Invalid Input </p>
+                      </div>
+                    </div>
+                    <div class="col-md-4 form-group">
+                      <label>Email Marking:</label>
+                      <select class="form-control" [(ngModel)]="contact.email_marking" [name]="'contact_person___'+i+'___email_marking'" [attr.name]="'contact_person___'+i+'___email_marking'">
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
+                    </div>
+                    <div class="col-md-8 form-group">
+                      <label [class.required-star]="contact.email_marking=='Yes'">Email:</label>
+                      <input type="text" [name]="'contact_person___'+i+'___email'" [attr.name]="'contact_person___'+i+'___email'" [(ngModel)]="contact.email"
+                        class="form-control" autocomplete="off" [required]="contact.email_marking=='Yes'" placeholder="youremail@domain.com"
+                        #contactbookEmailRef="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [attr.maxlength]="100"
+                        [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true"
+                        [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                      <div class="form-error-msg" [hidden]="contactbookEmailRef.pristine && contactbookEmailRef.untouched">
+                        <p [hidden]="!addVendor.hasError('required' , 'contact_person___'+i+'___email' )"> Cannot be empty </p>
+                        <p [hidden]="!addVendor.hasError('pattern' , 'contact_person___'+i+'___email')"> Invalid Email </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="col-md-6 form-group">
+                      <label>Vendor Department Name:</label>
+                      <input type="text" [name]="'contact_person___'+i+'___department'" [attr.name]="'contact_person___'+i+'___department'" [(ngModel)]="contact.department"
+                        class="form-control" autocomplete="off" placeholder="Department Name" [attr.maxlength]="100" [attr.permitAlphabets]="true"
+                        [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+                        [attr.defaultValue]="" [attr.permitSpecial]="true">
+                    </div>
+                    <div class="col-md-6 form-group">
+                      <label>Vendor Designation:</label>
+                      <input type="text" [name]="'contact_person___'+i+'___designation'" [attr.name]="'contact_person___'+i+'___designation'" [(ngModel)]="contact.designation"
+                        class="form-control" autocomplete="off" placeholder="Designation" [attr.maxlength]="100" [attr.permitAlphabets]="true"
+                        [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+                        [attr.defaultValue]="" [attr.permitSpecial]="true">
+                    </div>
+                    <div class="col-md-12 form-group">
+                      <label>Vendor Note:</label>
+                      <textarea [(ngModel)]="contact.note" [name]="'contact_person___'+i+'___note'" [attr.name]="'contact_person___'+i+'___note'"
+                        placeholder="For internal use only" class="form-control" rows="5" spellcheck="false" data-gramm_editor="false"
+                        [attr.maxlength]="250" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                        [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true"></textarea>
+                    </div>
+
+                  </div>
+
+
+
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid card">
+      <div class="card-header">
+        <h4 class="card-title">Other Details</h4>
+      </div>
+      <div class="card-content">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Payment Terms:</label>
+                <input type="text" class="form-control" [(ngModel)]="vendor.vendor_paymentterms" placeholder="Payment Terms (No. of Days)"
+                  name="vendor_paymentterms" [attr.min]="0" [attr.max]="365" [attr.precision]="0" [attr.defaultValue]="0">
+              </div>
+            </div>
+            <div class="col-md-6 form-group">
+              <label>Opening Balance:</label>
+              <input type="text" placeholder="Opening Balance" name="vendor_openingbalance" [(ngModel)]="vendor.vendor_openingbalance"
+                class="form-control" autocomplete="off" [attr.min]="-999999999999" [attr.max]="999999999999" [attr.precision]="2"
+                [attr.defaultValue]="0.00">
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="required-star">GST Treatment:</label>
+                <select class="form-control" [(ngModel)]="vendor.vendor_gsttreatment" name="vendor_gsttreatment" required>
+                  <option value="Regular" *ngIf="vendor.vendor_registered==1">Registered Business - Regular</option>
+                  <option value="Composition" *ngIf="vendor.vendor_registered==1">Registered Business - Composition</option>
+                  <option value="Unregistered" *ngIf="vendor.vendor_registered==0">Unregistered Business</option>
+                  <option value="Overseas" *ngIf="vendor.vendor_registered==0">Overseas</option>
+                  <option value="SEZ">Special Economic Zone</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Remark:</label>
+                <textarea name="vendor_note" [(ngModel)]="vendor.vendor_note" placeholder="Remark (For internal use)" class="form-control"
+                  rows="5" spellcheck="false" data-gramm_editor="false" [attr.maxlength]="250" [attr.permitAlphabets]="true"
+                  [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+                  [attr.defaultValue]="" [attr.permitSpecial]="true"></textarea>
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="text-right">
+      <input type="hidden" name="vendor_id" class="form-control" [(ngModel)]="vendor.vendor_id">
+      <button [disabled]="!putCallable || !patchCallable" type="submit" class="btn btn-success btn-fill btn-wd btn-loader">{{!(putCallable && patchCallable)?'Saving':'Save'}}
+        <i class="fa fa-circle-o-notch fa-spin" *ngIf="!putCallable || !patchCallable"></i>
+      </button>
+    </div>
+  </form>
+</div>

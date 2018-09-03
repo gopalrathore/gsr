@@ -1,0 +1,143 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="title">Reports</h4>
+        <div class="card">
+          <div class="card-content">
+            <div class="row">
+              <div class="col-md-6">
+                <h5>Tax Ledger's</h5>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.taxLedger.cgstLedger.link]" [class.disabled]="!report.taxLedger.cgstLedger.permission">{{report.taxLedger.cgstLedger.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.taxLedger.cgstLedger.status]"></span>
+                  </a>
+                </p>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.taxLedger.igstLedger.link]" [class.disabled]="!report.taxLedger.igstLedger.permission">{{report.taxLedger.igstLedger.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.taxLedger.igstLedger.status]"></span>
+                  </a>
+                </p>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.taxLedger.sgstLedger.link]" [class.disabled]="!report.taxLedger.sgstLedger.permission">{{report.taxLedger.sgstLedger.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.taxLedger.sgstLedger.status]"></span>
+                  </a>
+                </p>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.taxLedger.cessLedger.link]" [class.disabled]="!report.taxLedger.cessLedger.permission">{{report.taxLedger.cessLedger.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.taxLedger.cessLedger.status]"></span>
+                  </a>
+                </p>
+       
+               
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.taxLedger.tdsLedger.link]" [class.disabled]="!report.taxLedger.tdsLedger.permission">{{report.taxLedger.tdsLedger.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.taxLedger.tdsLedger.status]"></span>
+                  </a>
+                </p>
+               
+              </div>
+              <div class="col-md-6">
+                <h5>Business Reports</h5>
+                <p class="report-inner-content">
+                    <a [routerLink]="[report.businessReports.bankCashBook.link]" [class.disabled]="!report.businessReports.bankCashBook.permission">{{report.businessReports.bankCashBook.reportDisplayName}}
+                      <span [innerHTML]="spanStatus[report.businessReports.bankCashBook.status]"></span>
+                    </a>
+                </p>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.businessReports.bankBook.link]" [class.disabled]="!report.businessReports.bankBook.permission">{{report.businessReports.bankBook.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.businessReports.bankBook.status]"></span>
+                  </a>
+                </p>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.businessReports.cashBook.link]" [class.disabled]="!report.businessReports.cashBook.permission">{{report.businessReports.cashBook.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.businessReports.cashBook.status]"></span>
+                  </a>
+                </p>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.businessReports.expenseReport.link]" [class.disabled]="!report.businessReports.expenseReport.permission">{{report.businessReports.expenseReport.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.businessReports.expenseReport.status]"></span>
+                  </a>
+                </p>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.businessReports.goodsAndServiceReport.link]" [class.disabled]="!report.businessReports.goodsAndServiceReport.permission">{{report.businessReports.goodsAndServiceReport.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.businessReports.goodsAndServiceReport.status]"></span>
+                  </a>
+                </p>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.businessReports.stockAdjustmentReport.link]" [class.disabled]="!report.businessReports.stockAdjustmentReport.permission">{{report.businessReports.stockAdjustmentReport.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.businessReports.stockAdjustmentReport.status]"></span>
+                  </a>
+                </p>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.businessReports.paymentReport.link]" [class.disabled]="!report.businessReports.paymentReport.permission">{{report.businessReports.paymentReport.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.businessReports.paymentReport.status]"></span>
+                  </a>
+                </p>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.businessReports.purchaseRegisterItemwise.link]" [class.disabled]="!report.businessReports.purchaseRegisterItemwise.permission">{{report.businessReports.purchaseRegisterItemwise.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.businessReports.purchaseRegisterItemwise.status]"></span>
+                  </a>
+                </p>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.businessReports.purchaseRegisterinvoicewise.link]" [class.disabled]="!report.businessReports.purchaseRegisterinvoicewise.permission">{{report.businessReports.purchaseRegisterinvoicewise.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.businessReports.purchaseRegisterinvoicewise.status]"></span>
+                  </a>
+                </p>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.businessReports.receiptReports.link]" [class.disabled]="!report.businessReports.receiptReports.permission">{{report.businessReports.receiptReports.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.businessReports.receiptReports.status]"></span>
+                  </a>
+                </p>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.businessReports.salesRegisterItemwise.link]" [class.disabled]="!report.businessReports.salesRegisterItemwise.permission">{{report.businessReports.salesRegisterItemwise.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.businessReports.salesRegisterItemwise.status]"></span>
+                  </a>
+                </p>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.businessReports.salesRegisterInvoicewise.link]" [class.disabled]="!report.businessReports.salesRegisterInvoicewise.permission">{{report.businessReports.salesRegisterInvoicewise.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.businessReports.salesRegisterInvoicewise.status]"></span>
+                  </a>
+                </p>
+                
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <h5>Business Ledger's</h5>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.businessLedger.clientLedger.link]" [class.disabled]="!report.businessLedger.clientLedger.permission">{{report.businessLedger.clientLedger.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.businessLedger.clientLedger.status]"></span>
+                  </a>
+                </p>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.businessLedger.vendorLedger.link]" [class.disabled]="!report.businessLedger.vendorLedger.permission">{{report.businessLedger.vendorLedger.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.businessLedger.vendorLedger.status]"></span>
+                  </a>
+                </p>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.businessLedger.creditorsLedger.link]" [class.disabled]="!report.businessLedger.creditorsLedger.permission">{{report.businessLedger.creditorsLedger.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.businessLedger.creditorsLedger.status]"></span>
+                  </a>
+                </p>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.businessLedger.debtorsLedger.link]" [class.disabled]="!report.businessLedger.debtorsLedger.permission">{{report.businessLedger.debtorsLedger.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.businessLedger.debtorsLedger.status]"></span>
+                  </a>
+                </p>
+              </div>
+              <div class="col-md-6">
+                <h5>Tax Reports</h5>
+                <p class="report-inner-content">
+                  <a [routerLink]="[report.taxReports.gstLedgerReport.link]" [class.disabled]="!report.taxReports.gstLedgerReport.permission">{{report.taxReports.gstLedgerReport.reportDisplayName}}
+                    <span [innerHTML]="spanStatus[report.taxReports.gstLedgerReport.status]"></span>
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<div class="card-header">
+  <h5 class="card-title">Sales Invoice Format</h5>
+</div>
+<form #invoiceFormat="ngForm" (ngSubmit)="updateInvoiceNumberFormat(invoiceFormat.valid)" [ngClass]="{submitted:invoiceFormat.submitted}">
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label class="required-star">Invoice Type</label>
+      <select name="invoiceType" class="form-control" [(ngModel)]="invoiceNumberFormat.invoice_type" (change)="getInvoiceNumberFormat()">
+        <option value="0">Select Invoice Type</option>
+        <option value="TI" *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.TI">Tax Invoice</option>
+        <option value="RI" *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.RI">Retail Invoice/B2C Sale</option>
+        <option value="EI" *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.EI">Export Invoice</option>
+        <option value="BOS" *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.BOS">Bill of Supply</option>
+        <option value="RV" *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.RV">Advance Receipt Voucher</option>
+        <option value="RFV" *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.RFV">Refund Voucher</option>
+        <option value="PV" *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.PV">RCM Payment Voucher</option>
+        <option value="CN" *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.CN">Credit Note</option>
+        <option value="DN" *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.DN">Debit Note</option>
+        <option value="REI" *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.REI">Revise Invoice</option>
+        <option value="DC" *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.DC">Tax Delivery Challan</option>
+        <option value="TDC" *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.TDC">Trade Delivery Challan</option>
+      </select>
+    </div>
+
+    <div *ngIf="invoiceNumberFormat.invoice_type!='0'">
+      <div class="form-group col-md-6">
+        <label class="required-star">Prefix</label>
+        <input type="text" class="form-control" name="prefix" [(ngModel)]="invoiceNumberFormat.prefix" [attr.maxlength]="10" [attr.permitAlphabets]="true"
+          [attr.permitSpace]="false" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]=""
+          [attr.permitSpecial]="true" required>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="required-star">Suffix</label>
+        <input type="text" class="form-control" name="suffix" [(ngModel)]="invoiceNumberFormat.suffix" [attr.maxlength]="10" [attr.permitAlphabets]="true"
+          [attr.permitSpace]="false" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]=""
+          [attr.permitSpecial]="true">
+      </div>
+      <div class="form-group col-md-6">
+        <label class="required-star">Starting Number</label>
+        <input type="text" class="form-control" name="starting_number" [attr.min]="1" [attr.max]="99999" [attr.precision]="0" [attr.defaultValue]="1"
+          required [(ngModel)]="invoiceNumberFormat.starting_number">
+      </div>
+      <div class="col-md-12">
+        <button [disabled]="!putCallable" type="submit" class="btn btn-fill btn-success btn-wd btn-loader">{{ !putCallable ? 'Updating' : 'Update' }}
+          <i class="fa fa-circle-o-notch fa-spin" *ngIf="!putCallable"></i>
+        </button>
+      </div>
+
+    </div>
+
+
+  </div>
+</form>

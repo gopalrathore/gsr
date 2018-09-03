@@ -1,0 +1,155 @@
+<nav class="navbar navbar-transparent navbar-absolute">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle navbar-toggle-black" data-toggle="collapse" data-target="#navigation-example-2"
+        (click)="sidebarToggle()">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar "></span>
+        <span class="icon-bar "></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a routerLinkActive="active" [routerLink]="['/login']" class="btn">
+            Looking to login?
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="wrapper wrapper-full-page">
+  <div class="register-page">
+    <!--   you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple" -->
+    <div class="content">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 col-md-offset-2">
+            <div class="header-text">
+              <!-- <h2>Frate – The E-Way Bill Software</h2> -->
+              <h2>Edge E-Way Bill Software</h2>
+              <h4>Quick logistics. Quick compliance.</h4>
+              <hr>
+            </div>
+          </div>
+          <div class="col-md-4 col-md-offset-2">
+            <div class="media">
+              <div class="media-left">
+                <div class="icon icon-danger">
+                  <i class="ti ti-user"></i>
+                </div>
+              </div>
+              <div class="media-body">
+                <h5>Bulk Update</h5>
+                Raise consolidated / bulk E-Way Bills and bulk update vehicle numbers.
+              </div>
+            </div>
+            <div class="media">
+              <div class="media-left">
+                <div class="icon icon-warning">
+                  <i class="ti-bar-chart-alt"></i>
+                </div>
+              </div>
+              <div class="media-body">
+                <h5>GSTN Connect</h5>
+                Directly communicate with the government portal and save loads of time.
+              </div>
+            </div>
+            <div class="media">
+              <div class="media-left">
+                <div class="icon icon-info">
+                  <i class="ti-headphone"></i>
+                </div>
+              </div>
+              <div class="media-body">
+                <h5>Complete Support</h5>
+                Our team of experts are there to guide you when you need it. We also help you to raise E-Way Bills.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <form #registrationForm="ngForm" class="validateForm" (ngSubmit)="userSubmit(registrationForm.valid,registrationForm.value)" [ngClass]="{submitted:registrationForm.submitted}">
+              <div class="card card-plain">
+                  <div class="content">
+                      <div class="form-group">
+                          <input type="text" name="first_name" [(ngModel)]="user.first_name" autocomplete="off" placeholder="Your First Name" #registerNameRef="ngModel"
+                              class="form-control" required [attr.maxlength]="100" [attr.permitAlphabets]="true"
+                              [attr.permitSpace]="true" [attr.permitUnderscore]="false" [attr.permitDash]="false"
+                              [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false">
+                          <div class="form-error-msg" [hidden]="registerNameRef.pristine && registerNameRef.untouched">
+                              <p [hidden]="!registrationForm.hasError('required' , 'first_name')"> Cannot be empty </p>
+                              <p [hidden]="!registrationForm.hasError('minlength' , 'first_name')"> Username too short </p>
+                          </div>
+                      </div>
+
+                      <div class="form-group">
+                              <input type="text" name="last_name" [(ngModel)]="user.last_name" autocomplete="off" placeholder="Your Last Name" #registerNameRef="ngModel"
+                                  class="form-control" required [attr.maxlength]="100" [attr.permitAlphabets]="true"
+                                  [attr.permitSpace]="true" [attr.permitUnderscore]="false" [attr.permitDash]="false"
+                                  [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false">
+                              <div class="form-error-msg" [hidden]="registerNameRef.pristine && registerNameRef.untouched">
+                                  <p [hidden]="!registrationForm.hasError('required' , 'last_name')"> Cannot be empty </p>
+                                  <p [hidden]="!registrationForm.hasError('minlength' , 'last_name')"> Username too short </p>
+                              </div>
+                          </div>
+                      <div class="form-group">
+                          <input type="text" name="email" [(ngModel)]="user.email" autocomplete="off" placeholder="Your Email" #registerUsernameRef="ngModel"
+                              class="form-control" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                              [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                              [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                          <div class="form-error-msg" [hidden]="registerUsernameRef.pristine && registerUsernameRef.untouched">
+                              <p [hidden]="!registrationForm.hasError('required' , 'email')"> Cannot be empty </p>
+                              <p [hidden]="!registrationForm.hasError('pattern' ,  'email' )"> Invalid Email </p>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <input type="text" name="mobile" [(ngModel)]="user.mobile" autocomplete="off" placeholder="Your Mobile Number" #registerMobileRef="ngModel"
+                              class="form-control" required [attr.maxlength]="16" [attr.permitAlphabets]="false"
+                              [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false"
+                              [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+                          <div class="form-error-msg" [hidden]="registerMobileRef.pristine && registerMobileRef.untouched">
+                              <p [hidden]="!registrationForm.hasError('required' , 'mobile')"> Cannot be empty </p>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <!-- Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character: -->
+                          <input type="password" name="password" [(ngModel)]="user.password" autocomplete="off" ng-model="pwd" ng-keypress="pass" placeholder="Password"
+                              #registerPasswordRef="ngModel" class="form-control validate-off" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}">
+                          <div class="form-error-msg" [hidden]="registerPasswordRef.pristine && registerPasswordRef.untouched">
+                              <p [hidden]="!registrationForm.hasError('required' , 'password')"> Cannot be empty </p>
+                              <p [hidden]="registrationForm.hasError('required' , 'password') || validatePassword(user.password)"> {{passwordError}} </p>
+
+                          </div>
+
+                      </div>
+                      <div class="form-group">
+                          <input type="password" name="password_confirmation" autocomplete="off" [(ngModel)]="password_confirmation" #registerpasswordConfirmRef="ngModel"
+                              placeholder="Password Confirmation" class="form-control" required>
+                          <div class="form-error-msg" [hidden]="registerpasswordConfirmRef.pristine && registerpasswordConfirmRef.untouched ">
+                              <p [hidden]="!registrationForm.hasError('required' , 'password_confirmation')"> Cannot be empty </p>
+                              <p [hidden]="registrationForm.hasError('required' , 'password_confirmation') || user.password===password_confirmation"> Password Missmatch </p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="footer text-center">
+                      <button type="submit" [disabled]="password_confirmation!=user.password && user.password.length!=0" class="btn btn-fill btn-danger btn-wd">Create Free Account </button>
+                  </div>
+              </div>
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <footer class="footer footer-transparent">
+            <div class="container">
+                <div class="copyright text-center">
+                    &copy; {{test | date: 'yyyy'}}, Handcrafted with <i class="fa fa-heart heart"></i> in Mumbai
+                </div>
+            </div>
+        </footer> -->
+  </div>
+</div>

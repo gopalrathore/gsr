@@ -1,0 +1,252 @@
+<div class="main-content">
+  <div style="font-size: 24px;  margin: 0px 3px 15px 15px; font-weight: bold;">
+    <a [routerLink]="['./../']">
+      <span class="ti-back-left"> Back</span>
+    </a>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <form #journalForm="ngForm" (ngSubmit)="journalSubmit(journalForm.valid)" [ngClass]="{submitted:journalForm.submitted}" class="validateForm">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-content">
+                  <div class="row">
+                    <div class="col-md-4 form-group">
+                      <label class="required-star">Journal Date</label>
+                      <p-calendar name="journal_date" dateFormat="dd/mm/yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"
+                        [(ngModel)]="journal.journal_date" #journalDate="ngModel" required></p-calendar>
+                      <div class="form-error-msg" [hidden]="journalDate.pristine && journalDate.untouched">
+                        <p [hidden]="!journalForm.hasError('required', 'journal_date')"> Cannot be empty </p>
+                      </div>
+                    </div>
+                    <div class="col-md-8 form-group">
+                      <label>Journal Note</label>
+                      <input class="form-control" type="text" name="journal_notes" [(ngModel)]="journal.journal_notes" [attr.maxlength]="100" [attr.permitAlphabets]="true"
+                        [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+                        [attr.defaultValue]="" [attr.permitSpecial]="true">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h4 class="card-title">Debit
+                <a class="btn btn-success btn-simple btn-xs" (click)="addMoreItem('debit_details')">
+                  <i class="ti-plus"></i>
+                </a>
+              </h4>
+              <div class="card" *ngFor="let debit of journal.debit_details; let i = index">
+                <div class="card-content">
+                  <h4 class="card-title">
+                    <button type="button" class="btn btn-simple btn-danger btn-icon pull-right remove" *ngIf="i!=0" (click)="removeMoreItem('debit_details', i)">
+                      <i class="ti-close"></i>
+                    </button>
+                  </h4>
+                  <div class="row clear-both">
+                    <div class="col-md-4 form-group">
+                      <label>Account {{debit.account_type}}</label>
+                      <select [name]="'debit_details___'+i+'___account_type'" #debitAccType="ngModel" [attr.name]="'debit_details___'+i+'___account_type'"
+                        required class="form-control" [(ngModel)]="debit.account_type" (change)="debit.foreign_key=''; debit.client_name=''; debit.vendor_name=''; debit.bank_name=''; debit.expense_name=''">
+                        <option value="">Select Account</option>
+                        <option value="client">Client</option>
+                        <option value="vendor">Vendor</option>
+                        <option value="bank">Bank</option>
+                        <option value="expense">Expense</option>
+                        <option value="tax">Tax</option>
+                      </select>
+                      <div class="form-error-msg" [hidden]="debitAccType.pristine && debitAccType.untouched">
+                        <p [hidden]="!journalForm.hasError('required', 'debit_details___'+i+'___account_type')"> Cannot be empty </p>
+                      </div>
+                    </div>
+                    <div class="col-md-4 form-group" *ngIf="debit.account_type=='client'">
+                      <label class="required-star">Client Name</label>
+                      <p-autoComplete [name]="'debit_details___'+i+'___debit_client_name'" [forceSelection]="true" [attr.name]="'debit_details___'+i+'___debit_client_name'"
+                        required [(ngModel)]="debit.client_name" [suggestions]="clientNameAutocomplete.list" required (onSelect)="clientSelected('debit_details', i)"
+                        #debitClientName="ngModel" (completeMethod)="clientNameAutocomplete.searchList($event)"></p-autoComplete>
+                      <div class="form-error-msg" [hidden]="debitClientName.pristine && debitClientName.untouched">
+                        <p [hidden]="!journalForm.hasError('required' , 'debit_details___'+i+'___debit_client_name')"> Cannot be empty </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4 form-group" *ngIf="debit.account_type=='vendor'">
+                      <label class="required-star">Vendor Name</label>
+                      <p-autoComplete [name]="'debit_details___'+i+'___debit_vendor_name'" [forceSelection]="true" [attr.name]="'debit_details___'+i+'___debit_vendor_name'"
+                        required [(ngModel)]="debit.vendor_name" [suggestions]="vendorNameAutocomplete.list" required (onSelect)="vendorSelected('debit_details', i)"
+                        #debitVendorName="ngModel" (completeMethod)="vendorNameAutocomplete.searchList($event)"></p-autoComplete>
+                      <div class="form-error-msg" [hidden]="debitVendorName.pristine && debitVendorName.untouched">
+                        <p [hidden]="!journalForm.hasError('required' , 'debit_details___'+i+'___debit_vendor_name')"> Cannot be empty </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4 form-group" *ngIf="debit.account_type=='bank'">
+                      <label class="required-star">Bank Name</label>
+                      <p-autoComplete [name]="'debit_details___'+i+'___debit_bank_name'" [forceSelection]="true" [attr.name]="'debit_details___'+i+'___debit_bank_name'"
+                        required [(ngModel)]="debit.bank_name" [suggestions]="bankNameAutocomplete.list" required (onSelect)="bankSelected('debit_details', i)"
+                        #debitBankName="ngModel" (completeMethod)="bankNameAutocomplete.searchList($event)"></p-autoComplete>
+                      <div class="form-error-msg" [hidden]="debitBankName.pristine && debitBankName.untouched">
+                        <p [hidden]="!journalForm.hasError('required' , 'debit_details___'+i+'___debit_bank_name')"> Cannot be empty </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4 form-group" *ngIf="debit.account_type=='expense'">
+                      <label class="required-star">Expense Name</label>
+                      <select class="form-control" [name]="'debit_details___'+i+'___debit_expense_name'" [attr.name]="'debit_details___'+i+'___debit_expense_name'"
+                        (change)="expenseSelected('debit_details', i)" required [(ngModel)]="debit.expense_name" #debitExpenseName="ngModel">
+                        <option value="">Select Expense</option>
+                        <option *ngFor="let type of expenseType" [value]="type">{{type}}</option>
+                      </select>
+                      <div class="form-error-msg" [hidden]="debitExpenseName.pristine && debitExpenseName.untouched">
+                        <p [hidden]="!journalForm.hasError('required' , 'debit_details___'+i+'___debit_expense_name')"> Cannot be empty </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4 form-group" *ngIf="debit.account_type=='tax'">
+                      <label class="required-star">Tax Type</label>
+                      <select class="form-control" [name]="'debit_details___'+i+'___debit_tax_type'" [attr.name]="'debit_details___'+i+'___debit_tax_type'"
+                        (change)="taxSelected('debit_details', i)" required [(ngModel)]="debit.tax_type" #debitTaxType="ngModel">
+                        <!-- <option value="">Select Type</option> -->
+                        <option value="cgst">CGST</option>
+                        <option value="cess">SGST</option>
+                        <option value="igst">IGST</option>
+                        <option value="cess">CESS</option>
+                      </select>
+                      <div class="form-error-msg" [hidden]="debitTaxType.pristine && debitTaxType.untouched">
+                        <p [hidden]="!journalForm.hasError('required' , 'debit_details___'+i+'___debit_tax_type')"> Cannot be empty </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4 form-group">
+                      <label>Amount</label>
+                      <input type="text" [name]="'debit_details___'+i+'___amount'" [attr.name]="'debit_details___'+i+'___amount'" required class="form-control"
+                        [(ngModel)]="debit.amount" [attr.min]="" [attr.max]="999999999" [attr.precision]="2" [attr.defaultValue]="">
+                    </div>
+                    <div class="col-md-12 form-group">
+                      <label>Note</label>
+                      <input type="text" [name]="'debit_details___'+i+'___journal_debit_notes'" [attr.name]="'debit_details___'+i+'___journal_debit_notes'"
+                        class="form-control" [(ngModel)]="debit.journal_debit_notes" [attr.maxlength]="100" [attr.permitAlphabets]="true"
+                        [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+                        [attr.defaultValue]="" [attr.permitSpecial]="true">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h4 class="card-title">Credit
+                <a class="btn btn-success btn-simple btn-xs" (click)="addMoreItem('credit_details')">
+                  <i class="ti-plus"></i>
+                </a>
+              </h4>
+              <div class="card" *ngFor="let credit of journal.credit_details; let i = index">
+                <div class="card-content">
+                  <h4 class="card-title">
+                    <button type="button" *ngIf="i!=0" class="btn btn-simple btn-danger btn-icon pull-right remove" (click)="removeMoreItem('credit_details', i)">
+                      <i class="ti-close"></i>
+                    </button>
+                  </h4>
+                  <div class="row clear-both">
+                    <div class="col-md-4 form-group">
+                      <label>Account</label>
+                      <select [name]="'credit_details___'+i+'___account_type'" #creditAccType="ngModel" [attr.name]="'credit_details___'+i+'___account_type'"
+                        required class="form-control" required [(ngModel)]="credit.account_type" (change)="credit.foreign_key=''; credit.client_name=''; credit.vendor_name=''; credit.bank_name=''; credit.expense_name=''">
+                        <option value="">Select Account</option>
+                        <option value="client">Client</option>
+                        <option value="vendor">Vendor</option>
+                        <option value="bank">Bank</option>
+                        <option value="expense">Expense</option>
+                        <option value="tax">Tax</option>
+                      </select>
+                      <div class="form-error-msg" [hidden]="creditAccType.pristine && creditAccType.untouched">
+                        <p [hidden]="!journalForm.hasError('required', 'credit_details___'+i+'___account_type')"> Cannot be empty </p>
+                      </div>
+                    </div>
+                    <div class="col-md-4 form-group" *ngIf="credit.account_type=='client'">
+                      <label class="required-star">Client Name</label>
+                      <p-autoComplete [name]="'credit_details___'+i+'___credit_client_name'" [forceSelection]="true" [attr.name]="'credit_details___'+i+'___credit_client_name'"
+                        required [(ngModel)]="credit.client_name" [suggestions]="clientNameAutocomplete.list" required (onSelect)="clientSelected('credit_details', i)"
+                        #creditClientName="ngModel" (completeMethod)="clientNameAutocomplete.searchList($event)"></p-autoComplete>
+                      <div class="form-error-msg" [hidden]="creditClientName.pristine && creditClientName.untouched">
+                        <p [hidden]="!journalForm.hasError('required' , 'credit_details___'+i+'___credit_client_name')"> Cannot be empty </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4 form-group" *ngIf="credit.account_type=='vendor'">
+                      <label class="required-star">Vendor Name</label>
+                      <p-autoComplete [name]="'credit_details___'+i+'___credit_vendor_name'" [forceSelection]="true" [attr.name]="'credit_details___'+i+'___credit_vendor_name'"
+                        required [(ngModel)]="credit.vendor_name" [suggestions]="vendorNameAutocomplete.list" required (onSelect)="vendorSelected('credit_details', i)"
+                        #creditVendorName="ngModel" (completeMethod)="vendorNameAutocomplete.searchList($event)"></p-autoComplete>
+                      <div class="form-error-msg" [hidden]="creditVendorName.pristine && creditVendorName.untouched">
+                        <p [hidden]="!journalForm.hasError('required' , 'credit_details___'+i+'___credit_vendor_name')"> Cannot be empty </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4 form-group" *ngIf="credit.account_type=='bank'">
+                      <label class="required-star">Bank Name</label>
+                      <p-autoComplete [name]="'credit_details___'+i+'___credit_bank_name'" [forceSelection]="true" [attr.name]="'credit_details___'+i+'___credit_bank_name'"
+                        required [(ngModel)]="credit.bank_name" [suggestions]="bankNameAutocomplete.list" required (onSelect)="bankSelected('credit_details', i)"
+                        #creditBankName="ngModel" (completeMethod)="bankNameAutocomplete.searchList($event)"></p-autoComplete>
+                      <div class="form-error-msg" [hidden]="creditBankName.pristine && creditBankName.untouched">
+                        <p [hidden]="!journalForm.hasError('required' , 'credit_details___'+i+'___credit_bank_name')"> Cannot be empty </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4 form-group" *ngIf="credit.account_type=='expense'">
+                      <label class="required-star">Expense Type</label>
+                      <select class="form-control" [name]="'credit_details___'+i+'___credit_expense_name'" [attr.name]="'credit_details___'+i+'___credit_expense_name'"
+                        (change)="expenseSelected('credit_details', i)" required [(ngModel)]="credit.expense_name" #creditExpenseName="ngModel">
+                        <option *ngFor="let type of expenseType" [value]="type">{{type}}</option>
+                      </select>
+                      <div class="form-error-msg" [hidden]="creditExpenseName.pristine && creditExpenseName.untouched">
+                        <p [hidden]="!journalForm.hasError('required' , 'credit_details___'+i+'___credit_expense_name')"> Cannot be empty </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4 form-group" *ngIf="credit.account_type=='tax'">
+                      <label class="required-star">Tax Type</label>
+                      <select class="form-control" [name]="'credit_details___'+i+'___credit_tax_type'" [attr.name]="'credit_details___'+i+'___credit_tax_type'"
+                        (change)="taxSelected('credit_details', i)" required [(ngModel)]="credit.tax_type" #creditTaxType="ngModel">
+                        <!-- <option value="">Select Type</option> -->
+                        <option value="cgst">CGST</option>
+                        <option value="cess">SGST</option>
+                        <option value="igst">IGST</option>
+                        <option value="cess">CESS</option>
+                      </select>
+                      <div class="form-error-msg" [hidden]="creditTaxType.pristine && creditTaxType.untouched">
+                        <p [hidden]="!journalForm.hasError('required' , 'credit_details___'+i+'___credit_tax_type')"> Cannot be empty </p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4 form-group">
+                      <label>Amount</label>
+                      <input type="text" [name]="'credit_details___'+i+'___amount'" [attr.name]="'credit_details___'+i+'___amount'" required class="form-control"
+                        [(ngModel)]="credit.amount" [attr.min]="" [attr.max]="999999999" [attr.precision]="2" [attr.defaultValue]="">
+                    </div>
+                    <div class="col-md-12 form-group">
+                      <label>Note</label>
+                      <input type="text" [name]="'credit_details___'+i+'___journal_credit_notes'" [attr.name]="'credit_details___'+i+'___journal_credit_notes'"
+                        class="form-control" [(ngModel)]="credit.journal_credit_notes" [attr.maxlength]="100" [attr.permitAlphabets]="true"
+                        [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+                        [attr.defaultValue]="" [attr.permitSpecial]="true">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-12 text-right">
+                  <button type="submit" [disabled]="!putCallable" class="btn btn-success btn-wd btn-fill btn-loader">{{ !putCallable ? 'Saving' : 'Save' }}
+                    <i class="fa fa-circle-o-notch fa-spin" *ngIf="!putCallable"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

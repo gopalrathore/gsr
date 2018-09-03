@@ -1,0 +1,77 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="title text-center">EWB Login</h4>
+        <p class="category"></p>
+        <br>
+        <div class="row">
+          <div class="col-md-6 login-form">
+              <div class="card">
+                  <div class="card-content">
+                    <div class="row">
+                      <div class="login-form col-md-12">
+                        <form #loginForm="ngForm" class="validateForm" (ngSubmit)="login(loginForm)" [ngClass]="{submitted:loginForm.submitted}">
+                          <div class="modal-body">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label class="required-star">Your GSTIN</label>
+                                    <select class="form-control" name="userGstin" [(ngModel)]="loginData.userGstin" required>
+                                      <option value="">Select GSTIN</option>
+                                      <option *ngFor="let id of gst_id_list" [value]="id.gstin">{{id.display_name}}</option>
+                                    </select>
+                                    <div class="form-error-msg" [hidden]="username.pristine && username.untouched">
+                                      <p [hidden]="!loginForm.hasError('required', 'username')"> Cannot be empty </p>
+                                    </div>
+                                  </div>
+                                  <div class="form-group col-md-6">
+                                      <label>Account Type</label>
+                                      <div class="radiobtn">
+                                          <label class="radio-inline">
+                                              <input type="radio" name="accountType" value="B" [(ngModel)]="loginData.accountType">Business
+                                            </label>
+                                            <label class="radio-inline">
+                                              <input type="radio" name="accountType" value="T" [(ngModel)]="loginData.accountType">Transporter
+                                            </label>
+                                        </div>
+                                    </div>
+                              <div class="form-group col-md-6">
+                                <label class="required-star">NIC Username</label>
+                                <input type="text" #username="ngModel" class="form-control" required autocomplete="off" placeholder="Username" [(ngModel)]="loginData.username"
+                                  name="username" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                                  [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                                <div class="form-error-msg" [hidden]="username.pristine && username.untouched">
+                                  <p [hidden]="!loginForm.hasError('required', 'username')"> Cannot be empty </p>
+                                </div>
+                              </div>
+        
+                              <div class="form-group col-md-6">
+                                <label class="required-star">NIC Password</label>
+                                <input type="password" #password="ngModel" class="form-control" required autocomplete="off" placeholder="Password" [(ngModel)]="loginData.password"
+                                  name="password" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                                  [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                                <div class="form-error-msg" [hidden]="username.pristine && username.untouched">
+                                  <p [hidden]="!loginForm.hasError('required', 'password')"> Cannot be empty </p>
+                                </div>
+                              </div>
+        
+                              
+                            </div>
+                          </div>
+                          <div class="clearfix">
+                            <button type="submit" [disabled]="saveBtnText==='Logging you in'" class="btn btn-success btn-fill btn-wd">{{saveBtnText}}</button>
+                            <p>If you dont have e-way bill NIC account, please <a href="https://www.gstedge.com/register-for-ewaybill" target="_blank">Click here</a></p>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+          </div>
+
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>

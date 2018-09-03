@@ -1,0 +1,114 @@
+<div id="updatePartB" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Update Part B Slip <span class="ewbNo">E-Way bill No.: {{updateData.data.EwbNo}}</span></h4>
+      </div>
+          <div class="row">
+              <div class="col-md-12">
+                <form #updatePartB="ngForm" class="validateForm" (ngSubmit)="partBSubmit(updatePartB)" [ngClass]="{submitted:updatePartB.submitted}">
+                    <div class="modal-body">
+                  <div class="row">
+                    <!-- <div class="form-group col-md-6">
+                      <label>E-Way bill No.</label>
+                      <input type="text" #EwbNo="ngModel" [disabled]="true" class="form-control" required autocomplete="off" placeholder="E -Way Bill Number" [(ngModel)]="updateData.data.EwbNo" name="EwbNo" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                      <div class="form-error-msg" [hidden]="EwbNo.pristine && EwbNo.untouched">
+                        <p [hidden]="!updatePartB.hasError('required', 'EwbNo')"> Cannot be empty </p>
+                      </div>
+                    </div> -->
+
+                    <div class="col-md-6 form-group">
+                      <label>Mode</label>
+                      <select name="transMode" [(ngModel)]="updateData.data.TransMode" class="form-control" (change)="updateData.data.VehicleNo=''">
+                        <option value="1">Road</option>
+                        <option value="2">Rail</option>
+                        <option value="3">Air</option>
+                        <option value="4">Ship</option>
+                      </select>
+                    </div>
+                    <div *ngIf="updateData.data.TransMode==='1'" class="col-md-6 form-group">
+                        <label>Vehicle No.</label>
+                        <input type="text" placeholder="Vehicle Number" [required]="updateData.data.TransMode==='1'" name="VehicleNo" pattern="[OT|JK|HP|PB|CH|UK|HR|DL|RJ|UP|BR|SK|AR|NL|MN|MZ|TR|ML|AS|WB|JH|OD|OR|CG|MP|GJ|DD|DN|MH|AP|KA|GA|LD|KL|TN|PY|AN|TS]{2}[0-9A-Za-z]{5,9}" [ngModel]="updateData.data.VehicleNo | uppercase" (ngModelChange)="updateData.data.VehicleNo=$event" class="form-control" autocomplete="off"
+                        [attr.maxlength]="11" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="false" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false" #VehicleNo="ngModel">
+                        <div class="form-error-msg" [hidden]="VehicleNo.pristine && VehicleNo.untouched">
+                            <p [hidden]="!updatePartB.hasError('required', 'VehicleNo')"> Cannot be empty </p>
+                            <p [hidden]="!updatePartB.hasError('pattern', 'VehicleNo')"> Invalid value </p>
+                          </div>
+                      </div>
+
+                    
+
+                    <div class="form-group col-md-6">
+                      <label>Reason for Update</label>
+                      <select name="reasonCode" class="form-control" required [(ngModel)]="updateData.data.ReasonCode" #reasonCode="ngModel">
+                        <option value="">Select Reason</option>
+                        <option value="1">Due to Break Down</option>
+                        <option value="2">Due to Transhipment</option>
+                        <option value="3">Others</option>
+                      </select>
+                      <div class="form-error-msg" [hidden]="reasonCode.pristine && reasonCode.untouched">
+                        <p [hidden]="!updatePartB.hasError('required', 'reasonCode')"> Cannot be empty </p>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label>Describe reason</label>
+                      <input type="text" #reasonRem="ngModel" class="form-control" required autocomplete="off" placeholder="Reason for update" [(ngModel)]="updateData.data.ReasonRem" name="reasonRem" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                      <div class="form-error-msg" [hidden]="reasonRem.pristine && reasonRem.untouched">
+                        <p [hidden]="!updatePartB.hasError('required', 'reasonRem')"> Cannot be empty </p>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label>From Place</label>
+                        <input type="text" #fromPlace="ngModel" class="form-control" required autocomplete="off" placeholder="From Place" [(ngModel)]="updateData.data.FromPlace" name="fromPlace" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                        <div class="form-error-msg" [hidden]="fromPlace.pristine && fromPlace.untouched">
+                          <p [hidden]="!updatePartB.hasError('required', 'fromPlace')"> Cannot be empty </p>
+                        </div>
+                      </div>
+  
+                      <div class="form-group col-md-6">
+                        <label>From State</label>
+                        <select name="fromStateCode" class="form-control" required [(ngModel)]="updateData.data.FromState" #fromStateCode="ngModel">
+                          <option value="">Select Sate</option>
+                          <!-- <option *ngFor="let stateItem of state.stateCode" [value]="stateItem.state_code">{{stateItem.state_name}}</option> -->
+                          <option value="97">Other Territory</option>
+                          <option value="99">Other Country</option>
+                        </select>
+                        <div class="form-error-msg" [hidden]="fromStateCode.pristine && fromStateCode.untouched">
+                          <p [hidden]="!updatePartB.hasError('required', 'fromStateCode')"> Cannot be empty </p>
+                        </div>
+                      </div>
+
+                    <div class="form-group col-md-6">
+                        <label>Document Date</label>
+                        <p-calendar #transdocDate="ngModel" name="transDocDate" placeholder="Transporter Doc. Date" dateFormat="dd/mm/yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="2017:2060" [(ngModel)]="updateData.data.TransDocDate"></p-calendar>
+                        <div class="form-error-msg" [hidden]="transdocDate.pristine && transdocDate.untouched">
+                          <p [hidden]="!updatePartB.hasError('required', 'transDocDate')"> Cannot be empty </p>
+                        </div>
+                      </div>
+
+                    <div class="form-group col-md-6">
+                        <label *ngIf="updateData.data.TransMode==='1'">Transporter Doc. No.</label>
+                        <label *ngIf="updateData.data.TransMode==='2'">RR No.</label>
+                        <label *ngIf="updateData.data.TransMode==='3'">Airway Bill No.</label>
+                        <label *ngIf="updateData.data.TransMode==='4'">Bill of lading No.</label>
+                        <input [required]="updateData.data.TransMode!='1'" type="text" #transDocNo ="ngModel" class="form-control" required autocomplete="off" placeholder="" [(ngModel)]="updateData.data.TransDocNo" name="transDocNo" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                        <div class="form-error-msg" [hidden]="transDocNo.pristine && transDocNo.untouched">
+                          <p [hidden]="!updatePartB.hasError('required', 'transDocNo')"> Cannot be empty </p>
+                        </div>
+                      </div>
+
+                  </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit" [disabled]="saveBtnText==='Updating'" class="btn btn-success btn-fill">{{saveBtnText}}</button>
+                      <button type="button" class="btn btn-fill btn-warning" (click)="close(updatePartB)">Close</button>
+                    </div>
+                </form>
+              </div>
+            </div>        
+    </div> 
+  </div>
+</div>

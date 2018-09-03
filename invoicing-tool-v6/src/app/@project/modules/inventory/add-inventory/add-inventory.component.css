@@ -1,0 +1,15 @@
+.submitted input.ng-invalid, input.ng-invalid.ng-dirty, input.ng-invalid.ng-touched,
+.submitted textarea.ng-invalid, textarea.ng-invalid.ng-dirty, textarea.ng-invalid.ng-touched,
+.submitted select.ng-invalid, select.ng-invalid.ng-dirty, select.ng-invalid.ng-touched{
+    border-bottom: 1px solid red;
+}
+
+input.ng-valid.ng-touched, input.ng-valid.submitted,
+textarea.ng-valid.ng-touched, textarea.ng-valid.submitted,
+select.ng-valid.ng-touched, select.ng-valid.submitted{
+    border-left: 3px solid green;
+}
+
+.validateForm {
+  padding-bottom: 20px;
+}

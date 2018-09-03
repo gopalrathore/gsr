@@ -1,0 +1,19 @@
+.report-inner-content {
+  font-size: 14px;
+  padding: 5px 35px;
+  border: 2px solid #f7f7f7;
+}
+.report-inner-content:hover {
+  background-color: #f7f7f7;
+  cursor: pointer;
+}
+h5 {
+  background-color: #7ac29a;
+  color: #fff;
+  padding: 12px;
+}
+
+a.disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+}

@@ -1,0 +1,48 @@
+<div id="billCancel" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+  
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Cancel E-Way Bill <span class="ewbNo">E-Way bill No.: {{EWBnumber}}</span></h4>
+        </div>
+            <div class="row">
+                <div class="col-md-12">
+                  <form #cancelForm="ngForm" class="validateForm" (ngSubmit)="cancelBill(cancelForm)" [ngClass]="{submitted:cancelForm.submitted}">
+                      <div class="modal-body">
+                    <div class="row">
+                        <!-- <div class="form-group col-md-6">
+                            <label>E-Way Bill No.</label>
+                            <input type="text" [disabled]="true" [(ngModel)]="EWBnumber" class="form-control" name="EWBnumber">
+                            </div> -->
+
+                      <div class="form-group col-md-6">
+                        <label class="required-star">Reason for cancelation</label>
+                        <select name="cancelRsnCode" class="form-control" [(ngModel)]="cancelData.cancelRsnCode" #cancelRsnCode="ngModel" required>
+                          <option value="">Select Reason</option>
+                          <option value="1">Duplicate</option>
+                          <option value="2">Order Cancelled</option>
+                          <option value="3">Data Entry mistake</option>
+                          <option value="4">Other</option>
+                        </select>
+                        <div class="form-error-msg" [hidden]="cancelRsnCode.pristine && cancelRsnCode.untouched">
+                          <p [hidden]="!cancelForm.hasError('required', 'username')"> Cannot be empty </p>
+                        </div>
+                      </div>
+  
+                      <div class="form-group col-md-12">
+                        <label>Remark</label>
+                        <textarea name="cancelRmrk" rows="3" [(ngModel)]="cancelData.cancelRmrk" class="form-control"></textarea>
+                      </div>
+                       
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success btn-fill">Save</button>
+                        <button type="button" class="btn btn-fill btn-warning" (click)="close(cancelForm)">Close</button>
+                      </div>
+                  </form>
+                </div>
+              </div>        
+      </div> 
+    </div>
+  </div>

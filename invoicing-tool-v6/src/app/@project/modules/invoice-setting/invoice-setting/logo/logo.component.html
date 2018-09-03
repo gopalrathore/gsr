@@ -1,0 +1,12 @@
+<label>Logo</label>
+<div class="images">
+	<div class="company-img">
+		<img [src]="currentCompany.company_logo" alt="logo">
+	</div>
+
+	<div class="file-upload">
+		<label for="upload" class="file-upload__label">Upload</label>
+		<input class="file-upload__input" type="file" (change)="fileChange($event)" placeholder="Upload file"
+		 accept=".jpg,.png,.jpeg">
+	</div>
+</div>

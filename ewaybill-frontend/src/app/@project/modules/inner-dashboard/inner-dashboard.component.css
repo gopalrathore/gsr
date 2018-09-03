@@ -1,0 +1,31 @@
+
+
+.right-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.left-div a, .left-div p, .right-div a, .right-div p {
+    margin: 10px 10px;
+}
+
+.gstin-list {
+    margin: 0;
+}
+
+.gstin-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.gstin-list li:last-of-type {
+    border-bottom: none;
+}
+
+.branch-item {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}

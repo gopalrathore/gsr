@@ -1,0 +1,111 @@
+
+<!-- <app-splash-screen (splashConfirm)="confirm($event)"  *ngIf="accept"></app-splash-screen> -->
+<div class="main-content" [class.hidden]="false">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="card card-wizard" id="wizardCard">
+                        <form id="wizardForm">
+                            <div class="card-header text-center">
+                                <h4 class="card-title">Create Your Company</h4>
+                                <p *ngIf="companyServiceService.companies.length>0" class="category"><a [routerLink]="['/inner-dashboard']">Goto Dashboard</a></p>
+                                <p ><a (click)="firebaseServiceService.logout()">Logout</a></p>
+                            </div>
+                            <div class="card-content">
+                                <ul class="nav">
+                                    <li><a href="#tab1" data-toggle="tab">Basic Detail</a></li>
+                                    <li><a href="#tab2" data-toggle="tab">GST Detail</a></li>
+                                    <li><a href="#tab3" data-toggle="tab">Confirm</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane" id="tab1">
+                                        <h5 class="text-center">Please tell us more about yourself.</h5>
+                                        <form id="createCompany1" class="validateForm" #createCompany1="ngForm" (ngSubmit)="validateCompany(createCompany1.valid,createCompany1.value)" [ngClass]="{submitted:createCompany1.submitted}">
+                                        <div class="row">
+                                            <div class="col-md-5 col-md-offset-1">
+                                                <div class="form-group">
+                                                    <label class="control-label required-star">
+                                                        Company Name
+                                                    </label>
+                                                    <input class="form-control" type="text" name="company_name" [(ngModel)]="company.company_name" required #companyNameRef="ngModel" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                                                    [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false"/>
+                                                    <div class="form-error-msg" [hidden]="companyNameRef.pristine && companyNameRef.untouched">
+                                                            <p [hidden]= "!createCompany1.hasError('required' , 'company_name')"> Cannot be empty </p>
+                                                          </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label class="control-label required-star">
+                                                        Company Email
+                                                    </label>
+                                                    <input type="text" class="form-control" name="company_email" [(ngModel)]="company.company_email" #companyEmailRef="ngModel" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                                                    [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                                                    <div class="form-error-msg" [hidden]="companyEmailRef.pristine && companyEmailRef.untouched">
+                                                            <p [hidden]= "!createCompany1.hasError('required' , 'company_email')"> Cannot be empty </p>
+                                                            <p [hidden]="!createCompany1.hasError('pattern' ,  'company_email' )"> Invalid Email </p>
+                                                          </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                      
+                                    </div>
+                                    <div class="tab-pane" id="tab2">
+                                        <h5 class="text-center">Please give us more details about your platform.</h5>
+                                        <form id="createCompany2" class="validateForm" #createCompany2="ngForm" (ngSubmit)="validateCompany(createCompany2.valid,createCompany2.value)" [ngClass]="{submitted:createCompany1.submitted}">
+                                        <div class="row">
+
+                                                <div class="col-md-6 form-group">
+                                                        <label class="required-star">GST Registered:</label>
+                                                        <select name="company_registered" [(ngModel)]="company.company_registered" class="form-control" (change)="setCountry(company.company_registered)"
+                                                          required #companyGsteRef="ngModel">
+                                                              <option value="0">No</option>
+                                                              <option value="1">Yes</option>
+                                                            </select>
+                                                            <div class="form-error-msg" [hidden]="companyGsteRef.pristine && companyGsteRef.untouched">
+                                                                    <p [hidden]= "!createCompany2.hasError('required' , 'company_registered')"> Cannot be empty </p>
+                                                                  </div>
+                                                      </div>
+                                                      <div class="col-md-6 form-group" *ngIf="company.company_registered==1">
+                                                        <label>GSTIN:</label>
+                                                        <input type="text" name="company_gst_id" [ngModel]="company.company_gst_id | uppercase" (ngModelChange)="company.company_gst_id=$event"
+                                                          class="form-control" pattern="[0-9]{2}[A-Za-z]{3}[C,P,H,F,A,T,B,L,J,G,c,p,h,f,a,t,b,l,j,g]{1}[A-Za-z]{1}[0-9]{4}[A-Za-z]{1}[0-9]{1}[A-Za-z0-9]{1}[A-Z0-9a-z]{1}" (keyup)="select_company_type(company.company_gst_id)"
+                                                          autocomplete="off" #companyGstIdRef="ngModel" [attr.maxlength]="15" [attr.permitAlphabets]="true" [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+                                                          <div class="form-error-msg" [hidden]="companyGstIdRef.pristine && companyGstIdRef.untouched">
+                                                                <p [hidden]= "!createCompany2.hasError('pattern' , 'company_gst_id')">Invalid GST No. </p>
+                                                              </div>
+                                                        <p class="pan">{{company.company_pan}}</p>
+                                                      </div>
+                                                      <div [class.hidden]="company.company_registered==1" class="col-md-6 form-group">
+                                                        <label>PAN:</label>
+                                                        <input type="text" name="company_pan" [(ngModel)]="company.company_pan" [readonly]="company.company_registered==1" class="form-control uppercase"
+                                                        autocomplete="off" #companyPanRef="ngModel" pattern="([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}" autocomplete="off" [attr.maxlength]="10" [attr.permitAlphabets]="true" [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+                                                          <div class="form-error-msg" [hidden]="companyPanRef.pristine && companyPanRef.untouched">
+                                                                <p [hidden]= "!createCompany2.hasError('required' , 'company_pan')"> Cannot be empty </p>
+                                                                <p [hidden]= "!createCompany2.hasError('pattern' , 'company_pan')"> Invalid PAN No. </p>
+                                                              </div>
+                                                      </div>
+                                                     
+
+                                        </div>
+                                    </form>
+                                    </div>
+                                    <div class="tab-pane" id="tab3">
+                                        <h2 class="text-center text-space">Yuhuuu! <br><small> 													Click on "<b>Finish</b>" to goto dashboard</small></h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="button" class="btn btn-default btn-fill btn-wd btn-back pull-left">Back</button>
+                                <button type="button" class="btn btn-info btn-fill btn-wd btn-next pull-right">Next</button>
+                                <button type="button" class="btn btn-info btn-fill btn-wd btn-finish pull-right" (click)="profileSubmit()">Finish</button>
+                                <div class="clearfix"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    

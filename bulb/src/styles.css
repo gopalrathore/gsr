@@ -1,0 +1,32 @@
+ul {
+  list-style-type: none;
+}
+
+.st0{fill:url(#fill_2_);}
+.st1{opacity:0.47;fill:#B3B3B3;}
+.st2{fill:#1A1A1A;}
+.st3{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E5E5;}
+.st4{fill-rule:evenodd;clip-rule:evenodd;}
+.st5{fill:#E5E5E5;}
+
+.on .st0{ fill: hsl(63, 96%, 49%); }
+.on .st1{ fill:#fff; }
+
+.user-action .item { margin-bottom: 10px; }
+.user-action .item p {
+  margin: 0;
+  display: inline-block;
+  cursor: pointer;
+}
+.user-action .active { position: relative; }
+.user-action .active::before {
+  content: '>>';
+  position: absolute;
+  left: -22px;
+}
+
+.logoHide { display: none; }
+.bulb {
+  width: 100px;
+  cursor: move;
+}

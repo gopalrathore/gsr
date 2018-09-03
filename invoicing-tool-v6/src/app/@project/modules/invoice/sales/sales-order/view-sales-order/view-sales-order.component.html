@@ -1,0 +1,332 @@
+<div class="main-content">
+  <div style="font-size: 24px;  margin: 0px 3px 15px 15px; font-weight: bold;">
+    <a [routerLink]="['./../']">
+      <span class="ti-back-left"> Back</span>
+    </a>
+  </div>
+  <section id="invoicePreview">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-5">
+          <div class="card invoiceDates">
+            <div class="card-content">
+              <div class="row">
+                <div class="col-md-12">
+                  <h5>INVOICE #
+                    <span>{{invoiceData.invoice_number}}</span>
+                  </h5>
+                  <h5>CLIENT NAME
+                    <span>{{invoiceData.client_company}}</span>
+                  </h5>
+                  <h5 *ngIf="invoiceData.client_gst_id!=null && invoiceData.client_gst_id!=''">GSTIN
+                    <span>{{invoiceData.client_gst_id}}</span>
+                  </h5>
+                  <h5>INVOICE DATE
+                    <span>{{invoiceData.invoice_date | date}}</span>
+                  </h5>
+                  <h5 *ngIf="invoiceData.already_paid!='1'">DUE DATE
+                    <span>{{invoiceData.invoice_date | paymentDate:invoiceData.payment_due_days | date}}</span>
+                  </h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-7">
+          <div class="card billShip">
+            <div class="card-content">
+              <div class="row">
+                <div class="col-md-6 address">
+                  <h5>BILLING ADDRESS</h5>
+                  <p>{{invoiceData.client_address}}</p>
+                  <p>{{invoiceData.client_address_2}}</p>
+                  <p>{{invoiceData.client_address_3}}</p>
+                  <p>{{invoiceData.client_state_name}}</p>
+                  <p>{{invoiceData.client_address_4}}</p>
+                </div>
+                <div class="col-md-6 address">
+                  <h5>SHIPPING ADDRESS</h5>
+                  <p>{{invoiceData.client_shipping_address}}</p>
+                  <p>{{invoiceData.client_shipping_address_2}}</p>
+                  <p>{{invoiceData.client_shipping_address_3}}</p>
+                  <p>{{invoiceData.client_shipping_state_name}}</p>
+                  <p>{{invoiceData.client_shipping_address_4}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-content">
+              <div class="row">
+                <div class="col-md-3">
+                  <h5>Sales Order number:</h5>
+                  <p>{{invoiceData.sales_order_number}}</p>
+                </div>
+                <div class="col-md-3">
+                  <h5>Sales Person:</h5>
+                  <p>{{invoiceData.sales_person}}</p>
+                </div>
+                <div class="col-md-3">
+                  <h5>Reverse Charge:</h5>
+                  <p>{{invoiceData.reverse_charge=='1'?'Yes': 'No'}}</p>
+                </div>
+                <div class="col-md-3">
+                  <h5>Payment</h5>
+                  <p>{{invoiceData.already_paid=='1'?'Paid': 'Due'}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-content">
+          <div class="row">
+            <div class="container" id="accord1">
+              <div class="row invoice-table">
+                <div class="col-md-3">
+                  <h5>Sr. No.</h5>
+                </div>
+                <div class="col-md-3">
+                  <h5>Item Name</h5>
+                </div>
+                <div class="col-md-3">
+                  <h5>Quantity</h5>
+                </div>
+                <div class="col-md-3">
+                  <h5>Total</h5>
+                </div>
+              </div>
+              <div *ngFor="let item of invoiceData.invoice_items; let i=index">
+                <a class="row item_collapse" data-toggle="collapse" href="#item{{i+1}}">
+                  <div class="col-md-3">
+                    <p> {{i+1}} </p>
+                  </div>
+                  <div class="col-md-3">
+                    <p>{{item.item_name}}</p>
+                  </div>
+                  <div class="col-md-3">
+                    <p>{{item.item_qty}} {{item.item_unit_display}}</p>
+                  </div>
+                  <div class="col-md-3">
+                    <p>₹ {{item.item_gross_value}} </p>
+                  </div>
+                </a>
+                <div class="row">
+                  <div class="accordian-content col-md-12 collapse" id="item{{i+1}}">
+                    <div class="row">
+                      <div class="col-md-1" *ngIf="item.cgst">
+                        <h5>CGST</h5>
+                      </div>
+                      <div class="col-md-1" *ngIf="item.sgst">
+                        <h5>SGST</h5>
+                      </div>
+                      <div class="col-md-1" *ngIf="item.igst">
+                        <h5>IGST</h5>
+                      </div>
+                      <div class="col-md-2" *ngIf="item.item_hsn_code!=null && item.item_hsn_code!=''">
+                        <h5>HSN</h5>
+                      </div>
+                      <div class="col-md-2">
+                        <h5>Rate</h5>
+                      </div>
+                      <div class="col-md-2">
+                        <h5>Tax Rate</h5>
+                      </div>
+                      <div class="col-md-2">
+                        <h5>Discount</h5>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-1" *ngIf="item.cgst">
+                        <p>₹ {{item.cgst}}</p>
+                      </div>
+                      <div class="col-md-1" *ngIf="item.sgst">
+                        <p>₹ {{item.sgst}}</p>
+                      </div>
+                      <div class="col-md-1" *ngIf="item.igst">
+                        <p>₹ {{item.igst}}</p>
+                      </div>
+                      <div class="col-md-2" *ngIf="item.item_hsn_code!=null && item.item_hsn_code!=''">
+                        <p>{{item.item_hsn_code}}</p>
+                      </div>
+                      <div class="col-md-2">
+                        <p>₹ {{item.item_rate}} </p>
+                      </div>
+                      <div class="col-md-2">
+                        <p>{{item.item_tax_rate}}%</p>
+                      </div>
+                      <div class="col-md-2">
+                        <p>{{item.item_discount}}%</p>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="item.item_desc!=''">
+                      <div class="col-md-12">
+                        <h5>Description</h5>
+                        <p>{{item.item_desc}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-4 extraCharges">
+          <div class="card" *ngIf="invoiceData.extra_charges!='0'">
+            <div class="card-content">
+              <div class="row">
+                <div class="col-md-12">
+                  <h5>Extra Charges:
+                    <span>Total: ₹ {{invoiceData.extra_charges}}</span>
+                  </h5>
+                  <p *ngIf="invoiceData.freight!=0">Freight:
+                    <span>₹ {{invoiceData.freight}}</span>
+                  </p>
+                  <p *ngIf="invoiceData.insurance!=0">Insurance:
+                    <span>₹ {{invoiceData.insurance}}</span>
+                  </p>
+                  <p *ngIf="invoiceData.pack_n_frwd!=0">Packaging and Forwarding:
+                    <span>₹ {{invoiceData.pack_n_frwd}}</span>
+                  </p>
+                  <p *ngIf="invoiceData.ope!=0">OPE:
+                    <span>₹ {{invoiceData.ope}}</span>
+                  </p>
+                  <p *ngIf="invoiceData.extra_label!=null && invoiceData.extra_label!=''">{{invoiceData.extra_label}}:
+                    <span>₹ {{invoiceData.extra_value}}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 extraCharges">
+          <div class="card" *ngIf="invoiceData.transport_mode!=null && invoiceData.transport_mode!=''">
+            <div class="card-content">
+              <div class="row">
+                <div class="col-md-12">
+                  <h5>Transportation Details: {{invoiceData.transport_mode}}</h5>
+                  <p>Mode of Transport:
+                    <span>{{invoiceData.transport_mode}}</span>
+                  </p>
+                  <p>Name of Transporter:
+                    <span>{{invoiceData.transporter_name}}</span>
+                  </p>
+                  <p>Source:
+                    <span>{{invoiceData.transport_source}}</span>
+                  </p>
+                  <p>Destination:
+                    <span>{{invoiceData.transport_destination}}</span>
+                  </p>
+                  <p *ngIf="invoiceData.transport_mode == 'Road'">Vehicle Number:
+                    <span>{{invoiceData.vehicle_number}}</span>
+                  </p>
+                  <p *ngIf="invoiceData.transport_mode == 'Air'">Flight Number:
+                    <span>{{invoiceData.vehicle_number}}</span>
+                  </p>
+                  <p *ngIf="invoiceData.transport_mode == 'Sea'">Vessel-Voyage Number:
+                    <span>{{invoiceData.vehicle_number}}</span>
+                  </p>
+                  <p *ngIf="invoiceData.transport_mode == 'Rail'">Train Number:
+                    <span>{{invoiceData.vehicle_number}}</span>
+                  </p>
+                  <p *ngIf="invoiceData.transport_mode == 'Road' || invoiceData.transport_mode == 'Rail'">LR Number:
+                    <span>{{invoiceData.lr_number}}</span>
+                  </p>
+                  <p *ngIf="invoiceData.transport_mode == 'Air' || invoiceData.transport_mode == 'Sea'">BE Number:
+                    <span>{{invoiceData.lr_number}}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 extraCharges">
+					<div class="card" *ngIf="invoiceData.custom_fields.length>0">
+						<div class="card-content">
+							<div class="row">
+								<div class="col-md-12">
+									<h5>Custom Fields</h5>
+									<p *ngFor="let field of invoiceData.custom_fields">{{field.label}}
+										<span>{{field.value}}</span>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-offset-4 col-md-8">
+          <div class="card">
+            <div class="card-content">
+              <div class="row">
+                <div class="col-md-12 invoiceTotal">
+                  <h5>Invoice Total</h5>
+                  <p>Total Extra Charges:
+                    <span>₹ {{invoiceData.extra_charges}}</span>
+                  </p>
+                  <p>Tax On Extra Charges:
+                    <span>₹ {{invoiceData.tax_on_extra_charges}}</span>
+                  </p>
+                  <p>Total Invoice Value (In Figure):
+                    <span>₹ {{invoiceData.invoice_total}}</span>
+                  </p>
+                  <p class="rupee-in-words">
+                    <span>Total Invoice Value (In Words):</span>
+                    <span>{{invoiceData.invoiceTotalInWords}}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card" *ngIf="invoiceData.tnc!=null && invoiceData.tnc!=''">
+            <div class="card-content">
+              <div class="row">
+                <div class="col-md-12">
+                  <h5>Terms and Conditions</h5>
+                  <p>{{invoiceData.tnc}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card" *ngIf="invoiceData.declaration!=null && invoiceData.declaration!=''">
+            <div class="card-content">
+              <div class="row">
+                <div class="col-md-12">
+                  <h5>Declarations</h5>
+                  <p>{{invoiceData.declaration}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,38 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Timeline</h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col-md-4 form-group">
+                                <label class="required-star">Start Date: </label>
+                                <p-calendar dateFormat="dd/mm/yy" placeholder="Start Date:" [monthNavigator]="true" [(ngModel)]="filter.start_date" [yearNavigator]="true"
+                                    yearRange="1948:2118" required></p-calendar>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label class="required-star">End Date: </label>
+                                <p-calendar dateFormat="dd/mm/yy" placeholder="End Date:" [monthNavigator]="true" [(ngModel)]="filter.end_date" [yearNavigator]="true"
+                                    [minDate]="filter.start_date" yearRange="1948:2118" required></p-calendar>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="invisible">fgf</label>
+                                <div class="toolbar text-center" style="margin-bottom:5px">
+                                    <button class="btn btn-success btn-fill">Get Timeline</button>
+                                </div>
+                            </div>
+                        </div>
+                        <ul>
+                            <li *ngFor="let timeline of timelineList">
+                                <app-log [timeline]="timeline"></app-log>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

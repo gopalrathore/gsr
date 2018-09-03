@@ -1,0 +1,110 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="row">
+        <div class="col-lg-12 col-md-12">
+          <div class="card">
+            <div class="card-header text-center">
+              <h4 class="card-title">Invoice Settings</h4>
+              <p class="category">Configure your Invoice Settings</p>
+            </div>
+            <div class="card-content">
+              <div class="nav-tabs-navigation">
+                <div class="nav-tabs-wrapper">
+                  <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                      <li class="active">
+                          <a href="#invoiceTemplate" data-toggle="tab">Invoice Template</a>
+                        </li>
+                    <li>
+                      <a href="#tnc" data-toggle="tab">Terms & Conditions</a>
+                    </li>
+                    <li>
+                      <a href="#declaration" data-toggle="tab">Declaration</a>
+                    </li>
+                    <li>
+                      <a href="#numbering-format" data-toggle="tab">Numbering Format</a>
+                    </li>
+                    <li>
+                      <a href="#invoiceDetail" data-toggle="tab">Invoice Detail</a>
+                    </li>
+                    
+                  </ul>
+                </div>
+              </div>
+              <div id="my-tab-content" class="tab-content">
+                  <div class="tab-pane active" id="invoiceTemplate">
+                      <app-template></app-template>
+                    </div>
+                <div class="tab-pane" id="tnc">
+                  <app-tnc></app-tnc>
+                </div>
+                <div class="tab-pane" id="declaration">
+                  <app-declaration></app-declaration>
+                </div>
+                <div class="tab-pane" id="numbering-format">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <app-sales-invoice-format></app-sales-invoice-format>
+                    </div>
+                    <div class="col-md-4">
+                      <app-receipt-voucher-format></app-receipt-voucher-format>
+                    </div>
+                    <div class="col-md-4">
+                      <app-payment-voucher-format></app-payment-voucher-format>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="tab-pane" id="invoiceDetail">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <app-logo></app-logo>
+                    </div>
+                    <div class="col-md-6">
+                      <app-sign></app-sign>
+                    </div>
+                    <app-custom-fields></app-custom-fields>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 col-md-12">
+      <div class="card">
+        <div class="card-header text-center">
+          <h4 class="card-title">Dashboard Theme</h4>
+        </div>
+        <div class="card-content">
+          <div class="custom-theme">
+            <ul class="custom-dropdown-menu">
+              <li class="header-title text-center">Sidebar Background</li>
+              <li class="adjustments-line text-center">
+                <a href="javascript:void(0)" class="switch-trigger background-color">
+                  <span class="badge filter badge-black active" data-color="black"></span>
+                  <span class="badge filter badge-brown" data-color="brown"></span>
+                  <span class="badge filter badge-white" data-color="white"></span>
+                </a>
+              </li>
+              <li class="header-title text-center">Sidebar Active Color</li>
+              <li class="adjustments-line text-center">
+                <a href="javascript:void(0)" class="switch-trigger active-color">
+                  <span class="badge filter badge-primary" data-color="primary"></span>
+                  <span class="badge filter badge-info" data-color="info"></span>
+                  <span class="badge filter badge-success" data-color="success"></span>
+                  <span class="badge filter badge-warning" data-color="warning"></span>
+                  <span class="badge filter badge-danger active" data-color="danger"></span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

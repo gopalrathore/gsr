@@ -1,0 +1,3 @@
+<ul class="user-action">
+  <li class="item" *ngFor="let state of history|async; let i = index" [class.active]="(count|async) ==i"><p (click)="jumpTo(i)">{{i+1}}. bulb: {{state.bulbState?'ON':'OFF'}}, Logo: {{state.logoState?'Shown':'Hidden'}}, Bulb Position: {{state.bulbLocation|json}}</p></li>
+</ul>

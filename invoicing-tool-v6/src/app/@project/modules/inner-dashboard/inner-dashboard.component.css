@@ -1,0 +1,74 @@
+nav.navbar-fixed {
+    width: 100%;
+}
+
+.dashboard-content {
+    padding-top: 12px;
+
+}
+
+ul {
+    padding: 0;
+    list-style: none;
+}
+
+a:hover {
+    cursor: pointer;
+}
+
+.navbar-right p, .navbar-right h2 {
+    margin-bottom: 0;
+}
+
+.letter {
+    background: #ff0000;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 50%;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.user-detail {
+    display: flex;
+    align-items: center;
+}
+.user-detail p {
+    text-align: right;
+}
+
+.company-list li a{
+  display: flex;
+  align-items: center;
+  margin: 18px 0px 10px 0px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid black;
+}
+
+.company-list li a .avatar{
+  padding: 0px 10px;
+}
+
+.sidebar .sidebar-wrapper {
+    height: 100%;
+}
+.stat-item .card-content {
+    min-height: 110px;
+}
+
+.dashboard-content .avatar .img-circle, .dashboard-content .avatar h4 {
+    display: inline-block;
+    vertical-align: middle;
+}
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.dashboard-content .avatar h4 {
+    margin-left: 20px;
+}
+
+.dashboard-content h1,.dashboard-content h2,.dashboard-content h3,.dashboard-content h4 {
+    margin: 0;
+}

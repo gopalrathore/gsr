@@ -1,0 +1,8 @@
+RewriteEngine On
+RewriteBase /invoicev2/
+Options +FollowSymLinks
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.html [L,QSA]
+
+ErrorDocument 404 /invoicev2/index.html

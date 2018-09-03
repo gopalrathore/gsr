@@ -1,0 +1,40 @@
+<div id="edit-company" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Company</h4>
+      </div>
+      <div class="modal-body">
+        <form #profileEdit="ngForm" (ngSubmit)="profileEditSubmit(profileEdit)" [ngClass]="{submitted:profileEdit.submitted}">
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label class="required-star">Company Name</label>
+              <input type="text" class="form-control" #editCompanyName="ngModel" required placeholder="Company Name" name="company_name"
+                [(ngModel)]="editCompany.company_name" autocomplete="off" maxlength="50">
+              <div class="form-error-msg" [hidden]="editCompanyName.pristine && editCompanyName.untouched">
+                <p [hidden]="!profileEdit.hasError('required', 'company_name')"> Cannot be empty </p>
+              </div>
+            </div>
+            <div class="col-md-6 form-group">
+              <label>PAN Number</label>
+              <input type="text" class="form-control uppercase" #editPanNumber="ngModel" placeholder="Company PAN" name="pan" [(ngModel)]="editCompany.pan"
+                pattern="([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}" autocomplete="off" maxlength="10">
+              <div class="form-error-msg" [hidden]="editPanNumber.pristine && editPanNumber.untouched">
+                <p [hidden]="!profileEdit.hasError('required', 'pan')"> Cannot be empty </p>
+                <p [hidden]="!profileEdit.hasError('pattern', 'pan')"> Invalid Input </p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success btn-fill">Save</button>
+            <button type="button" class="btn btn-warning btn-fill" (click)="close(profileEdit)">Close</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+</div>

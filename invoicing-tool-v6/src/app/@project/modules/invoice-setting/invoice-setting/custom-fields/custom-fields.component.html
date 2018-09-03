@@ -1,0 +1,33 @@
+<div class="row" style="margin-top:53px">
+  <div class="col-md-12">
+    <div class="card-header">
+      <h4 class="card-title">Custom Fields
+        <a *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.customFieldPrefrence.editablecustomFields.length<10"
+          rel="tooltip" title="Add Contact" class="btn btn-success btn-simple btn-xs" (click)="addMoreItem()">
+          <i class="ti-plus"></i>
+        </a>
+      </h4>
+    </div>
+  </div>
+  <div class="col-md-12">
+
+    <ul class="custom-field-list">
+      <li *ngFor="let item of companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.customFieldPrefrence.editablecustomFields;let i = index">
+        <input type="text" class="form-control" placeholder="Key" [(ngModel)]="item.label">
+        <input type="text" class="form-control" placeholder="Value" [(ngModel)]="item.value">
+        <button *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.customFieldPrefrence.editablecustomFields.length>1"
+          class="btn btn-simple btn-danger btn-icon remove" (click)="removeItem(i)">
+          <i class="ti-close"></i>
+        </button>
+      </li>
+    </ul>
+
+    <div class="main-content text-right">
+      <button [disabled]="!putCallable" class="btn btn-success btn-fill btn-wd text-right btn-loader" (click)="saveCustomFields()">{{ !putCallable ? 'Saving' : 'Save' }}
+        <i class="fa fa-circle-o-notch fa-spin" *ngIf="!putCallable"></i>
+      </button>
+    </div>
+
+  </div>
+
+</div>

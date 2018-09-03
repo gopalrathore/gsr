@@ -1,0 +1,37 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="title">TDS Ledger</h4>
+        <div class="card">
+          <div class="card-content">
+            <div class="row">
+              <div class="col-md-4 form-group">
+                  <label class="required-star">Start Date: </label>
+                  <p-calendar  dateFormat="dd/mm/yy"  placeholder="Start Date:" [monthNavigator]="true" [(ngModel)]="report['DATE_FILTER'].start_date" [yearNavigator]="true" yearRange="1948:2118"  required></p-calendar>
+              </div>
+              <div class="col-md-4 form-group">
+                  <label class="required-star">End Date: </label>
+                  <p-calendar  dateFormat="dd/mm/yy" placeholder="End Date:"  [monthNavigator]="true" [(ngModel)]="report['DATE_FILTER'].end_date" [yearNavigator]="true" yearRange="1948:2118"  required></p-calendar>
+              </div>
+              <div class="col-md-4">
+                <div class="toolbar text-center" style="margin-bottom:5px">
+                    <label class="invisible">Label</label>
+                    <button [disabled]="!viewCallable" class="btn btn-success btn-fill" (click)="generateReport()">{{!viewCallable?'Generating':'Generate'}}
+                      <i class="fa fa-circle-o-notch fa-spin" *ngIf="!viewCallable"></i></button>
+                    <button [disabled]="!fileDownloadCallable" class="btn btn-success btn-fill" *ngIf="downloadReportBtn" (click)="downloadReport()">{{!fileDownloadCallable?'Downloading':'Download'}}
+                      <i class="fa fa-circle-o-notch fa-spin" *ngIf="!fileDownloadCallable"></i></button>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+                <div class="fresh-table">
+                    <div id="tableDiv"></div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

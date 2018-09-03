@@ -1,0 +1,549 @@
+<div class="main-content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<h4 class="title">RCM Payment Voucher</h4>
+				<p class="category">Payment voucher allows the user to record payments to the vendors for the goods/services procured</p>
+				<p class="category">To record receipts from vendors for goods & services procured</p>
+			</div>
+		</div>
+		<form #taxInvoice="ngForm" class="validateForm" (ngSubmit)="invoiceSubmit(taxInvoice.valid)" [ngClass]="{submitted:taxInvoice.submitted}">
+			<div class="card">
+				<div class="card-content">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="required-star">Name:</label>
+								<p-autoComplete placeholder="Name" name="client_name" (onSelect)="clientSelected()" [(ngModel)]="invoiceData.client_name"
+								 [suggestions]="createInvoiceClient.clientNameAutocomplete.list" (completeMethod)="createInvoiceClient.clientNameAutocomplete.searchList($event)"
+								 [required]="true" [readonly]="createInvoiceClient.clientNameSelected" [required]="true" #paymentVoucherNameRef="ngModel"></p-autoComplete>
+								<button *ngIf="createInvoiceClient.clientNameSelected" class="enable-btn" (click)="createInvoiceClient.clearclientAutocomplete()">x</button>
+								<div class="form-error-msg" [hidden]="paymentVoucherNameRef.pristine && paymentVoucherNameRef.untouched">
+									<p [hidden]="!taxInvoice.hasError('required' , 'client_name')"> Cannot be empty </p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12" *ngIf="createInvoiceClient.clientNameSelected">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>GSTIN:</label>
+										<p>
+											{{createInvoiceClient.client_gstin==null || createInvoiceClient.client_gstin==''?'Not Registered':createInvoiceClient.client_gstin}}
+										</p>
+									</div>
+									<div class="form-group">
+										<label>Billing Address:</label>
+										<p [innerHTML]="createInvoiceClient.billing_address.client_address"></p>
+										<p [innerHTML]="createInvoiceClient.billing_address.client_address_2"></p>
+										<p [innerHTML]="createInvoiceClient.billing_address.client_address_3"></p>
+										<p [innerHTML]="createInvoiceClient.billing_address.client_address_4"></p>
+										<p [innerHTML]="createInvoiceClient.billing_address.client_state_name"></p>
+										<p [innerHTML]="createInvoiceClient.billing_address.client_country"></p>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<div class="col-sm-12">
+											<div class="checkbox">
+												<input name="same_billing_address" type="checkbox" checked="" [(ngModel)]="invoiceData.same_as_billing">
+												<label>Same as Billing Address</label>
+											</div>
+										</div>
+										<div *ngIf="!invoiceData.same_as_billing">
+
+											<div class="col-md-12 form-group">
+												<label>Shipping Address:</label>
+												<input type="text" placeholder="Flat / House No. / Floor / Building" name="client_shipping_address" [(ngModel)]="invoiceData.client_shipping_address"
+												 class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+												 [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true"
+												 #paymentVoucherShipAddRef="ngModel">
+												<div class="form-error-msg" [hidden]="paymentVoucherShipAddRef.pristine && paymentVoucherShipAddRef.untouched">
+													<p [hidden]="!taxInvoice.hasError('required' , 'client_shipping_address')"> Cannot be empty </p>
+												</div>
+											</div>
+											<div class="col-md-12 form-group">
+												<input type="text" placeholder="Colony / Street / Locality" name="client_shipping_address_2" [(ngModel)]="invoiceData.client_shipping_address_2"
+												 class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+												 [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+											</div>
+
+											<div class="col-md-6 form-group">
+												<input type="text" placeholder="City" name="client_shipping_address_3" [(ngModel)]="invoiceData.client_shipping_address_3"
+												 class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+												 [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]=""
+												 [attr.permitSpecial]="false">
+											</div>
+											<div class="col-md-6 form-group">
+												<input type="text" placeholder="PIN Code" name="client_shipping_address_4" [(ngModel)]="invoiceData.client_shipping_address_4"
+												 class="form-control" autocomplete="off" [attr.maxlength]="6" [attr.permitAlphabets]="false" [attr.permitSpace]="false"
+												 [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]=""
+												 [attr.permitSpecial]="false">
+											</div>
+											<div class="col-md-6 form-group">
+												<label>Country:</label>
+												<select name="client_shipping_country" [(ngModel)]="invoiceData.client_shipping_country" class="form-control" #paymentVoucherCountryRef="ngModel">
+													<option *ngFor="let country of countries.data" [value]="country.country_name">{{country.country_name}}</option>
+												</select>
+												<div class="form-error-msg" [hidden]="paymentVoucherCountryRef.pristine && paymentVoucherCountryRef.untouched">
+													<p [hidden]="!taxInvoice.hasError('required' , 'client_shipping_country')"> Cannot be empty </p>
+												</div>
+											</div>
+											<div class="col-md-6 form-group" *ngIf="invoiceData.client_shipping_country=='India'">
+												<label>State:</label>
+												<select name="client_state_code" [(ngModel)]="invoiceData.client_shipping_state_code" class="form-control" #paymentVoucherStateRef="ngModel">
+													<option value="">Please Select State</option>
+													<option *ngFor="let state of state.data" [value]="state.state_code">{{state.state_name}}</option>
+
+												</select>
+												<div class="form-error-msg" [hidden]="paymentVoucherStateRef.pristine && paymentVoucherStateRef.untouched">
+													<p [hidden]="!taxInvoice.hasError('required' , 'client_state_code')"> Cannot be empty </p>
+												</div>
+											</div>
+											<div class="col-md-6 form-group" *ngIf="invoiceData.client_shipping_country!='India'">
+												<label>State:</label>
+												<input type="text" name="client_shipping_state_name" [(ngModel)]="invoiceData.client_shipping_state_name" class="form-control"
+												 [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="false"
+												 [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false" autocomplete="off">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-content">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label class="required-star">Invoice Number:
+									<a rel="tooltip" title="Invoice Number Setting" class="invoice-setting btn-rotate" data-toggle="modal" data-target="#invoice-number-setting">
+										<i class="ti-settings"></i>
+									</a>
+								</label>
+
+								<input class="form-control" type="text" name="invoice_number" [(ngModel)]="invoiceData.invoice_number" autocomplete="off"
+								 [attr.maxlength]="20" [attr.permitAlphabets]="true" [attr.permitSpace]="false" [attr.permitUnderscore]="true" [attr.permitDash]="true"
+								 [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true" [disabled]="createInvoiceInvoiceNumber.invoiceNumberAutomation || editmode"
+								 (focusout)="invoiceData.invoice_number!='' && createInvoiceInvoiceNumber.checkInvoiceNumber()" required #paymentVoucherInvoiceRef="ngModel">
+								<button *ngIf="createInvoiceInvoiceNumber.invoiceNumberAutomation && !editmode" class="enable-btn" (click)="createInvoiceInvoiceNumber.clearInvoiceNumber()">x</button>
+								<div class="form-error-msg" [hidden]="paymentVoucherInvoiceRef.pristine && paymentVoucherInvoiceRef.untouched">
+									<p [hidden]="!taxInvoice.hasError('required' , 'invoice_number')"> Cannot be empty </p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label class="required-star">Invoice Date:</label>
+								<!-- <input name="invoice_date" [(ngModel)]="invoiceData.invoice_date" type="text" class="form-control datepicker" placeholder="Date Picker Here" />-->
+								<p-calendar name="invoice_date" placeholder="Invoice Date" dateFormat="dd/mm/yy" [monthNavigator]="true" [yearNavigator]="true"
+								 yearRange="2000:2030" (onSelect)="createInvoiceInvoiceNumber.getInvoiceNumber()" #paymentVoucherDateRef="ngModel"
+								 [(ngModel)]="invoiceData.invoice_date" required></p-calendar>
+								<div class="form-error-msg" [hidden]="paymentVoucherDateRef.pristine && paymentVoucherDateRef.untouched">
+									<p [hidden]="!taxInvoice.hasError('required' , 'invoice_date')"> Cannot be empty </p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Payment Due (In Days):</label>
+								<input class="form-control" placeholder="Payment Due (In Days)" type="text" name="payment_due_days" [(ngModel)]="invoiceData.payment_due_days"
+								 [attr.min]="0" [attr.max]="365" [attr.precision]="0" [attr.defaultValue]="0">
+								<div class="form-info-msg">
+									<p>Payment Due Date: {{invoiceData.invoice_date | paymentDate:invoiceData.payment_due_days | date}} </p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Sales Order number:</label>
+								<input class="form-control" placeholder="Sales Order No." [attr.maxlength]="20" [attr.permitAlphabets]="true" [attr.permitSpace]="false"
+								 [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true"
+								 type="text" name="sales_order_number" [(ngModel)]="invoiceData.sales_order_number">
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Sales Person:</label>
+								<input class="form-control" placeholder="Sales Person Name" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+								 [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false"
+								 type="text" name="sales_person" [(ngModel)]="invoiceData.sales_person">
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Reverse Charge:</label>
+								<select name="reverse_charge" class="form-control" [(ngModel)]="invoiceData.reverse_charge">
+									<option value="0">No</option>
+									<option value="1">Yes</option>
+								</select>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-header">
+					<h4 class="card-title">Add Item to Invoice</h4>
+				</div>
+				<div class="row col-md-12 common-discount">
+					<div class="col-md-2 pull-right form-group">
+						<label>Common Discount</label>
+						<input type="text" class="form-control" name="common_discount" [(ngModel)]="createInvoiceInventory.common_discount" (ngModelChange)="createInvoiceInventory.setCommonDiscount()"
+						 (keyup)="createInvoiceCaluculator.calculator()" [attr.min]="0" [attr.max]="100" [attr.precision]="3" [attr.defaultValue]="0"
+						 (focusout)="createInvoiceCaluculator.calculator()">
+					</div>
+				</div>
+				<div class="card-content table-responsive table-full-width">
+					<table class="table invoice-item">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th class="required-star">Name</th>
+								<th>Quantity</th>
+								<th>Unit</th>
+								<th>Rate INR</th>
+								<th>Tax Rate</th>
+								<th>Discount(%)</th>
+								<th>Total</th>
+								<th>
+									<a rel="tooltip" title="Add Item" class="btn btn-success btn-simple btn-xs" (click)="createInvoiceInventory.addMoreItem()">
+										<i class="ti-plus"></i>
+									</a>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let item of invoiceData.invoice_items ; let i = index" [class.item-edit]="invoiceData.invoice_items.length!=i+1">
+								<td>{{i+1}}</td>
+								<td>
+									<p-autoComplete [name]="'invoice_items___'+i+'___item_name'" [attr.name]="'invoice_items___'+i+'___item_name'" [readonly]="item.item_id"
+									 placeholder="Item Name" (onSelect)="itemSelected(invoiceData.invoice_items[i].item_name,i)" [(ngModel)]="item.item_name"
+									 [suggestions]="createInvoiceInventory.itemNameAutocomplete.list" (completeMethod)="createInvoiceInventory.itemNameAutocomplete.searchList($event)"
+									 [required]="true" #deliveryAddItemRef="ngModel"></p-autoComplete>
+									<div class="form-info-msg">
+										<p [hidden]="taxInvoice.hasError('required' , 'invoice_items___'+i+'___item_name')">HSN Code: {{item.item_hsn_code}} </p>
+									</div>
+									<div class="form-error-msg" [hidden]="deliveryAddItemRef.pristine && deliveryAddItemRef.untouched">
+										<p [hidden]="!taxInvoice.hasError('required' , 'invoice_items___'+i+'___item_name')"> Cannot be empty </p>
+									</div>
+								</td>
+
+								<td>
+									<input type="text" class="form-control small" placeholder="Quantity" required [name]="'invoice_items___'+i+'___item_qty'"
+									 [attr.name]="'invoice_items___'+i+'___item_qty'" [(ngModel)]="item.item_qty" (keyup)="createInvoiceCaluculator.calculator()"
+									 [attr.min]="0.000001" [attr.max]="999999999" [attr.precision]="6" [attr.defaultValue]="1">
+								</td>
+								<td>
+									<select class="form-control" [name]="'invoice_items___'+i+'___item_unit'" [attr.name]="'invoice_items___'+i+'___item_unit'"
+									 [(ngModel)]="item.item_unit" (change)="createInvoiceCaluculator.calculator()" [class.hidden]="item.item_type=='S'">
+										<option [value]="item.item_unit_primary_actual">{{item.item_unit_primary_display}}</option>
+										<option [value]="item.item_unit_secondary_actual">{{item.item_unit_secondary_display}}</option>
+									</select>
+								</td>
+								<td>
+									<input type="text" class="form-control mediumRateInr" placeholder="Rate INR" required [name]="'invoice_items___'+i+'___item_rate'"
+									 [attr.name]="'invoice_items___'+i+'___item_rate'" (keyup)="createInvoiceCaluculator.calculator()" [(ngModel)]="item.item_rate"
+									 [attr.min]="0" [attr.max]="999999999" [attr.precision]="2" [attr.defaultValue]="0">
+								</td>
+								<td>
+									<select class="form-control" [name]="'invoice_items___'+i+'___item_tax_rate'" [attr.name]="'invoice_items___'+i+'___item_tax_rate'"
+									 [disabled]="item.item_taxation_category!='T'" [(ngModel)]="item.item_tax_rate" (change)="createInvoiceCaluculator.calculator()">
+										<option *ngFor="let rate of taxRate" value="{{rate | number:'1.2-2'}}">{{rate}} %</option>{{item.item_tax_rate}} </select>
+									<div class="rates">
+										<p *ngIf="!invoiceData.interstate">sgst: @{{item.item_tax_rate/2 | nan | number:'1.2-2'}}% - {{item.sgst | nan | number:'1.2-2'}}</p>
+										<p *ngIf="!invoiceData.interstate">cgst: @{{item.item_tax_rate/2 | nan | number:'1.2-2'}}% - {{item.cgst | nan | number:'1.2-2'}}</p>
+										<p *ngIf="invoiceData.interstate">igst: @{{item.item_tax_rate | nan | number:'1.2-2'}}% - {{item.igst | nan | number:'1.2-2'}}</p>
+									</div>
+								</td>
+								<td>
+									<input type="text" class="form-control small" placeholder="Discount" [name]="'invoice_items___'+i+'___item_discount'" [attr.name]="'invoice_items___'+i+'___item_discount'"
+									 (focusout)="createInvoiceCaluculator.calculator()" [(ngModel)]="item.item_discount" (keyup)="createInvoiceCaluculator.calculator()"
+									 [attr.min]="0" [attr.max]="100" [attr.precision]="3" [attr.defaultValue]="0">
+								</td>
+								<td>
+									<span>{{item.item_taxed_total | nan | number:'1.2-2' }}</span>
+								</td>
+								<td class="td-actions">
+									<a rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs" (click)="createInvoiceInventory.removeMoreItem(i); createInvoiceCaluculator.calculator()">
+										<i class="ti-close"></i>
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-content">
+					<div class="custom-field">
+						<div class="row">
+							<div class="col-md-4">
+								<div class="panel-group">
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" href="#custon-field">Custom Fields
+													<i class="fa fa-caret-down" aria-hidden="true"></i>
+												</a>
+											</h4>
+										</div>
+										<div id="custon-field" class="panel-collapse collapse">
+											<div class="form-group inline-fields" style="flex-wrap:nowrap" *ngFor="let field of companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.customFieldPrefrence.customFields;let i=index">
+												<input type="text" class="form-control inline" placeholder="Custom Label" name="custom_label-{{i}}" [(ngModel)]="field.label"
+												 [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+												 [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+												<span class="seperator">:</span>
+												<input type="text" class="form-control inline" placeholder="Custom Value" name="custom_value-{{i}}" [(ngModel)]="field.value"
+												 [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+												 [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="panel-group">
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" href="#transportaion-field">Transportation Details
+													<i class="fa fa-caret-down" aria-hidden="true"></i>
+												</a>
+											</h4>
+										</div>
+										<div id="transportaion-field" class="panel-collapse collapse">
+											<div class="form-group">
+												<label>Mode of Transport: </label>
+												<select class="form-control" name="transport_mode" [(ngModel)]="invoiceData.transport_mode">
+													<option value="">Choose</option>
+													<option value="Road">Road</option>
+													<option value="Rail">Rail</option>
+													<option value="Air">Air</option>
+													<option value="Sea">Sea</option>
+												</select>
+											</div>
+
+											<div class="form-group" *ngIf="invoiceData.transport_mode != ''">
+												<label>Name of Transporter:</label>
+												<input type="text" class="form-control" name="transporter_name" placeholder="Transporter Name" [(ngModel)]="invoiceData.transporter_name"
+												 [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+												 [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+											</div>
+
+											<div class="form-group" *ngIf="invoiceData.transport_mode != ''">
+												<label>Source:</label>
+												<input type="text" class="form-control" name="transport_source" placeholder="Source" [(ngModel)]="invoiceData.transport_source"
+												 [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+												 [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+											</div>
+
+											<div class="form-group" *ngIf="invoiceData.transport_mode != ''">
+												<label>Destination:</label>
+												<input type="text" class="form-control" name="transport_destination" placeholder="Destination" [(ngModel)]="invoiceData.transport_destination"
+												 [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+												 [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+											</div>
+
+											<div class="form-group" *ngIf="invoiceData.transport_mode != ''">
+												<label *ngIf="invoiceData.transport_mode == 'Road'">Vehicle Number:</label>
+												<label *ngIf="invoiceData.transport_mode == 'Air'">Flight Number:</label>
+												<label *ngIf="invoiceData.transport_mode == 'Sea'">Vessel-Voyage Number:</label>
+												<label *ngIf="invoiceData.transport_mode == 'Rail'">Train Number:</label>
+												<input type="text" class="form-control" name="vehicle_number" [(ngModel)]="invoiceData.vehicle_number" [attr.maxlength]="20"
+												 [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true"
+												 [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+											</div>
+											<div class="form-group" *ngIf="invoiceData.transport_mode != ''">
+												<label *ngIf="invoiceData.transport_mode == 'Road'">LR Number:</label>
+												<label *ngIf="invoiceData.transport_mode == 'Air'">BE Number:</label>
+												<label *ngIf="invoiceData.transport_mode == 'Sea'">BE Number:</label>
+												<label *ngIf="invoiceData.transport_mode == 'Rail'">LR Number:</label>
+												<input type="text" class="form-control" name="lr_number" [(ngModel)]="invoiceData.lr_number" [attr.maxlength]="20" [attr.permitAlphabets]="true"
+												 [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+												 [attr.defaultValue]="" [attr.permitSpecial]="true">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="panel-group">
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title flex-inline" style="display:flex;justify-content:space-between;font-size:15px">
+												<a data-toggle="collapse" href="#extra-charges">Extra Charges:
+													<i class="fa fa-caret-down" aria-hidden="true"></i>
+												</a>
+												<p>Total: {{ createInvoiceCaluculator.totals.totalEC }}</p>
+											</h4>
+										</div>
+										<div id="extra-charges" class="panel-collapse collapse">
+											<div class="form-group">
+												<label>Freight: {{invoiceData.freight}}</label>
+												<input type="text" class="form-control" name="freight" [(ngModel)]="invoiceData.freight" (keyup)="createInvoiceCaluculator.calculator()"
+												 required [attr.min]="0" [attr.max]="999999999" [attr.precision]="2" [attr.defaultValue]="0">
+											</div>
+											<div class="form-group">
+												<label>Insurance:</label>
+												<input type="text" class="form-control" name="insurance" [(ngModel)]="invoiceData.insurance" (keyup)="createInvoiceCaluculator.calculator()"
+												 required [attr.min]="0" [attr.max]="999999999" [attr.precision]="2" [attr.defaultValue]="0">
+											</div>
+											<div class="form-group">
+												<label>Packaging and Forwarding:</label>
+												<input type="text" class="form-control" name="pack_n_frwd" [(ngModel)]="invoiceData.pack_n_frwd" (keyup)="createInvoiceCaluculator.calculator()"
+												 required [attr.min]="0" [attr.max]="999999999" [attr.precision]="2" [attr.defaultValue]="0">
+											</div>
+
+											<div class="form-group">
+												<label>OPE:</label>
+												<input type="text" class="form-control" name="ope" [(ngModel)]="invoiceData.ope" (keyup)="createInvoiceCaluculator.calculator()"
+												 required [attr.min]="0" [attr.max]="999999999" [attr.precision]="2" [attr.defaultValue]="0">
+											</div>
+											<div class="inline-fields">
+												<div class="form-group">
+													<label>Extra:</label>
+													<input type="text" class="form-control" name="extra_label" [(ngModel)]="invoiceData.extra_label" [attr.maxlength]="100" [attr.permitAlphabets]="true"
+													 [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+													 [attr.defaultValue]="" [attr.permitSpecial]="true">
+												</div>
+												<div class="form-group">
+													<label></label>
+													<input type="text" class="form-control" name="extra_value" [(ngModel)]="invoiceData.extra_value" (keyup)="createInvoiceCaluculator.calculator()"
+													 [attr.min]="0" [attr.max]="999999999" [attr.precision]="2" [attr.defaultValue]="0">
+												</div>
+
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-header">
+					<h4 class="card-title">Invoice Total</h4>
+				</div>
+				<div class="card-content clearfix">
+					<div class="total">
+						<p>
+							<span class="left">Taxable Value:</span>
+							<span class="right">{{createInvoiceCaluculator.totals.UnTaxedTotal | nan | number:'1.2-2'}}</span>
+						</p>
+						<p>
+							<span class="left">Tax Value:</span>
+							<span class="right">{{((createInvoiceCaluculator.totals.taxedTotal)-(createInvoiceCaluculator.totals.UnTaxedTotal)) | nan | number:'1.2-2'}}</span>
+						</p>
+						<p>
+							<span class="left">Total Extra Charges:</span>
+							<span class="right">{{createInvoiceCaluculator.totals.totalEC | nan | number:'1.2-2'}}</span>
+						</p>
+						<p>
+							<span class="left">Tax on Extra Charges:</span>
+							<span class="right">{{((createInvoiceCaluculator.totals.eCtaxTotal)-(createInvoiceCaluculator.totals.totalEC)) | nan | number:'1.2-2'}}</span>
+						</p>
+						<p class="total-last">
+							<span class="left">Total Invoice Value:</span>
+							<span class="right">{{createInvoiceCaluculator.totals.finalTotal | nan | number:'1.2-2'}}</span>
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-content">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="panel-group">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<a data-toggle="collapse" href="#tnc">Terms and Condition
+												<i class="fa fa-caret-down" aria-hidden="true"></i>
+											</a>
+										</h4>
+									</div>
+									<div id="tnc" class="panel-collapse collapse">
+										<div class="form-group">
+											<textarea spellcheck="false" class="form-control" name="company_tnc" [(ngModel)]="invoiceData.tnc" placeholder="Terms and Condition"
+											 rows="3" [attr.maxlength]="500" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+											 [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true" autocomplete="off"
+											 data-gramm_editor="false"></textarea>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="panel-group">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<a data-toggle="collapse" href="#declaration">Declaration
+												<i class="fa fa-caret-down" aria-hidden="true"></i>
+											</a>
+										</h4>
+									</div>
+									<div id="declaration" class="panel-collapse collapse">
+										<div class="form-group">
+											<textarea spellcheck="false" class="form-control" name="company_declaration" [(ngModel)]="invoiceData.declaration" placeholder="Declaration"
+											 rows="3" [attr.maxlength]="500" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+											 [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true" autocomplete="off"
+											 data-gramm_editor="false"></textarea>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+      </div>
+      <div class="card">
+          <div class="card-content">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Remark:</label>
+                  <textarea spellcheck="false" placeholder="Remark (For internal use only)" data-gramm_editor="false" name="invoice_note" rows="3"
+                    class="form-control" [(ngModel)]="invoiceData.invoice_note" [attr.maxlength]="500" [attr.permitAlphabets]="true"
+                    [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+                    [attr.defaultValue]="" [attr.permitSpecial]="true"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+			<div class="text-right">
+				<button [disabled]="createInvoiceClient.client_gsttreatment=='SEZ' || !putCallable" type="submit" class="btn btn-success btn-fill btn-wd btn-loader">{{ !putCallable ? 'Saving' : 'Save' }}
+					<i class="fa fa-circle-o-notch fa-spin" *ngIf="!putCallable"></i>
+				</button>
+			</div>
+
+		</form>
+	</div>
+
+	<button class="modal-btn hide btn btn-success" data-toggle="modal" data-target="#saveInvoice">Save</button>
+	<button class="newClient hide btn btn-success" data-toggle="modal" data-target="#newClient">Save</button>
+	<button class="newInventory hide btn btn-success" data-toggle="modal" data-target="#newInventory">Save</button>
+
+	<app-save-invoice [invoice_number]="this.invoiceData['invoice_number']" [invoice_id]="invoice_id" [contact_person]="contact_person"></app-save-invoice>
+	<app-invoice-number-setting (formatChanged)="formatChanged($event)" [invoiceType]="invoiceData.invoice_type"></app-invoice-number-setting>
+	<app-new-client (newClientAdded)="createInvoiceClient.newClientAdded($event)"></app-new-client>
+	<app-new-inventory (newItemAdded)="createInvoiceInventory.newItemAdded($event)"></app-new-inventory>
+</div>

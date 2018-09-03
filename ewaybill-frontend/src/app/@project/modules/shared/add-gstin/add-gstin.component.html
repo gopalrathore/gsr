@@ -1,0 +1,44 @@
+<div id="newGSTIN" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Add GSTIN</h4>
+        </div>
+        <div class="modal-body">
+          <form #addGSTIN="ngForm" class="validateForm" (ngSubmit)="gstinSubmit(addGSTIN)"  [ngClass]="{submitted:addGSTIN.submitted}">
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label class="required-star">GSTIN</label>
+              <input type="text" name="gst_id" [ngModel]="gstin.gstin | uppercase" placeholder="GSTIN" #gstPanRef="ngModel"  (ngModelChange)="gstin.gstin=$event"
+              class="form-control" pattern="[0-9]{2}[A-Za-z]{3}[C,P,H,F,A,T,B,L,J,G,c,p,h,f,a,t,b,l,j,g]{1}[A-Za-z]{1}[0-9]{4}[A-Za-z]{1}[0-9]{1}[A-Za-z0-9]{1}[A-Z0-9a-z]{1}"
+              autocomplete="off" required [attr.maxlength]="15" [attr.permitAlphabets]="true" [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+              <div class="form-error-msg" [hidden]="gstPanRef.pristine && gstPanRef.untouched">
+                <p [hidden]="!addGSTIN.hasError('required', 'gst_id')"> Cannot be empty </p>
+                <p [hidden]="!addGSTIN.hasError('pattern', 'gst_id')"> Invalid Input </p>
+              </div>
+            </div>
+            <div class="col-md-6 form-group">
+              <label class="required-star">GSTIN Display Name</label>
+              <input type="text" class="form-control" name="display_name" [(ngModel)]="gstin.display_name" required [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+              [attr.permitUnderscore]="true" #displayName="ngModel" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+              <div class="form-error-msg" [hidden]="displayName.pristine && displayName.untouched">
+                <p [hidden]="!addGSTIN.hasError('required', 'display_name')"> Cannot be empty </p>
+              </div>
+            </div>
+          
+          </div>
+  
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success btn-fill">Save</button>
+            <button type="button" class="btn btn-warning btn-fill" (click)="close(addGSTIN)">Close</button>
+        </div>
+        
+        </form>
+        </div>
+        
+      </div>
+  
+    </div>
+  </div>

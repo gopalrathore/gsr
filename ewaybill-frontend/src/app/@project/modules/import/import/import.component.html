@@ -1,0 +1,17 @@
+<div class="main-content">
+  <div class="container-fluid card">
+    <div class="card-header">
+      <h4 class="card-title">Bulk Import E-Way Bills</h4>
+      <p class="category">Bulk import invoice data in the standard excel format and convert your excel invoices in to e-way bill compatible JSON
+        format.</p>
+    </div>
+    <div class="card-content clearfix">
+
+      <div class="file-upload pull-left">
+        <label for="upload" class="btn btn-success btn-fill btn-wd">Select file from computer</label>
+        <input rel="tooltip" title="Upload standard excel template with your invoice details" class="btn btn-success btn-fill btn-wd file-upload__input"
+          type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".xlsx">
+      </div>
+      <a rel="tooltip" title="Standard bulk import excel template" class="btn btn-warning btn-fill btn-wd pull-right" href="https://s3.amazonaws.com/eway-bill-bulk-software/v.02/template/upload_data_file.xlsx" download="sample.xlsx">Download Excel Template</a>
+    </div>
+  </div>

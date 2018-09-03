@@ -1,0 +1,91 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="title">Invoice Listing</h4>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="dropdown">
+              <button href="#" class="btn btn-block dropdown-toggle" data-toggle="dropdown">
+                Create Invoice
+                <b class="caret"></b>
+              </button>
+              <ul class="dropdown-menu">
+                <li *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.TI"><a
+                    [routerLink]="['tax-invoice']">Tax Invoice</a></li>
+                <li *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.SO"><a
+                    [routerLink]="['sales-order']">Sales Order</a></li>
+                <li *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.RI"><a
+                    [routerLink]="['retail-invoice']">Retail Invoice/B2C Sale</a></li>
+                <li *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.EI"><a
+                    [routerLink]="['export-invoice']">Export Invoice</a></li>
+                <li *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.BOS"><a
+                    [routerLink]="['bill-of-supply']">Bill of Supply</a></li>
+                <li *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.RV"><a
+                    [routerLink]="['receipt-voucher']">Advance Receipt Voucher</a></li>
+                <li *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.RFV"><a
+                    [routerLink]="['refund-voucher']">Refund Voucher</a></li>
+                <li *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.PV"><a
+                    [routerLink]="['payment-voucher']">RCM Payment Voucher</a></li>
+                <li *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.CN"><a
+                    [routerLink]="['credit-note']">Credit Note</a></li>
+                <li *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.DN"><a
+                    [routerLink]="['debit-note']">Debit Note</a></li>
+                <li *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.REI"><a
+                    [routerLink]="['revise-invoice']">Revise Invoice</a></li>
+                <li *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.DC"><a
+                    [routerLink]="['delivery-challan']">Delivery Challan</a></li>
+                <li *ngIf="companyServiceService.allPrefences.myPrefrences.myInvoicePrefrence.invoicePrefrence.avaliableInvoiceType.TDC"><a
+                    [routerLink]="['trade-delivery-challan']">Trade Delivery Challan</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <br>
+        <div class="card">
+          <div class="card-content">
+            <h4 class="card-title">Sales Invoices</h4>
+            <div class="toolbar">
+              <!--        Here you can write extra buttons/actions for the toolbar              -->
+            </div>
+            <!-- <div class="tutorial-img" *ngIf="showImg">
+                            <img src="http://placehold.it/100x100" alt="img">
+                        </div> -->
+            <div class="fresh-table">
+              <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
+                <thead>
+                  <tr>
+                    <th>{{ dataTable.headerRow[0] }}</th>
+                    <th>{{ dataTable.headerRow[1] }}</th>
+                    <th>{{ dataTable.headerRow[2] }}</th>
+                    <th>{{ dataTable.headerRow[3] }}</th>
+                    <th>{{ dataTable.headerRow[4] }}</th>
+                    <th class="disabled-sorting">{{ dataTable.headerRow[5] }}</th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th>{{ dataTable.footerRow[0] }}</th>
+                    <th>{{ dataTable.footerRow[1] }}</th>
+                    <th>{{ dataTable.footerRow[2] }}</th>
+                    <th>{{ dataTable.footerRow[3] }}</th>
+                    <th>{{ dataTable.footerRow[4] }}</th>
+                    <th>{{ dataTable.footerRow[5] }}</th>
+                  </tr>
+                </tfoot>
+                <tbody>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- end content-->
+        </div>
+        <!--  end card  -->
+      </div>
+      <!-- end col-md-12 -->
+    </div>
+    <!-- end row -->
+  </div>
+</div>

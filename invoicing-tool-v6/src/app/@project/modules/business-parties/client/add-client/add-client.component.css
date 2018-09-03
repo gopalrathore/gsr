@@ -1,0 +1,18 @@
+.add-client .card-title p {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 0;
+}
+.add-client .panel-group{
+    margin-bottom: 0px;
+}
+.add-client .card-contact .card-content{
+    padding: 10px 30px 10px 30px;
+}
+.add-client .card-contact .card-content .panel{
+    margin-top: 0;
+}
+
+.add-client .gstin-error  p {
+  top: -12px;
+}

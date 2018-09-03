@@ -1,0 +1,159 @@
+<div class="container-fluid" style="float:none;width:100%">
+  <div class="row">
+    <div class="col-sm-12">
+      <br>
+      <div class="toolbar pull-left" style="margin-bottom:5px">
+        <h4 class="card-title">
+          <strong>{{currentCompany.company_name | titlecase}}</strong>
+        </h4>
+      </div>
+      <div class="toolbar text-right" style="margin-bottom:5px">
+        <a>
+          <button class="btn btn-success btn-fill btn-wd" data-toggle="modal" data-target="#newGSTIN">Add new GSTIN</button>
+        </a>
+        <a>
+          <button class="btn btn-success btn-fill btn-wd" data-toggle="modal" data-target="#addBranch">Add new Branch</button>
+        </a>
+      </div>
+      <br>
+      <div class="card" *ngFor="let gstid of gst_id_list">
+        <div class="card-header">
+          <!-- <h4 class="category text-right pull-right"><strong>GSTIN Name: {{gstid.display_name}}</strong></h4> -->
+          <h4 class="card-title">
+            <strong>{{gstid.display_name|titlecase}}</strong>
+          </h4>
+          <a rel="tooltip" title="All invoices uploaded till date" class="pull-right" style="z-index:9999999" (click)="allBillsgstid(gstid.company_gst_id)">All E-Way Bills</a>
+          <p class="category">{{gstid.gstin | uppercase}} - {{state.getStateName(gstid.gstin.slice(0,2))}}</p>
+          <!-- <h4 class="card-title text-right"><button type="button" class="btn btn-info btn-fill btn-wd" >Add Branch</button></h4> -->
+        </div>
+        <div class="card-content">
+          <ul class="gstin-list">
+            <li class="row branch-item" *ngFor="let item of gstid.branches;let i = index">
+              <div class="col-md-3 left-div">
+                <p>{{item.branch_name | titlecase}}</p>
+              </div>
+              <div class="col-md-2 left-div">
+                <p>{{item.branch_city|titlecase}}</p>
+              </div>
+              <div class="col-md-7 right-div">
+
+                <a class="btn btn-wd btn-info btn-fill" (click)="importFile(gstid.company_gst_id,item.branch_id)">
+                  <span class="btn-label">
+                    <i class="ti-import"></i>
+                  </span>
+                  Import invoice data</a>
+                <a (click)="allBillsBranch(item.branch_id, gstid.company_gst_id)">All Invoices Uploaded</a>
+                <a (click)="BranchImportHistory(item.branch_id,gstid.company_gst_id, item.branch_name)">Import History</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="addBranch" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Add Branch</h4>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <form #addBranch="ngForm" class="validateForm" (ngSubmit)="branchSubmit(addBranch)" [ngClass]="{submitted:addBranch.submitted}">
+            <div class="modal-body">
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label class="required-star">Select GSTIN</label>
+                  <select class="form-control" #selectGSTIN="ngModel" name="company_gst_id" [(ngModel)]="addBranch.company_gst_id" required
+                    (change)="gstinSelected(addBranch.company_gst_id)">
+                    <option value="">Select GSTIN</option>
+                    <option *ngFor="let id of gst_id_list" [value]="id.company_gst_id">{{id.display_name}}</option>
+                  </select>
+                  <div class="form-error-msg" [hidden]="selectGSTIN.pristine && selectGSTIN.untouched">
+                    <p [hidden]="!addBranch.hasError('required', 'company_gst_id')"> Cannot be empty </p>
+                    <p [hidden]="!addBranch.hasError('pattern', 'company_gst_id')"> Invalid Input </p>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label class="required-star">Branch Name</label>
+                  <input type="text" #branch="ngModel" class="form-control" required autocomplete="off" placeholder="Branch Name" [(ngModel)]="addBranch.branch_name"
+                    name="branch_name" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+                    [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                    [attr.permitSpecial]="true">
+                  <div class="form-error-msg" [hidden]="branch.pristine && branch.untouched">
+                    <p [hidden]="!addBranch.hasError('required', 'branch_name')"> Cannot be empty </p>
+                    <p [hidden]="!addBranch.hasError('pattern', 'branch_name')"> Invalid Input </p>
+                  </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label class="required-star">Branch Address</label>
+                  <input type="text" #address="ngModel" class="form-control" required autocomplete="off" placeholder="Branch Address" [(ngModel)]="addBranch.branch_address"
+                    name="branch_address" [attr.maxlength]="200" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                    [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                  <div class="form-error-msg" [hidden]="address.pristine && address.untouched">
+                    <p [hidden]="!addBranch.hasError('required', 'branch_address')"> Cannot be empty </p>
+                    <p [hidden]="!addBranch.hasError('pattern', 'branch_address')"> Invalid Input </p>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label class="required-star">City</label>
+                  <input type="text" #city="ngModel" class="form-control" required autocomplete="off" placeholder="Branch City" [(ngModel)]="addBranch.branch_city"
+                    name="branch_city" [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="false"
+                    [attr.permitDash]="true" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false">
+                  <div class="form-error-msg" [hidden]="city.pristine && city.untouched">
+                    <p [hidden]="!addBranch.hasError('required', 'branch_city')"> Cannot be empty </p>
+                    <p [hidden]="!addBranch.hasError('pattern', 'branch_city')"> Invalid Input </p>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label class="required-star">Pincode</label>
+                  <input type="text" #pincode="ngModel" class="form-control" pattern="^[1-9][0-9]{5}$" required autocomplete="off" placeholder="Branch Pincode"
+                    [(ngModel)]="addBranch.branch_pincode" name="branch_pincode" [attr.maxlength]="6" [attr.permitAlphabets]="false"
+                    [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true"
+                    [attr.defaultValue]="" [attr.permitSpecial]="false">
+                  <div class="form-error-msg" [hidden]="pincode.pristine && pincode.untouched">
+                    <p [hidden]="!addBranch.hasError('required', 'branch_pincode')"> Cannot be empty </p>
+                    <p [hidden]="!addBranch.hasError('pattern', 'branch_pincode')"> Invalid Input </p>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label class="required-star">State</label>
+                  <select class="form-control" #stateName="ngModel" name="branch_state" [(ngModel)]="addBranch.branch_state" required>
+                    <option value="">Select State</option>
+                    <option *ngFor="let state of state.data" [value]="state.state_code">{{state.state_name}}</option>
+                  </select>
+                  <div class="form-error-msg" [hidden]="stateName.pristine && stateName.untouched">
+                    <p [hidden]="!addBranch.hasError('required', 'branch_state')"> Cannot be empty </p>
+                    <p [hidden]="!addBranch.hasError('pattern', 'branch_state')"> Invalid Input </p>
+                  </div>
+
+                </div>
+
+              </div>
+
+
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success btn-fill">Save</button>
+              <button type="button" class="btn btn-fill btn-warning" (click)="close(addBranch)">Close</button>
+            </div>
+          </form>
+          <!-- <a class="btn btn-info-btn-wd">Add Branch</a> -->
+        </div>
+      </div>
+
+
+
+    </div>
+
+  </div>
+</div>
+
+<app-add-gstin (newGSTINAdded)="newGSTINAdded()"></app-add-gstin>

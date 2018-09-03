@@ -1,0 +1,48 @@
+.invoice-item tbody tr:last-of-type .enable-btn {
+    bottom: 12px;
+
+}
+
+.table select {
+    width: 87px;
+    padding: 7px 4px;
+}
+
+.table .action {
+    position: absolute;
+    right: 58px;
+    bottom: 49px;
+}
+
+.table select {
+    padding: 10px 0;
+    width: 75px;
+}
+
+.tableItem{
+    position: relative;
+}
+
+.tableItem .enable-btn {
+    bottom: 33px;
+}
+
+.main-content {
+    padding-bottom: 30px;
+}
+
+.bill-table .form-control {
+    padding: 7px 3px;
+}
+
+.add-more {
+    font-size: 14px;
+}
+
+select {
+    padding: 0;
+}
+
+.radiobtn {
+    padding: 7px 0;
+}

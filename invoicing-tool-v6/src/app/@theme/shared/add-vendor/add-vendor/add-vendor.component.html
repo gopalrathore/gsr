@@ -1,0 +1,111 @@
+<div id="newVendor" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Add New Vendor</h4>
+      </div>
+      <div class="modal-body">
+        <form #addVendor="ngForm" [class]="'validateForm-'+constructor.name" (ngSubmit)="vendorSubmit(addVendor, addVendor.valid,addVendor.value)"
+          [ngClass]="{submitted:addVendor.submitted}">
+          <button type="button" class="close" (click)="close(addVendor)" data-dismiss="modal">&times;</button>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="col-md-12 form-group">
+                <label class="required-star">Company Name:</label>
+                <input type="text" placeholder="Name of the company" name="vendor_company" [(ngModel)]="vendor.vendor_company" class="form-control"
+                  #vendorCompanyRef="ngModel" required autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true"
+                  [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+                  [attr.defaultValue]="" [attr.permitSpecial]="true" (keyup)="vendor.vendor_company_nickname=vendor.vendor_company">
+                <div class="form-error-msg" [hidden]="vendorCompanyRef.pristine && vendorCompanyRef.untouched">
+                  <p [hidden]="!addVendor.hasError('required' , 'vendor_company')"> Cannot be empty </p>
+                </div>
+              </div>
+              <!-- here -->
+              <div class="col-md-5 form-group">
+                <label class="required-star">GST Registered:</label>
+                <select name="vendor_registered" [(ngModel)]="vendor.vendor_registered" class="form-control" (change)="setCountry(vendor.vendor_registered)"
+                  required>
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+              <div class="col-md-7 form-group" *ngIf="vendor.vendor_registered==1">
+                <label class="required-star">GSTIN:</label>
+                <input type="text" name="vendor_gst_id" [ngModel]="vendor.vendor_gst_id | uppercase" (ngModelChange)="vendor.vendor_gst_id=$event"
+                  class="form-control" pattern="[0-9]{2}[A-Za-z]{3}[C,P,H,F,A,T,B,L,J,G,c,p,h,f,a,t,b,l,j,g]{1}[A-Za-z]{1}[0-9]{4}[A-Za-z]{1}[0-9]{1}[A-Za-z0-9]{1}[A-Z0-9a-z]{1}"
+                  (keyup)="select_vendor_type(vendor.vendor_gst_id)" [attr.maxlength]="15" [attr.permitAlphabets]="true" [attr.permitSpace]="false"
+                  [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                  [attr.permitSpecial]="false" autocomplete="off" required>
+                <p class="pan">{{vendor.vendor_pan}}</p>
+              </div>
+
+            </div>
+
+            <div class="col-md-6">
+              <div class="col-md-12 form-group">
+                <label class="required-star">Address:</label>
+                <input type="text" placeholder="Flat / House No. / Floor / Building" name="vendor_address" [(ngModel)]="vendor.vendor_address"
+                  class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+                  [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                  [attr.permitSpecial]="true" required>
+              </div>
+              <div class="col-md-12 form-group">
+                <input type="text" placeholder="Colony / Street / Locality" name="vendor_address_2" [(ngModel)]="vendor.vendor_address_2"
+                  class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+                  [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                  [attr.permitSpecial]="true">
+              </div>
+
+              <div class="col-md-6 form-group">
+                <input type="text" placeholder="City" name="vendor_address_3" [(ngModel)]="vendor.vendor_address_3" class="form-control"
+                  autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="false"
+                  [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false"
+                  required>
+              </div>
+              <div class="col-md-6 form-group">
+                <input type="text" placeholder="PIN Code" name="vendor_address_4" pattern="^[1-9][0-9]{5}$" [(ngModel)]="vendor.vendor_address_4"
+                  class="form-control" autocomplete="off" [attr.maxlength]="6" [attr.permitAlphabets]="false" [attr.permitSpace]="false"
+                  [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                  [attr.permitSpecial]="false" required>
+              </div>
+              <div class="col-md-6 form-group">
+                <label class="required-star">Country:</label>
+                <select name="vendor_country" [(ngModel)]="vendor.vendor_country" class="form-control" required>
+                  <option *ngFor="let country of countries.data" [value]="country.country_name">{{country.country_name}}</option>
+                </select>
+              </div>
+              <div class="col-md-6 form-group" *ngIf="vendor.vendor_country=='India'">
+                <label class="required-star">State:</label>
+                <select name="vendor_state_code" [(ngModel)]="vendor.vendor_state_code" class="form-control" required>
+                  <option value="">Please Select State</option>
+                  <option *ngFor="let state of state.data" [value]="state.state_code">{{state.state_name}}</option>
+
+                </select>
+              </div>
+              <div class="col-md-6 form-group" *ngIf="vendor.vendor_country!='India'">
+                <label class="required-star">State:</label>
+                <input type="text" placeholder="State Name" name="vendor_state_name" [(ngModel)]="vendor.vendor_state_name" class="form-control"
+                  [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="false"
+                  [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false"
+                  autocomplete="off" required>
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="modal-footer">
+            <button [disabled]="!putCallable" type="submit" class="btn btn-success btn-fill btn-wd btn-loader">{{ !putCallable ? 'Saving' : 'Save' }}
+              <i class="fa fa-circle-o-notch fa-spin" *ngIf="!putCallable"></i>
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+</div>

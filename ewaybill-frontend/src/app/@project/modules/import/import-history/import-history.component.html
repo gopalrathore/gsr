@@ -1,0 +1,48 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="title">Import History</h4>
+        <p class="category">
+          <strong>Branch: {{data.branch_name?data.branch_name:'' |titlecase}}</strong>
+        </p>
+        <br>
+        <div class="card">
+          <div class="card-content">
+            <h4 class="card-title text-right"></h4>
+            <!-- <div class="tutorial-img" *ngIf="showImg">
+                          <img src="http://placehold.it/100x100" alt="img">
+                      </div> -->
+            <div class="fresh-table e-way-bill-table">
+              <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
+                <thead>
+                  <tr>
+                    <th>{{ dataTable.headerRow[0] }}</th>
+                    <th>{{ dataTable.headerRow[1] }}</th>
+                    <th>{{ dataTable.footerRow[2] }}</th>
+                    <th class="disabled-sorting">{{ dataTable.headerRow[3] }}</th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th>{{ dataTable.footerRow[0] }}</th>
+                    <th>{{ dataTable.footerRow[1] }}</th>
+                    <th>{{ dataTable.footerRow[2] }}</th>
+                    <th>{{ dataTable.footerRow[3] }}</th>
+                  </tr>
+                </tfoot>
+                <tbody>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- end content-->
+        </div>
+        <!--  end card  -->
+      </div>
+      <!-- end col-md-12 -->
+    </div>
+    <!-- end row -->
+  </div>
+</div>

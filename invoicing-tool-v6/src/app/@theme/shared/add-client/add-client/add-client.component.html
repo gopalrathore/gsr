@@ -1,0 +1,152 @@
+<div id="newClient" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Add New Client</h4>
+      </div>
+      <div class="modal-body">
+        <form #addClient="ngForm" [class]="'validateForm-'+constructor.name" (ngSubmit)="clientSubmit(addClient,addClient.valid,addClient.value)"
+          [ngClass]="{submitted:addClient.submitted}">
+          <button type="button" class="close" (click)="close(addClient)" data-dismiss="modal">&times;</button>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="col-md-12 form-group">
+                <label class="required-star">Company Name:</label>
+                <input type="text" placeholder="Name of the company" name="client_company" [(ngModel)]="client.client_company" class="form-control"
+                  #clientCompanyRef="ngModel" required autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true"
+                  [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+                  [attr.defaultValue]="" [attr.permitSpecial]="true" (keyup)="client.client_company_nickname=client.client_company">
+                <div class="form-error-msg" [hidden]="clientCompanyRef.pristine && clientCompanyRef.untouched">
+                  <p [hidden]="!addClient.hasError('required' , 'client_company')"> Cannot be empty </p>
+                </div>
+              </div>
+              <!-- here -->
+              <div class="col-md-5 form-group">
+                <label class="required-star">GST Registered:</label>
+                <select name="client_registered" [(ngModel)]="client.client_registered" class="form-control" (change)="setCountry(client.client_registered)"
+                  required>
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+              <div class="col-md-7 form-group" *ngIf="client.client_registered==1">
+                <label class="required-star">GSTIN:</label>
+                <input type="text" name="client_gst_id" #gstinRef="ngModel" [ngModel]="client.client_gst_id | uppercase" (ngModelChange)="client.client_gst_id=$event"
+                  class="form-control" pattern="[0-9]{2}[A-Za-z]{3}[C,P,H,F,A,T,B,L,J,G,c,p,h,f,a,t,b,l,j,g]{1}[A-Za-z]{1}[0-9]{4}[A-Za-z]{1}[0-9]{1}[A-Za-z0-9]{1}[A-Z0-9a-z]{1}"
+                  (keyup)="select_client_type(client.client_gst_id)" [attr.maxlength]="15" [attr.permitAlphabets]="true" [attr.permitSpace]="false"
+                  [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                  [attr.permitSpecial]="false" autocomplete="off" required>
+                <p class="pan">{{client.client_pan}}</p>
+                <div class="form-error-msg gstin-error" [hidden]="gstinRef.pristine && gstinRef.untouched">
+                  <p [hidden]="!addClient.hasError('required', 'client_gst_id')"> Cannot be empty </p>
+                  <p [hidden]="!addClient.hasError('pattern', 'client_gst_id')"> Invalid GSTIN </p>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="required-star">GST Treatment:</label>
+                  <select class="form-control" #gstTreatmentRef="ngModel" [(ngModel)]="client.client_gsttreatment" name="client_gsttreatment"
+                    required>
+                    <option value="">Select GST Treatment</option>
+                    <option value="Regular" *ngIf="client.client_registered==1">Registered Business - Regular</option>
+                    <option value="Composition" *ngIf="client.client_registered==1">Registered Business - Composition</option>
+                    <option value="Unregistered" *ngIf="client.client_registered==0">Unregistered Business</option>
+                    <option value="Overseas" *ngIf="client.client_registered==0">Overseas</option>
+                    <option value="SEZ">Special Economic Zone</option>
+                  </select>
+                  <div class="form-error-msg" [hidden]="gstTreatmentRef.pristine && gstTreatmentRef.untouched">
+                    <p [hidden]="!addClient.hasError('required', 'client_gsttreatment')"> Cannot be empty </p>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+
+            <div class="col-md-6">
+              <div class="col-md-12 form-group">
+                <label class="required-star">Address:</label>
+                <input type="text" placeholder="Flat / House No. / Floor / Building" name="client_address" [(ngModel)]="client.client_address"
+                  class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+                  [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                  [attr.permitSpecial]="true" required #clientAddRef="ngModel">
+                <div class="form-error-msg" [hidden]="clientAddRef.pristine && clientAddRef.untouched">
+                  <p [hidden]="!addClient.hasError('required' , 'client_address')"> Cannot be empty </p>
+                </div>
+              </div>
+              <div class="col-md-12 form-group">
+                <input type="text" placeholder="Colony / Street / Locality" name="client_address_2" [(ngModel)]="client.client_address_2"
+                  class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+                  [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                  [attr.permitSpecial]="true">
+              </div>
+
+              <div class="col-md-6 form-group">
+                <input type="text" placeholder="City" name="client_address_3" #clientAdd3Ref="ngModel" [(ngModel)]="client.client_address_3"
+                  class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+                  [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]=""
+                  [attr.permitSpecial]="false" required>
+                <div class="form-error-msg" [hidden]="clientAdd3Ref.pristine && clientAdd3Ref.untouched">
+                  <p [hidden]="!addClient.hasError('required' , 'client_address_3')"> Cannot be empty </p>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <input type="text" placeholder="PIN Code" name="client_address_4" pattern="^[1-9][0-9]{5}$" [(ngModel)]="client.client_address_4"
+                  class="form-control" autocomplete="off" [attr.maxlength]="6" [attr.permitAlphabets]="false" [attr.permitSpace]="false"
+                  [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                  [attr.permitSpecial]="false" #clientCity3Ref="ngModel" required>
+                <div class="form-error-msg" [hidden]="clientCity3Ref.pristine && clientCity3Ref.untouched">
+                  <p [hidden]="!addClient.hasError('pattern' , 'client_address_4')"> Invalid Pin Code </p>
+                  <p [hidden]="!addClient.hasError('required' , 'client_address_4')"> Cannot be empty </p>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <label class="required-star">Country:</label>
+                <select name="client_country" #clientCountryRef="ngModel" [(ngModel)]="client.client_country" class="form-control" required>
+                  <option *ngFor="let country of countries.data" [value]="country.country_name">{{country.country_name}}</option>
+                </select>
+                <div class="form-error-msg" [hidden]="clientCountryRef.pristine && clientCountryRef.untouched">
+                  <p [hidden]="!addClient.hasError('required', 'client_country')"> Cannot be empty </p>
+                </div>
+              </div>
+              <div class="col-md-6 form-group" *ngIf="client.client_country=='India'">
+                <label class="required-star">State:</label>
+                <select name="client_state_code" #clientStateCodeRef="ngModel" [(ngModel)]="client.client_state_code" class="form-control"
+                  required>
+                  <option value="">Please Select State</option>
+                  <option *ngFor="let state of state.data" [value]="state.state_code">{{state.state_name}}</option>
+                </select>
+                <div class="form-error-msg" [hidden]="clientStateCodeRef.pristine && clientStateCodeRef.untouched">
+                  <p [hidden]="!addClient.hasError('required', 'client_state_code')"> Cannot be empty </p>
+                </div>
+              </div>
+              <div class="col-md-6 form-group" *ngIf="client.client_country!='India'">
+                <label class="required-star">State:</label>
+                <input type="text" name="client_state_name" #clientStateNameRef="ngModel" [(ngModel)]="client.client_state_name" class="form-control"
+                  [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="false"
+                  [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false"
+                  autocomplete="off" required>
+                <div class="form-error-msg" [hidden]="clientStateNameRef.pristine && clientStateNameRef.untouched">
+                  <p [hidden]="!addClient.hasError('required', 'client_state_name')"> Cannot be empty </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="modal-footer">
+            <button [disabled]="!putCallable" type="submit" class="btn btn-success btn-fill btn-wd btn-loader">{{ !putCallable ? 'Saving' : 'Save' }}
+              <i class="fa fa-circle-o-notch fa-spin" *ngIf="!putCallable"></i>
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+</div>

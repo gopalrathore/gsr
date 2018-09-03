@@ -1,0 +1,235 @@
+<div class="main-content">
+  <div class="container-fluid card">
+    <div class="card-header">
+      <h4 class="card-title">Invoices to be bulk updated</h4>
+      <p class="category">You can select the invoices which do not contain transporter details and update the same to make them ready for E-
+        way bill generation</p>
+      <h4 class="card-title text-right">
+        <span rel="tooltip" title="Selected invoices will be updated with transporter details">
+          <button class="btn btn-wd btn-success btn-fill" [disabled]="selectedItem[0]===undefined" data-toggle="modal" data-target="#transporter">Bulk Update</button>
+          <!-- <button class="btn btn-wd btn-success btn-fill" [disabled]="selectedItem[0]===undefined" (click)="gopal()">Bulk Update</button> -->
+        </span>
+      </h4>
+
+    </div>
+    <div class="card-content">
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="ewaybill-table">
+
+            <p-dataTable [value]="jsonData" scrollable="true" scrollHeight="200px" [(selection)]="selectedItem" dataKey="row_id" frozenWidth="150px"
+              unfrozenWidth="calc(100% - 150px)" [paginator]="true" [rows]="10" [style]="{'margin-top':'30px'}" [headerCheckboxToggleAllPages]="true">
+              <p-header>Update Transporter Detail</p-header>
+              <p-column [style]="{'width':'20px'}" selectionMode="multiple" frozen="true"></p-column>
+              <p-column field="docNo" header="Document Number" [style]="{'width':'50px'}" frozen="true" [filter]="true" filterPlaceholder="Search"></p-column>
+              <p-column field="supplyType" header="Supply Type" [style]="{'width':'100px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+              <p-column field="subSupplyType" header="Sub Supply Type" [style]="{'width':'100px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+              <p-column field="docType" header="Document type" [style]="{'width':'140px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+              <p-column field="docDate" header="Document Date" [style]="{'width':'100px'}"></p-column>
+              <p-column field="toTrdname" header="To Trader Name" [style]="{'width':'250px'}"></p-column>
+              <p-column field="toGstin" header="To GSTIN" [style]="{'width':'180px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+              <p-column field="toAddr1" header="To Address 1" [style]="{'width':'250px'}"></p-column>
+              <p-column field="toAddr2" header="To Address 2" [style]="{'width':'250px'}"></p-column>
+              <p-column field="toPlace" header="To Place" [style]="{'width':'120px'}"></p-column>
+              <p-column field="toPincode" header="To pincode" [style]="{'width':'100px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+              <p-column field="toStateCode" header="To State Name" [style]="{'width':'150px'}"></p-column>
+              <p-column field="actToStateCode" header="actToStateCode" [style]="{'width':'150px'}"></p-column>
+              <p-column field="productName" header="Product name" [style]="{'width':'250px'}"></p-column>
+              <p-column field="productDesc" header="Product Description" [style]="{'width':'250px'}"></p-column>
+              <p-column field="hsnCode" header="HSN Code" [style]="{'width':'100px'}"></p-column>
+              <p-column field="quantity" header="Quantity" [style]="{'width':'100px'}"></p-column>
+              <p-column field="qtyUnit" header="Unit" [style]="{'width':'150px'}"></p-column>
+              <p-column field="taxableAmount" header="Taxable Amount" [style]="{'width':'100px'}"></p-column>
+              <p-column field="cgstValue" header="CGST Value" [style]="{'width':'100px'}"></p-column>
+              <p-column field="sgstValue" header="SGST Value" [style]="{'width':'100px'}"></p-column>
+              <p-column field="igstValue" header="IGST Value" [style]="{'width':'100px'}"></p-column>
+              <p-column field="cessValue" header="CESS Value" [style]="{'width':'100px'}"></p-column>
+              <p-column field="cgstRate" header="CGST Rate" [style]="{'width':'100px'}"></p-column>
+              <p-column field="sgstRate" header="SGST Rate" [style]="{'width':'100px'}"></p-column>
+              <p-column field="igstRate" header="IGST Rate" [style]="{'width':'100px'}"></p-column>
+
+              <p-column field="cessRate" header="CESS Rate" [style]="{'width':'100px'}"></p-column>
+              <p-column field="fromTrdName" header="From Trade Name" [style]="{'width':'250px'}"></p-column>
+              <p-column field="fromGstin" header="From GSTIN" [style]="{'width':'180px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+              <p-column field="fromAddr1" header="From Address 1" [style]="{'width':'250px'}"></p-column>
+              <p-column field="fromAddr2" header="From Address 2" [style]="{'width':'250px'}"></p-column>
+              <p-column field="fromPlace" header="From Place" [style]="{'width':'150px'}"></p-column>
+              <p-column field="fromPincode" header="From Pincode" [style]="{'width':'100px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+              <p-column field="fromStateCode" header="From State name" [style]="{'width':'150px'}"></p-column>
+              <p-column field="actualFromStateCode" header="actToStateCode" [style]="{'width':'150px'}"></p-column>
+              <p-column field="transMode" header="Transport Mode" [style]="{'width':'100px'}"></p-column>
+              <p-column field="transporterId" header="Transporter ID" [style]="{'width':'150px'}"></p-column>
+              <p-column field="transporterName" header="Transporter Name" [style]="{'width':'250px'}"></p-column>
+              <p-column field="transDocNo" header="Transporter Doc No" [style]="{'width':'100px'}"></p-column>
+              <p-column field="transDocDate" header="Transporter Doc Date" [style]="{'width':'100px'}"></p-column>
+              <p-column field="transDistance" header="Distance" [style]="{'width':'100px'}"></p-column>
+              <p-column field="vehicleNo" header="Vehicle Number" [style]="{'width':'150px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+            </p-dataTable>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid card" style="margin-top: 50px">
+    <div class="card-header">
+      <h4 class="card-title">Invoices ready for E-Way bill generation</h4>
+      <p class="category">Please select invoices and generate JSON to be uploaded on EWB portal.</p>
+      <h4 class="card-title text-right">
+        <span rel="tooltip" title="Selected invoices will be converted to EWB JSON format">
+          <a class="btn btn-wd btn-success btn-fill generatejson" [class.disabled]="selectedItem2[0]===undefined" (click)="generateJSON()"
+            download="json2.json">Generate JSON</a>
+          <a class="btn btn-clear json-downloading hidden" title="Download JSON" [href]="downloadJsonHref" [download]="jsonFileName+'.json'"></a>
+        </span>
+      </h4>
+    </div>
+    <div class="card-content">
+      <div class="ewaybill-table clearfix">
+        <p-dataTable [value]="jsonData2" scrollable="true" scrollHeight="200px" [(selection)]="selectedItem2" dataKey="row_id" frozenWidth="150px"
+          unfrozenWidth="calc(100% - 150px)" [paginator]="true" [rows]="10" [style]="{'margin-top':'30px'}" [headerCheckboxToggleAllPages]="true">
+          <p-header>Generate JSON</p-header>
+          <p-column [style]="{'width':'20px'}" selectionMode="multiple" frozen="true"></p-column>
+          <p-column field="docNo" header="Document Number" [style]="{'width':'50px'}" frozen="true" [filter]="true" filterPlaceholder="Search"></p-column>
+          <p-column field="supplyType" header="Supply Type" [style]="{'width':'100px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+          <p-column field="subSupplyType" header="Sub Supply Type" [style]="{'width':'100px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+          <p-column field="docType" header="Document type" [style]="{'width':'140px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+          <p-column field="docDate" header="Document Date" [style]="{'width':'100px'}"></p-column>
+          <p-column field="toTrdname" header="To Trader Name" [style]="{'width':'250px'}"></p-column>
+          <p-column field="toGstin" header="To GSTIN" [style]="{'width':'180px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+          <p-column field="toAddr1" header="To Address 1" [style]="{'width':'250px'}"></p-column>
+          <p-column field="toAddr2" header="To Address 2" [style]="{'width':'250px'}"></p-column>
+          <p-column field="toPlace" header="To Place" [style]="{'width':'120px'}"></p-column>
+          <p-column field="toPincode" header="To pincode" [style]="{'width':'100px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+          <p-column field="toStateCode" header="To State Name" [style]="{'width':'150px'}"></p-column>
+          <p-column field="productName" header="Product name" [style]="{'width':'250px'}"></p-column>
+          <p-column field="productDesc" header="Product Description" [style]="{'width':'250px'}"></p-column>
+          <p-column field="hsnCode" header="HSN Code" [style]="{'width':'100px'}"></p-column>
+          <p-column field="quantity" header="Quantity" [style]="{'width':'100px'}"></p-column>
+          <p-column field="qtyUnit" header="Unit" [style]="{'width':'150px'}"></p-column>
+          <p-column field="taxableAmount" header="Taxable Amount" [style]="{'width':'100px'}"></p-column>
+          <p-column field="cgstValue" header="CGST Value" [style]="{'width':'100px'}"></p-column>
+          <p-column field="sgstValue" header="SGST Value" [style]="{'width':'100px'}"></p-column>
+          <p-column field="igstValue" header="IGST Value" [style]="{'width':'100px'}"></p-column>
+          <p-column field="cessValue" header="CESS Value" [style]="{'width':'100px'}"></p-column>
+          <p-column field="cgstRate" header="CGST Rate" [style]="{'width':'100px'}"></p-column>
+          <p-column field="sgstRate" header="SGST Rate" [style]="{'width':'100px'}"></p-column>
+          <p-column field="igstRate" header="IGST Rate" [style]="{'width':'100px'}"></p-column>
+
+          <p-column field="cessRate" header="CESS Rate" [style]="{'width':'100px'}"></p-column>
+          <p-column field="fromTrdName" header="From Trade Name" [style]="{'width':'250px'}"></p-column>
+          <p-column field="fromGstin" header="From GSTIN" [style]="{'width':'180px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+          <p-column field="fromAddr1" header="From Address 1" [style]="{'width':'250px'}"></p-column>
+          <p-column field="fromAddr2" header="From Address 2" [style]="{'width':'250px'}"></p-column>
+          <p-column field="fromPlace" header="From Place" [style]="{'width':'150px'}"></p-column>
+          <p-column field="fromPincode" header="From Pincode" [style]="{'width':'100px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+          <p-column field="fromStateCode" header="From State name" [style]="{'width':'150px'}"></p-column>
+          <p-column field="transMode" header="Transport Mode" [style]="{'width':'100px'}"></p-column>
+          <p-column field="transporterId" header="Transporter ID" [style]="{'width':'150px'}"></p-column>
+          <p-column field="transporterName" header="Transporter Name" [style]="{'width':'250px'}"></p-column>
+          <p-column field="transDocNo" header="Transporter Doc No" [style]="{'width':'100px'}"></p-column>
+          <p-column field="transDocDate" header="Transporter Doc Date" [style]="{'width':'100px'}"></p-column>
+          <p-column field="transDistance" header="Distance" [style]="{'width':'100px'}"></p-column>
+          <p-column field="vehicleNo" header="Vehicle Number" [style]="{'width':'150px'}" [filter]="true" filterPlaceholder="Search"></p-column>
+        </p-dataTable>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="transporter" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h4 class="modal-title">Update Transporter Detail</h4>
+      </div>
+      <form #transporter="ngForm" class="validateForm" (ngSubmit)="bulkUpdate(transporter)" [ngClass]="{submitted:transporter.submitted}">
+        <div class="modal-body">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label class="required-star">Mode of Transport</label>
+              <select name="transMode" #mode="ngModel" required class="form-control" [(ngModel)]="trans.transMode">
+                <option value="1">Road</option>
+                <option value="2">Rail</option>
+                <option value="3">Air</option>
+                <option value="4">Ship</option>
+              </select>
+              <div class="form-error-msg" [hidden]="mode.pristine && mode.untouched">
+                <p [hidden]="!transporter.hasError('required', 'transMode')"> Cannot be empty </p>
+                <p [hidden]="!transporter.hasError('pattern', 'transMode')"> Invalid Input </p>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label>Transporter ID</label>
+              <input rel="tooltip" title="Enter transporter GSTIN or Transporter Enrollment ID" type="text" class="form-control" #transid="ngModel"
+                placeholder="Transporter ID" name="transporterId" [(ngModel)]="trans.transporterId" autocomplete="off" [attr.maxlength]="20"
+                [attr.permitAlphabets]="true" [attr.permitSpace]="false" [attr.permitUnderscore]="true" [attr.permitDash]="true"
+                [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+              <div class="form-error-msg" [hidden]="transid.pristine && transid.untouched">
+                <p [hidden]="!transporter.hasError('required', 'transporterId')"> Cannot be empty </p>
+                <p [hidden]="!transporter.hasError('pattern', 'transporterId')"> Invalid Input </p>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label>Transporter Name</label>
+              <input type="text" #tranName="ngModel" class="form-control" placeholder="Transporter Name" name="transporterName" [(ngModel)]="trans.transporterName"
+                autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+              <div class="form-error-msg" [hidden]="tranName.pristine && tranName.untouched">
+                <p [hidden]="!transporter.hasError('required', 'transporterName')"> Cannot be empty </p>
+                <p [hidden]="!transporter.hasError('pattern', 'transporterName')"> Invalid Input </p>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label>Transport Document No.</label>
+              <input type="text" class="form-control" #docno="ngModel" placeholder="Transport Document Number" name="transDocNo " [(ngModel)]="trans.transDocNo"
+                autocomplete="off" [attr.maxlength]="20" [attr.permitAlphabets]="true" [attr.permitSpace]="false" [attr.permitUnderscore]="true"
+                [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+              <div class="form-error-msg" [hidden]="docno.pristine && docno.untouched">
+                <p [hidden]="!transporter.hasError('required', 'transDocNo')"> Cannot be empty </p>
+                <p [hidden]="!transporter.hasError('pattern', 'transDocNo')"> Invalid Input </p>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label>Transport Document Date</label>
+              <p-calendar #docDate="ngModel" name="transDocDate" placeholder="Transport Document Date" dateFormat="dd/mm/yy" [monthNavigator]="true"
+                [yearNavigator]="true" yearRange="2016:2060" [(ngModel)]="trans.transDocDate"></p-calendar>
+              <div class="form-error-msg" [hidden]="docDate.pristine && docDate.untouched">
+                <p [hidden]="!transporter.hasError('required', 'transDocDate')"> Cannot be empty </p>
+                <p [hidden]="!transporter.hasError('pattern', 'transDocDate')"> Invalid Input </p>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="required-star">Appropriate Distance (Km)</label>
+              <input required type="text" #distance="ngModel" class="form-control" placeholder="Distance" name="transDistance" [(ngModel)]="trans.transDistance"
+                autocomplete="off" [attr.min]="0" [attr.max]="999999999999" [attr.precision]="2" [attr.defaultValue]="0.00">
+              <div class="form-error-msg" [hidden]="distance.pristine && distance.untouched">
+                <p [hidden]="!transporter.hasError('required', 'transDistance')"> Cannot be empty </p>
+                <p [hidden]="!transporter.hasError('pattern', 'transDistance')"> Invalid Input </p>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label>Vehicle Number</label>
+              <input type="text" class="form-control" #vehicleNumber="ngModel" placeholder="Vehicle Number" name="vehicleNo" [(ngModel)]="trans.vehicleNo"
+                autocomplete="off" [attr.maxlength]="20" [attr.permitAlphabets]="true" [attr.permitSpace]="false" [attr.permitUnderscore]="true"
+                [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+              <div class="form-error-msg" [hidden]="vehicleNumber.pristine && vehicleNumber.untouched">
+                <p [hidden]="!transporter.hasError('required', 'vehicleNo')"> Cannot be empty </p>
+                <p [hidden]="!transporter.hasError('pattern', 'vehicleNo')"> Invalid Input </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success btn-fill">Save</button>
+          <button type="button" class="btn btn-fill btn-warning" (click)="close(transporter)">Close</button>
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+</div>

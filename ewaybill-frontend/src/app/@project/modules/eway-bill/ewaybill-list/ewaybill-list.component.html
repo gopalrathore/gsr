@@ -1,0 +1,105 @@
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="card">
+                  <div class="card-content">
+                      <div class="user-info">
+                        <h4 class="card-title">{{currentCompany.company_name | titlecase}}</h4>
+                        <div class="category">{{userData.display_name | titlecase}} (<span class="govLogout" (click)="billGenerationService.logout()">Change</span>)</div>
+                        <div class="category">{{userData.userGstin}}</div>
+
+                        <button (click)="gopalCancel()">cancel</button>
+
+                        <!-- <div class="category" (click)="billGenerationService.logout()">Change GSTIN</div> -->
+                      </div>
+                      <div class="nav-tabs-navigation">
+                            <h4 class="card-title pull-right new-bill"><a [routerLink]="['/ewaybill','generate-new-e-way-bill']" class="btn btn-info btn-fill btn-wd">Generate New E-way bill</a></h4>
+                            <div class="nav-tabs-wrapper">
+                                <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                                    <li class="active"><a href="#passed" data-toggle="tab">E-Way Bills</a></li>
+                                    <li><a href="#failed" data-toggle="tab">Cancelled E-Way Bills</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="my-tab-content" class="tab-content">
+                            <div class="tab-pane active" id="passed">
+                      <div class="fresh-table e-way-bill-table">
+                            <table id="active-bill-table" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
+                                <thead>
+                                    <tr>
+                                      <th>{{ activeBillTableHeader.headerRow[0] }}</th>
+                                      <th>{{ activeBillTableHeader.headerRow[1] }}</th>
+                                      <th>{{ activeBillTableHeader.headerRow[2] }}</th>
+                                      <th>{{ activeBillTableHeader.headerRow[3] }}</th>
+                                      <th>{{ activeBillTableHeader.headerRow[4] }}</th>
+                                      <th>{{ activeBillTableHeader.headerRow[5] }}</th>
+                                      <th class="disabled-sorting">{{ activeBillTableHeader.headerRow[6] }}</th>
+                                      <th class="disabled-sorting">{{ activeBillTableHeader.headerRow[7] }}</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                      <th>{{ activeBillTableHeader.footerRow[0] }}</th>
+                                      <th>{{ activeBillTableHeader.footerRow[1] }}</th>
+                                      <th>{{ activeBillTableHeader.footerRow[2] }}</th>
+                                      <th>{{ activeBillTableHeader.footerRow[3] }}</th>
+                                      <th>{{ activeBillTableHeader.footerRow[4] }}</th>
+                                      <th>{{ activeBillTableHeader.footerRow[5] }}</th>
+                                      <th>{{ activeBillTableHeader.footerRow[6] }}</th>
+                                      <th>{{ activeBillTableHeader.footerRow[7] }}</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                                
+                            </div>
+                            <div class="tab-pane" id="failed">
+
+                                    <div class="fresh-table e-way-bill-table">
+                                            <table id="cancel-bill-table" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                      <th>{{ cancelBillTableHeader.headerRow[0] }}</th>
+                                                      <th>{{ cancelBillTableHeader.headerRow[1] }}</th>
+                                                      <th>{{ cancelBillTableHeader.headerRow[2] }}</th>
+                                                      <th>{{ cancelBillTableHeader.headerRow[3] }}</th>
+                                                      <th>{{ cancelBillTableHeader.headerRow[4] }}</th>
+                                                      <th>{{ cancelBillTableHeader.headerRow[5] }}</th>
+                                                      <th>{{ cancelBillTableHeader.headerRow[6] }}</th>
+                                                      <th>{{ cancelBillTableHeader.headerRow[7] }}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tfoot>
+                                                    <tr>
+                                                      <th>{{ cancelBillTableHeader.footerRow[0] }}</th>
+                                                      <th>{{ cancelBillTableHeader.footerRow[1] }}</th>
+                                                      <th>{{ cancelBillTableHeader.footerRow[2] }}</th>
+                                                      <th>{{ cancelBillTableHeader.footerRow[3] }}</th>
+                                                      <th>{{ cancelBillTableHeader.footerRow[4] }}</th>
+                                                      <th>{{ cancelBillTableHeader.headerRow[5] }}</th>
+                                                      <th>{{ cancelBillTableHeader.headerRow[6] }}</th>
+                                                      <th>{{ cancelBillTableHeader.headerRow[7] }}</th>
+                                                    </tr>
+                                                </tfoot>
+                                                <tbody>
+                
+                                                </tbody>
+                                            </table>
+                                        </div>
+                               
+                            </div>
+                        </div>
+
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<app-update-part-b [updateData]="updateData" (partBUpdated)="partBUpdated($event)"></app-update-part-b>
+<app-cancel-bill [EWBnumber]="EWBnumber" (billCanceled)="billCanceled($event)"></app-cancel-bill>

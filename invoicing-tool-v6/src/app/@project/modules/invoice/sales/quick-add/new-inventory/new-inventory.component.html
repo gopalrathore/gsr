@@ -1,0 +1,213 @@
+<div id="newInventory" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h4 class="modal-title">Add New Item</h4>
+      </div>
+      <div class="modal-body">
+        <form #productForm="ngForm" [class]="'validateForm-'+constructor.name" (ngSubmit)="productSubmit(productForm, productForm.valid)"
+          [ngClass]="{submitted:productForm.submitted}">
+          <button type="button" class="close" (click)="close(productForm)" data-dismiss="modal">&times;</button>
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label class="required-star">Item Type:</label>
+              <select class="form-control" name="item_type" [(ngModel)]="product.item_type" (change)="selectRate()" required>
+                <option value="G">Goods</option>
+                <option value="S">Services</option>
+              </select>
+            </div>
+            <div class="col-md-6 form-group">
+              <label class="required-star">Item Name:</label>
+              <input autocomplete="off" placeholder="Name of Item" #itemNameRef="ngModel" type="text" name="item_name" [(ngModel)]="product.item_name"
+                class="form-control" [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true" (keyup)="product.item_nick_name=product.item_name"
+                required>
+              <div class="form-error-msg" [hidden]="itemNameRef.pristine && itemNameRef.untouched">
+                <p [hidden]="!productForm.hasError('required' , 'item_name')"> Cannot be empty </p>
+                <p [hidden]="!productForm.hasError('pattern' , 'item_name')"> Invalid Input </p>
+              </div>
+            </div>
+            <div class="col-md-6 form-group">
+              <label class="required-star">Item Search Name:</label>
+              <input autocomplete="off" required #searchItemref="ngModel" placeholder="Item Search Name" type="text" name="item_nick_name"
+                [(ngModel)]="product.item_nick_name" class="form-control" [attr.maxlength]="50" [attr.permitAlphabets]="true"
+                [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+                [attr.defaultValue]="" [attr.permitSpecial]="true">
+              <div class="form-error-msg" [hidden]="searchItemref.pristine && searchItemref.untouched">
+                <p [hidden]="!productForm.hasError('required' , 'item_nick_name')"> Cannot be empty </p>
+                <p [hidden]="!productForm.hasError('pattern' , 'item_nick_name')"> Invalid Input </p>
+              </div>
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label class="required-star">Item Taxation Category:</label>
+              <select class="form-control" name="item_taxation_category" [(ngModel)]="product.item_taxation_category" required>
+                <option value="T">Taxable</option>
+                <option value="E">Exempt</option>
+              </select>
+            </div>
+            <div class="clearfix"></div>
+            <div *ngIf="product.item_type=='G'">
+
+              <div class="col-md-3 form-group" *ngIf="product.item_type=='G'">
+                <label class="required-star">Primary:</label>
+                <select #primaryActual="ngModel" class="form-control" name="item_unit_primary_actual" [(ngModel)]="product.item_unit_primary_actual"
+                  (change)="product.item_unit_primary_display=conversionTable[product.item_unit_primary_actual]['aka'];product.item_unit_secondary_actual=product.item_unit_primary_actual;product.item_unit_secondary_display=conversionTable[product.item_unit_primary_actual]['aka'];uqmConversion()"
+                  required>
+                  <option value="">Select Primary Unit</option>
+                  <option value="BAG-BAGS">BAG-BAGS</option>
+                  <option value="BAL-BALE">BAL-BALE</option>
+                  <option value="BDL-BUNDLES">BDL-BUNDLES</option>
+                  <option value="BKL-BUCKLES">BKL-BUCKLES</option>
+                  <option value="BOU-BILLION OF UNITS">BOU-BILLION OF UNITS</option>
+                  <option value="BOX-BOX">BOX-BOX</option>
+                  <option value="BTL-BOTTLES">BTL-BOTTLES</option>
+                  <option value="BUN-BUNCHES">BUN-BUNCHES</option>
+                  <option value="CAN-CANS">CAN-CANS</option>
+                  <option value="CBM-CUBIC METERS">CBM-CUBIC METERS</option>
+                  <option value="CCM-CUBIC CENTIMETERS">CCM-CUBIC CENTIMETERS</option>
+                  <option value="CMS-CENTIMETERS">CMS-CENTIMETERS</option>
+                  <option value="CTN-CARTONS">CTN-CARTONS</option>
+                  <option value="DOZ-DOZENS">DOZ-DOZENS</option>
+                  <option value="DRM-DRUMS">DRM-DRUMS</option>
+                  <option value="GGK-GREAT GROSS">GGK-GREAT GROSS</option>
+                  <option value="GMS-GRAMMES">GMS-GRAMMES</option>
+                  <option value="GRS-GROSS">GRS-GROSS</option>
+                  <option value="GYD-GROSS YARDS">GYD-GROSS YARDS</option>
+                  <option value="KGS-KILOGRAMS">KGS-KILOGRAMS</option>
+                  <option value="KLR-KILOLITRE">KLR-KILOLITRE</option>
+                  <option value="KME-KILOMETRE">KME-KILOMETRE</option>
+                  <option value="MLT-MILILITRE">MLT-MILILITRE</option>
+                  <option value="MTR-METERS">MTR-METERS</option>
+                  <option value="MTS-METRIC TON">MTS-METRIC TON</option>
+                  <option value="NOS-NUMBERS">NOS-NUMBERS</option>
+                  <option value="PAC-PACKS">PAC-PACKS</option>
+                  <option value="PCS-PIECES">PCS-PIECES</option>
+                  <option value="PRS-PAIRS">PRS-PAIRS</option>
+                  <option value="QTL-QUINTAL">QTL-QUINTAL</option>
+                  <option value="ROL-ROLLS">ROL-ROLLS</option>
+                  <option value="SET-SETS">SET-SETS</option>
+                  <option value="SQF-SQUARE FEET">SQF-SQUARE FEET</option>
+                  <option value="SQM-SQUARE METERS">SQM-SQUARE METERS</option>
+                  <option value="SQY-SQUARE YARDS">SQY-SQUARE YARDS</option>
+                  <option value="TBS-TABLETS">TBS-TABLETS</option>
+                  <option value="TGM-TEN GROSS">TGM-TEN GROSS</option>
+                  <option value="THD-THOUSANDS">THD-THOUSANDS</option>
+                  <option value="TON-TONNES">TON-TONNES</option>
+                  <option value="TUB-TUBES">TUB-TUBES</option>
+                  <option value="UGS-US GALLONS">UGS-US GALLONS</option>
+                  <option value="UNT-UNITS">UNT-UNITS</option>
+                  <option value="YDS-YARDS">YDS-YARDS</option>
+                  <option value="OTH-OTHERS">OTH-OTHERS</option>
+                </select>
+                <div class="form-error-msg" [hidden]="primaryActual.pristine && primaryActual.untouched">
+                  <p [hidden]="!productForm.hasError('required' , 'item_unit_primary_actual')"> Cannot be empty </p>
+                </div>
+              </div>
+              <div class="col-md-3 form-group" *ngIf="product.item_type=='G'">
+                <label class="required-star">Primary (display):</label>
+                <input autocomplete="off" placeholder="Primary (display)" #primaryDisplay="ngModel" type="text" class="form-control" name="item_unit_primary_display"
+                  [(ngModel)]="product.item_unit_primary_display" required [attr.maxlength]="15" [attr.permitAlphabets]="true"
+                  [attr.permitSpace]="true" [attr.permitUnderscore]="false" [attr.permitDash]="true" [attr.permitNumbers]="false"
+                  [attr.defaultValue]="" [attr.permitSpecial]="false">
+                <div class="form-error-msg" [hidden]="primaryDisplay.pristine && primaryDisplay.untouched">
+                  <p [hidden]="!productForm.hasError('required' , 'item_unit_primary_display')"> Cannot be empty </p>
+                </div>
+              </div>
+              <div class="col-md-3 form-group" *ngIf="product.item_type=='G'">
+                <label class="required-star">Secondary:</label>
+                <select #secondaryActual="ngModel" class="form-control" name="item_unit_secondary_actual" [(ngModel)]="product.item_unit_secondary_actual"
+                  (change)="product.item_unit_secondary_display=conversionTable[product.item_unit_secondary_actual]['aka'];uqmConversion()"
+                  required>
+                  <option value="">Select Secondary Unit</option>
+                  <option value="BAG-BAGS">BAG-BAGS</option>
+                  <option value="BAL-BALE">BAL-BALE</option>
+                  <option value="BDL-BUNDLES">BDL-BUNDLES</option>
+                  <option value="BKL-BUCKLES">BKL-BUCKLES</option>
+                  <option value="BOU-BILLION OF UNITS">BOU-BILLION OF UNITS</option>
+                  <option value="BOX-BOX">BOX-BOX</option>
+                  <option value="BTL-BOTTLES">BTL-BOTTLES</option>
+                  <option value="BUN-BUNCHES">BUN-BUNCHES</option>
+                  <option value="CAN-CANS">CAN-CANS</option>
+                  <option value="CBM-CUBIC METERS">CBM-CUBIC METERS</option>
+                  <option value="CCM-CUBIC CENTIMETERS">CCM-CUBIC CENTIMETERS</option>
+                  <option value="CMS-CENTIMETERS">CMS-CENTIMETERS</option>
+                  <option value="CTN-CARTONS">CTN-CARTONS</option>
+                  <option value="DOZ-DOZENS">DOZ-DOZENS</option>
+                  <option value="DRM-DRUMS">DRM-DRUMS</option>
+                  <option value="GGK-GREAT GROSS">GGK-GREAT GROSS</option>
+                  <option value="GMS-GRAMMES">GMS-GRAMMES</option>
+                  <option value="GRS-GROSS">GRS-GROSS</option>
+                  <option value="GYD-GROSS YARDS">GYD-GROSS YARDS</option>
+                  <option value="KGS-KILOGRAMS">KGS-KILOGRAMS</option>
+                  <option value="KLR-KILOLITRE">KLR-KILOLITRE</option>
+                  <option value="KME-KILOMETRE">KME-KILOMETRE</option>
+                  <option value="MLT-MILILITRE">MLT-MILILITRE</option>
+                  <option value="MTR-METERS">MTR-METERS</option>
+                  <option value="MTS-METRIC TON">MTS-METRIC TON</option>
+                  <option value="NOS-NUMBERS">NOS-NUMBERS</option>
+                  <option value="PAC-PACKS">PAC-PACKS</option>
+                  <option value="PCS-PIECES">PCS-PIECES</option>
+                  <option value="PRS-PAIRS">PRS-PAIRS</option>
+                  <option value="QTL-QUINTAL">QTL-QUINTAL</option>
+                  <option value="ROL-ROLLS">ROL-ROLLS</option>
+                  <option value="SET-SETS">SET-SETS</option>
+                  <option value="SQF-SQUARE FEET">SQF-SQUARE FEET</option>
+                  <option value="SQM-SQUARE METERS">SQM-SQUARE METERS</option>
+                  <option value="SQY-SQUARE YARDS">SQY-SQUARE YARDS</option>
+                  <option value="TBS-TABLETS">TBS-TABLETS</option>
+                  <option value="TGM-TEN GROSS">TGM-TEN GROSS</option>
+                  <option value="THD-THOUSANDS">THD-THOUSANDS</option>
+                  <option value="TON-TONNES">TON-TONNES</option>
+                  <option value="TUB-TUBES">TUB-TUBES</option>
+                  <option value="UGS-US GALLONS">UGS-US GALLONS</option>
+                  <option value="UNT-UNITS">UNT-UNITS</option>
+                  <option value="YDS-YARDS">YDS-YARDS</option>
+                  <option value="OTH-OTHERS">OTH-OTHERS</option>
+                </select>
+                <div class="form-error-msg" [hidden]="secondaryActual.pristine && secondaryActual.untouched">
+                  <p [hidden]="!productForm.hasError('required' , 'item_unit_secondary_actual')"> Cannot be empty </p>
+                </div>
+              </div>
+              <div class="col-md-3 form-group" *ngIf="product.item_type=='G'">
+                <label class="required-star">Secondary (display):</label>
+                <input autocomplete="off" placeholder="Secondary (display)" #secondaryDisplay="ngModel" type="text" class="form-control"
+                  name="item_unit_secondary_display" [(ngModel)]="product.item_unit_secondary_display" required [attr.maxlength]="15"
+                  [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="false" [attr.permitDash]="true"
+                  [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false">
+                <div class="form-error-msg" [hidden]="secondaryDisplay.pristine && secondaryDisplay.untouched">
+                  <p [hidden]="!productForm.hasError('required' , 'item_unit_secondary_display')"> Cannot be empty </p>
+                </div>
+              </div>
+              <div class="col-md-12" [class.hidden]="product.item_unit_secondary_actual==product.item_unit_primary_actual" style="text-align:center">
+                <div class="col-md-4 form-group">
+                  <p style="text-align:right">1 unit of {{product.item_unit_primary_display}} = </p>
+                </div>
+                <div class="col-md-4 form-group" *ngIf="product.item_type=='G'">
+                  <input autocomplete="off" [disabled]="product.item_unit_secondary_actual==product.item_unit_primary_actual" type="text" class="form-control"
+                    name="primary_secondary_conversion_factor" [(ngModel)]="product.primary_secondary_conversion_factor" required
+                    [attr.min]="0.000001" [attr.max]="9999999999" [attr.precision]="6" [attr.defaultValue]="1.000000">
+                </div>
+                <div class="col-md-4 form-group" style="text-align:left">
+                  <p>unit of {{product.item_unit_secondary_display}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button [disabled]="!putCallable" type="submit" class="btn btn-success btn-fill btn-wd btn-loader">{{ !putCallable ? 'Saving' : 'Save' }}
+              <i class="fa fa-circle-o-notch fa-spin" *ngIf="!putCallable"></i>
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>

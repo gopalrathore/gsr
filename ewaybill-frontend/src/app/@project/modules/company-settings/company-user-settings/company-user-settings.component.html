@@ -1,0 +1,88 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card" [hidden]="sameCompany.company_name!=null">
+          <div class="card-content">
+            <h4 class="card-title">Company Detail</h4>
+            <div class="row">
+              <div class="col-md-7 center-block" style="float: none;">
+                <form #profile="ngForm" class="form-inline company-profile validateForm" (ngSubmit)="profileSubmit(profile.valid,profile.value)"
+                  [ngClass]="{submitted:profile.submitted}">
+                  <div class="form-group">
+                    <label class="required-star">Company Name</label>
+                    <input type="text" class="form-control" #companyName="ngModel" required placeholder="Company Name" name="company_name" [(ngModel)]="company.company_name"
+                      autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                      [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                    <div class="form-error-msg" [hidden]="companyName.pristine && companyName.untouched">
+                      <p [hidden]="!profile.hasError('required', 'company_name')"> Cannot be empty </p>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>PAN Number</label>
+                    <input type="text" class="form-control uppercase" #panNumber="ngModel" placeholder="Company PAN" name="pan" [(ngModel)]="company.pan"
+                      pattern="([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}" autocomplete="off" [attr.maxlength]="10" [attr.permitAlphabets]="true"
+                      [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true"
+                      [attr.defaultValue]="" [attr.permitSpecial]="false">
+                    <div class="form-error-msg" [hidden]="panNumber.pristine && panNumber.untouched">
+                      <p [hidden]="!profile.hasError('required', 'pan')"> Cannot be empty </p>
+                      <p [hidden]="!profile.hasError('pattern', 'pan')"> Invalid Input </p>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-success btn-wd btn-fill">Update</button>
+                </form>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="card" [hidden]="sameCompany.company_name===null">
+          <div class="card-content">
+            <h4 class="card-title">{{company.company_name | titlecase}}
+              <span class="govLogout" (click)="editModal()">(Edit)</span>
+            </h4>
+            <!-- <div class="category">Company Name: {{company.company_name | titlecase}} (<span class="govLogout" (click)="editModal()">Edit</span>)</div> -->
+            <h4 class="card-title text-right">
+              <button type="button" class="btn btn-info btn-fill btn-wd add-gstin" data-toggle="modal" data-target="#newGSTIN">Add GSTIN</button>
+            </h4>
+            <div class="fresh-table e-way-bill-table">
+              <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
+                <thead>
+                  <tr>
+                    <th>{{ dataTable.headerRow[0] }}</th>
+                    <th>{{ dataTable.headerRow[1] }}</th>
+                    <th>{{ dataTable.footerRow[2] }}</th>
+                    <th>{{ dataTable.footerRow[3] }}</th>
+                    <th>{{ dataTable.footerRow[4] }}</th>
+                    <th class="disabled-sorting">{{ dataTable.headerRow[5] }}</th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th>{{ dataTable.footerRow[0] }}</th>
+                    <th>{{ dataTable.footerRow[1] }}</th>
+                    <th>{{ dataTable.footerRow[2] }}</th>
+                    <th>{{ dataTable.footerRow[3] }}</th>
+                    <th>{{ dataTable.footerRow[4] }}</th>
+                    <th>{{ dataTable.footerRow[5] }}</th>
+                  </tr>
+                </tfoot>
+                <tbody>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- end content-->
+        </div>
+        <!--  end card  -->
+      </div>
+      <!-- end col-md-12 -->
+    </div>
+    <!-- end row -->
+  </div>
+</div>
+
+<app-add-gstin (newGSTINAdded)="newGSTINAdded()"></app-add-gstin>
+
+<app-edit-company [editCompany]="editCompany" (companyEdited)="companyEdited()"></app-edit-company>

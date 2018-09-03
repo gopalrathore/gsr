@@ -1,0 +1,66 @@
+<div id="invoice-number-setting" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Invoice Number Setting</h4>
+      </div>
+      <div class="modal-body">
+        <form #invoiceNumber="ngForm" (ngSubmit)="changeInvoiceNumberFormat(invoiceNumber.valid)" [ngClass]="{submitted:invoiceNumber.submitted}"
+          [class]="'validateForm-'+constructor.name">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="required-star">Starting Number:</label>
+                <input class="form-control" type="text" [attr.min]="1" [attr.max]="99999" [attr.precision]="0" [attr.defaultValue]="1" #startNumRef="ngModel"
+                  name="starting_number" [(ngModel)]="numberSetting.starting_number" required>
+                <div class="form-error-msg" [hidden]="startNumRef.pristine && startNumRef.untouched">
+                  <p [hidden]="!invoiceNumber.hasError('required' , 'starting_number')"> Cannot be empty </p>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-md-6">
+              <div class="form-group">
+                <label class="required-star">Starting Date:</label>
+                <p-calendar name="starting_date" required dateFormat="dd/mm/yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" [(ngModel)]="numberSetting.starting_date" #startingDate="ngModel"></p-calendar>
+                <div class="form-error-msg" [hidden]="startingDate.pristine && startingDate.untouched">
+									<p [hidden]="!invoiceNumber.hasError('required' , 'starting_date')"> Cannot be empty </p>
+								</div>
+              </div>
+            </div> -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="required-star">Prefix:</label>
+                <input class="form-control" #prefixRef="ngModel" type="text" name="prefix" [(ngModel)]="numberSetting.prefix" required [attr.maxlength]="10"
+                  [attr.permitAlphabets]="true" [attr.permitSpace]="false" [attr.permitUnderscore]="true" [attr.permitDash]="true"
+                  [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                <div class="form-error-msg" [hidden]="prefixRef.pristine && prefixRef.untouched">
+                  <p [hidden]="!invoiceNumber.hasError('required' , 'prefix')"> Cannot be empty </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Sufix:</label>
+                <input class="form-control" type="text" name="sufix" [(ngModel)]="numberSetting.suffix" [attr.maxlength]="10" [attr.permitAlphabets]="true"
+                  [attr.permitSpace]="false" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+                  [attr.defaultValue]="" [attr.permitSpecial]="true">
+
+              </div>
+            </div>
+            <div class="col-md-12">
+              <span *ngIf="numberSetting.suffix.length+numberSetting.prefix.length>11">Your invoice number should not be greater than 16 character(fix me)</span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button [disabled]="numberSetting.suffix.length+numberSetting.prefix.length>11 || !putCallable" type="submit" class="btn btn-success btn-fill btn-wd btn-loader">{{ !putCallable ? 'Saving' : 'Save' }}
+              <i class="fa fa-circle-o-notch fa-spin" *ngIf="!putCallable"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

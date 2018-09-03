@@ -1,0 +1,37 @@
+.ui-autocomplete, input.ui-inputtext {
+    width: 100% !important;
+}
+
+.ui-autocomplete .ui-autocomplete-input {
+    width: 200px;
+}
+
+.width {
+    width: 200px !important;
+}   
+
+.inline-fields {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+.flex-inline p {
+    margin-bottom: 0;
+}
+.seperator {
+    margin: 0 10px;
+}
+
+.table select {
+    width: 87px;
+    padding: 7px 4px;
+}
+
+label {
+    display: block;
+}
+
+p-checkbox {
+    display: block;
+    margin-top: 8px;
+}

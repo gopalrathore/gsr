@@ -1,0 +1,160 @@
+<div class="container-fluid main-panel dashboard-content" style="float:none;width:100%">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="row stat-item">
+        <!-- <div class="col-md-12 card">
+          <div class="card-content">
+            <h1>Yet to be decided...</h1>
+          </div>
+        </div> -->
+        <div class="col-lg-3 col-sm-6">
+          <div class="card">
+            <div class="card-content">
+              <div class="row">
+                <div class="col-xs-5">
+                  <div class="icon-big icon-warning text-center">
+                    <i class="ti-receipt"></i>
+                  </div>
+                </div>
+                <div class="col-xs-7">
+                  <div class="numbers">
+                    <p>Sales Invoices</p>
+                    {{counters.salesInvoice}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <hr />
+              <div class="stats">
+                <i class="ti-reload"></i> <a [routerLink]="['/invoice/sales']">Manage</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+          <div class="card">
+            <div class="card-content">
+              <div class="row">
+                <div class="col-xs-5">
+                  <div class="icon-big icon-success text-center">
+                    <i class="ti-receipt"></i>
+                  </div>
+                </div>
+                <div class="col-xs-7">
+                  <div class="numbers">
+                    <p>Purchase Invoice</p>
+                    {{counters.purchaseInvoice}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <hr />
+              <div class="stats">
+                <i class="ti-reload"></i> <a [routerLink]="['/invoice/purchase']">Manage</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+          <div class="card">
+            <div class="card-content">
+              <div class="row">
+                <div class="col-xs-5">
+                  <div class="icon-big icon-danger text-center">
+                    <i class="ti-user"></i>
+                  </div>
+                </div>
+                <div class="col-xs-7">
+                  <div class="numbers">
+                    <p>Clients</p>
+                    {{counters.clients}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <hr />
+              <div class="stats">
+                <i class="ti-reload"></i> <a [routerLink]="['/business-parties/clients']">Manage</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+          <div class="card">
+            <div class="card-content">
+              <div class="row">
+                <div class="col-xs-5">
+                  <div class="icon-big icon-info text-center">
+                    <i class="ti-user"></i>
+                  </div>
+                </div>
+                <div class="col-xs-7">
+                  <div class="numbers">
+                    <p>Vendors</p>
+                    {{counters.vendors}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <hr />
+              <div class="stats">
+                <i class="ti-reload"></i> <a [routerLink]="['/business-parties/vendors']">Manage</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-content">
+                    <div>
+                        <div style="display: block">
+                          <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+                        </div>
+                      </div>
+
+                </div>
+              </div>
+
+        </div>
+
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title">In Stock Status</h4>
+              <p class="category"></p>
+            </div>
+            <div class="card-content table-responsive table-full-width" >
+              <table class="table table-striped" style="padding:0px 5px;">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Item Name</th>
+                    <th>In Stock</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let inventory of inventoryStatus;let i = index">
+                    <td>{{i+1}}</td>
+                    <td>{{inventory.item_name}}</td>
+                    <td>
+                      <span *ngIf="inventory.in_stock_status<=0" class="intentory-status btn-danger"> {{inventory.in_stock_status}}</span>
+                      <span *ngIf="inventory.in_stock_status<inventory.item_stock_reorderpoint && inventory.in_stock_status>0" class="intentory-status btn-warning"> {{inventory.in_stock_status}}</span>
+                      <span *ngIf="inventory.in_stock_status>0" class="intentory-status btn-success"> {{inventory.in_stock_status}}</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

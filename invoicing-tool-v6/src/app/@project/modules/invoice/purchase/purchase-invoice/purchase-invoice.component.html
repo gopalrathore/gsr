@@ -1,0 +1,511 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="title">Purchase Invoice</h4>
+      </div>
+    </div>
+    <form #taxInvoice="ngForm" class="validateForm" (ngSubmit)="purchaseSubmit(taxInvoice.valid)" [ngClass]="{submitted:taxInvoice.submitted}">
+      <div class="card">
+        <div class="card-content">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="required-star">Name:</label>
+                <p-autoComplete name="vendor_name" (onSelect)="vendorSelected()" [(ngModel)]="purchaseData.vendor_name" [suggestions]="createInvoiceVendor.vendorNameAutocomplete.list"
+                  (completeMethod)="createInvoiceVendor.vendorNameAutocomplete.searchList($event)" [required]="true" [readonly]="createInvoiceVendor.vendorNameSelected"
+                  [required]="true" #purchaseInvoiceNameRef="ngModel"></p-autoComplete>
+                <button *ngIf="createInvoiceVendor.vendorNameSelected" class="enable-btn" (click)="createInvoiceVendor.clearvendorAutocomplete()">x</button>
+                <div class="form-error-msg" [hidden]="purchaseInvoiceNameRef.pristine && purchaseInvoiceNameRef.untouched">
+                  <p [hidden]="!taxInvoice.hasError('required' , 'vendor_name')"> Cannot be empty </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="createInvoiceVendor.vendorNameSelected">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>GSTIN:</label>
+                    <p>
+                      {{createInvoiceVendor.vendor_gstin==null || createInvoiceVendor.vendor_gstin==''?'Not Registered':createInvoiceVendor.vendor_gstin}}
+                    </p>
+                  </div>
+                  <div class="form-group">
+                    <label>Billing Address:</label>
+                    <p [innerHTML]="createInvoiceVendor.billing_address.vendor_address"></p>
+                    <p [innerHTML]="createInvoiceVendor.billing_address.vendor_address_2"></p>
+                    <p [innerHTML]="createInvoiceVendor.billing_address.vendor_address_3"></p>
+                    <p [innerHTML]="createInvoiceVendor.billing_address.vendor_state_name"></p>
+                    <p [innerHTML]="createInvoiceVendor.billing_address.vendor_country"></p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <div class="col-sm-12">
+                      <div class="checkbox">
+                        <input name="same_billing_address" type="checkbox" [(ngModel)]="purchaseData.same_as_billing">
+                        <label>Same as Billing Address</label>
+                      </div>
+                    </div>
+
+
+                    <div *ngIf="!purchaseData.same_as_billing">
+
+                      <div class="col-md-12 form-group">
+                        <label>Shipping Address:</label>
+                        <input type="text" placeholder="Flat / House No. / Floor / Building" name="vendor_shipping_address" [(ngModel)]="purchaseData.vendor_shipping_address"
+                          class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+                          [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                          [attr.permitSpecial]="true">
+                      </div>
+                      <div class="col-md-12 form-group">
+                        <input type="text" placeholder="Colony / Street / Locality" name="vendor_shipping_address_2" [(ngModel)]="purchaseData.vendor_shipping_address_2"
+                          class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+                          [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                          [attr.permitSpecial]="true">
+                      </div>
+
+                      <div class="col-md-6 form-group">
+                        <input type="text" placeholder="City" name="vendor_shipping_address_3" [(ngModel)]="purchaseData.vendor_shipping_address_3"
+                          class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+                          [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]=""
+                          [attr.permitSpecial]="false">
+                      </div>
+                      <div class="col-md-6 form-group">
+                        <input type="text" placeholder="PIN Code" name="vendor_shipping_address_4" [(ngModel)]="purchaseData.vendor_shipping_address_4"
+                          class="form-control" autocomplete="off" [attr.maxlength]="6" [attr.permitAlphabets]="false" [attr.permitSpace]="false"
+                          [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                          [attr.permitSpecial]="false">
+                      </div>
+                      <div class="col-md-6 form-group">
+                        <label>Country:</label>
+                        <select name="vendor_shipping_country" [(ngModel)]="purchaseData.vendor_shipping_country" class="form-control">
+                          <option *ngFor="let country of countries.data" [value]="country.country_name">{{country.country_name}}</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6 form-group" *ngIf="purchaseData.vendor_shipping_country=='India'">
+                        <label>State:</label>
+                        <select name="vendor_state_code" [(ngModel)]="purchaseData.vendor_shipping_state_code" class="form-control">
+                          <option value="">Please Select State</option>
+                          <option *ngFor="let state of state.data" [value]="state.state_code">{{state.state_name}}</option>
+
+                        </select>
+                      </div>
+                      <div class="col-md-6 form-group" *ngIf="purchaseData.vendor_shipping_country!='India'">
+                        <label>State:</label>
+                        <input type="text" name="vendor_shipping_state_name" [(ngModel)]="purchaseData.vendor_shipping_state_name" class="form-control"
+                          [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="false"
+                          [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false"
+                          autocomplete="off">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label class="required-star">Invoice Number:</label>
+                <input class="form-control" type="text" name="purchase_number" [(ngModel)]="purchaseData.purchase_number" #purchaseInvoiceNumberRef="ngModel"
+                  required [attr.maxlength]="15" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                  [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                <div class="form-error-msg" [hidden]="purchaseInvoiceNumberRef.pristine && purchaseInvoiceNumberRef.untouched">
+                  <p [hidden]="!taxInvoice.hasError('required' , 'purchase_number')"> Cannot be empty </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label class="required-star">Invoice Date:</label>
+                <p-calendar name="purchase_date" dateFormat="dd/mm/yy" #invoicedate="ngModel" [monthNavigator]="true" [yearNavigator]="true"
+                  yearRange="2000:2030" [(ngModel)]="purchaseData.purchase_date"></p-calendar>
+                <div class="form-error-msg" [hidden]="invoicedate.pristine && invoicedate.untouched">
+                  <p [hidden]="!taxInvoice.hasError('required' , 'purchase_date')"> Cannot be empty </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Purchase Order number:</label>
+                <input class="form-control" placeholder="Purchase Order No." type="text" name="purchase_order_number" [(ngModel)]="purchaseData.purchase_order_number"
+                  [attr.maxlength]="15" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                  [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Purchase Order Date:</label>
+                <p-calendar name="purchase_order_date" dateFormat="dd/mm/yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"
+                  [(ngModel)]="purchaseData.purchase_order_date"></p-calendar>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Reference number:</label>
+                <input class="form-control" placeholder="Reference No." type="text" name="reference_number" [(ngModel)]="purchaseData.reference_number"
+                  [attr.maxlength]="15" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                  [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Payment Due (In Days):</label>
+                <input class="form-control" type="text" name="payment_due_days" [(ngModel)]="purchaseData.payment_due_days" [attr.min]="0"
+                  [attr.max]="365" [attr.precision]="0" [attr.defaultValue]="0">
+                <div class="form-info-msg">
+                  <p>Payment Due Date: {{purchaseData.purchase_date | paymentDate:purchaseData.payment_due_days | date}}
+                    </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label class="required-star">ITC Eligibility:</label>
+                <select name="itc_eligibility" class="form-control" [(ngModel)]="purchaseData.itc_eligibility" required (change)="purchaseData.itc_amount='0'">
+                  <option value="1">Eligible</option>
+                  <option value="0">Ineligible</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4" *ngIf="purchaseData.itc_eligibility == '1'">
+              <div class="form-group">
+                <label class="required-star">ITC Amount:</label>
+                <input type="text" class="form-control" name="itc_amount" [(ngModel)]="purchaseData.itc_amount" [attr.min]="0" [attr.max]="999999999"
+                  [attr.precision]="2" [attr.defaultValue]="0" [required]="purchaseData.itc_eligibility == '1'">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>TDS (%):</label>
+                <input type="text" placeholder="In %" name="tds" class="form-control" [(ngModel)]="purchaseData.tds" [attr.min]="0" [attr.max]="100"
+                  [attr.precision]="3" [attr.defaultValue]="0">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Reverse Charge:</label>
+                <select name="reverse_charge" class="form-control" [(ngModel)]="purchaseData.reverse_charge">
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Add Item to Invoice</h4>
+        </div>
+        <div class="row col-md-12 common-discount">
+          <div class="col-md-2 pull-right form-group">
+            <label>Common Discount</label>
+            <input type="text" class="form-control" name="common_discount" [(ngModel)]="createInvoiceInventory.common_discount" (ngModelChange)="createInvoiceInventory.setCommonDiscount()"
+              (keyup)="calculator()" [attr.min]="0" [attr.max]="100" [attr.precision]="3" [attr.defaultValue]="0" (focusout)="createInvoiceCaluculator.calculator()">
+          </div>
+        </div>
+        <div class="card-content table-responsive table-full-width">
+          <table class="table invoice-item">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th class="required-star">Name</th>
+                <th>Quantity</th>
+                <th>Unit</th>
+                <th>Rate INR</th>
+                <th>Tax Rate</th>
+                <th>Discount(%)</th>
+                <th>Total</th>
+                <th>
+                  <a rel="tooltip" title="Add Item" class="btn btn-success btn-simple btn-xs" (click)="createInvoiceInventory.addMoreItem()">
+                    <i class="ti-plus"></i>
+                  </a>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of purchaseData.purchase_items ; let i = index" [class.item-edit]="purchaseData.purchase_items.length!=i+1">
+                <td>{{i+1}}</td>
+                <td>
+                  <p-autoComplete [name]="'purchase_items___'+i+'___item_name'" [attr.name]="'purchase_items___'+i+'___item_name'" [readonly]="item.item_id"
+                    placeholder="Item Name" (onSelect)="itemSelected(purchaseData.purchase_items[i].item_name,i)" [(ngModel)]="item.item_name"
+                    [suggestions]="createInvoiceInventory.itemNameAutocomplete.list" (completeMethod)="createInvoiceInventory.itemNameAutocomplete.searchList($event)"
+                    [required]="true" autocomplete="off" #taxInvoiceAddItemNameRef="ngModel"></p-autoComplete>
+                  <div class="form-info-msg">
+                    <p [hidden]="taxInvoice.hasError('required' , 'purchase_items___'+i+'___item_name')">HSN Code: {{item.item_hsn_code}}
+                      </p>
+                  </div>
+                  <div class="form-error-msg" [hidden]="taxInvoiceAddItemNameRef.pristine && taxInvoiceAddItemNameRef.untouched">
+                    <p [hidden]="!taxInvoice.hasError('required' , 'purchase_items___'+i+'___item_name')"> Cannot be empty
+                      </p>
+                  </div>
+                </td>
+
+                <td>
+                  <input type="text" class="form-control small" placeholder="Quantity" required (keyup)="calculator()" [attr.min]="0.000001"
+                    [attr.max]="999999999" [attr.precision]="6" [attr.defaultValue]="1" [name]="'purchase_items___'+i+'___item_qty'"
+                    [attr.name]="'purchase_items___'+i+'___item_qty'" [(ngModel)]="item.item_qty">
+                </td>
+                <td>
+                  <select class="form-control" [name]="'purchase_items___'+i+'___item_unit'" [attr.name]="'purchase_items___'+i+'___item_unit'"
+                    [(ngModel)]="item.item_unit" (change)="calculator()" [class.hidden]="item.item_type=='S'">
+                    <option [value]="item.item_unit_primary_actual">{{item.item_unit_primary_display}}</option>
+                    <option *ngIf="item.item_unit_primary_actual!=item.item_unit_secondary_actual" [value]="item.item_unit_secondary_actual">{{item.item_unit_secondary_display}}</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="text" class="form-control mediumRateInr" placeholder="Rate INR" required [name]="'purchase_items___'+i+'___item_rate'"
+                    [attr.name]="'purchase_items___'+i+'___item_rate'" (keyup)="calculator()" [attr.min]="0" [attr.max]="999999999"
+                    [attr.precision]="2" [attr.defaultValue]="0" [(ngModel)]="item.item_rate">
+                </td>
+                <td>
+                  <select class="form-control" [name]="'purchase_items___'+i+'___item_tax_rate'" [attr.name]="'purchase_items___'+i+'___item_tax_rate'"
+                    [disabled]="item.item_taxation_category!='T'" [(ngModel)]="item.item_tax_rate" (change)="calculator()">
+                    <option *ngFor="let rate of taxRate" value="{{rate | number:'1.2-2'}}">{{rate}} %</option>
+                  </select>
+                  <div class="rates">
+                    <p *ngIf="!purchaseData.interstate">sgst: @{{item.item_tax_rate/2 | nan | number:'1.2-2'}}% - {{item.sgst
+                      | nan | number:'1.2-2'}}</p>
+                    <p *ngIf="!purchaseData.interstate">cgst: @{{item.item_tax_rate/2 | nan | number:'1.2-2'}}% - {{item.cgst
+                      | nan | number:'1.2-2'}}</p>
+                    <p *ngIf="purchaseData.interstate">igst: @{{item.item_tax_rate | nan | number:'1.2-2'}}% - {{item.igst
+                      | nan | number:'1.2-2'}}</p>
+                  </div>
+                </td>
+                <td>
+                  <input type="text" class="form-control small" placeholder="Discount" [name]="'purchase_items___'+i+'___item_discount'" [attr.name]="'purchase_items___'+i+'___item_discount'"
+                    (keyup)="calculator()" [attr.min]="0" [attr.max]="100" [attr.precision]="3" [attr.defaultValue]="0" [(ngModel)]="item.item_discount"
+                    (focusout)="createInvoiceCaluculator.calculator()">
+                </td>
+                <td>
+                  <span>{{item.item_taxed_total | nan | number:'1.2-2' }}</span>
+                </td>
+                <td class="td-actions">
+                  <a rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs" (click)="createInvoiceInventory.removeMoreItem(i); createInvoiceCaluculator.calculator()">
+                    <i class="ti-close"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Invoice Total</h4>
+        </div>
+        <div class="card-content clearfix">
+          <div class="total">
+            <p>
+              <span class="left">Taxable Value:</span>
+              <span class="right">{{createInvoiceCaluculator.totals.UnTaxedTotal | nan | number:'1.2-2'}}</span>
+            </p>
+            <p>
+              <span class="left">Tax Value:</span>
+              <span class="right">{{((createInvoiceCaluculator.totals.taxedTotal)-(createInvoiceCaluculator.totals.UnTaxedTotal))
+                | nan | number:'1.2-2'}}</span>
+            </p>
+            <p class="total-last">
+              <span class="left">Total Invoice Value:</span>
+              <span class="right">{{createInvoiceCaluculator.totals.finalTotal | nan | number:'1.2-2'}}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="custom-field">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="panel-group">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" href="#custon-field">Custom Fields
+                          <i class="fa fa-caret-down" aria-hidden="true"></i>
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="custon-field" class="panel-collapse collapse">
+                      <div class="form-group inline-fields" style="flex-wrap:nowrap" *ngFor="let field of custom_fields;let i=index">
+                        <input type="text" class="form-control inline" placeholder="Custom Label" name="custom_label-{{i}}" [(ngModel)]="field.label"
+                          [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                          [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                        <span class="seperator">:</span>
+                        <input type="text" class="form-control inline" placeholder="Custom Value" name="custom_value-{{i}}" [(ngModel)]="field.value"
+                          [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                          [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                  <div class="panel-group">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" href="#transportaion-field">Transportation Details
+                            <i class="fa fa-caret-down" aria-hidden="true"></i>
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="transportaion-field" class="panel-collapse collapse">
+                        <div class="form-group">
+                          <label>Mode of Transport: </label>
+                          <select class="form-control" name="transport_mode" [(ngModel)]="purchaseData.transport_mode">
+                            <option value="">Choose</option>
+                            <option value="Road">Road</option>
+                            <option value="Rail">Rail</option>
+                            <option value="Air">Air</option>
+                            <option value="Sea">Sea</option>
+                          </select>
+                        </div>
+  
+                        <div class="form-group" *ngIf="purchaseData.transport_mode != ''">
+                          <label>Name of Transporter:</label>
+                          <input type="text" class="form-control" name="transporter_name" placeholder="Transporter Name" [(ngModel)]="purchaseData.transporter_name"
+                           [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                           [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                        </div>
+  
+                        <div class="form-group" *ngIf="purchaseData.transport_mode != ''">
+                          <label>Source:</label>
+                          <input type="text" class="form-control" name="transport_source" placeholder="Source" [(ngModel)]="purchaseData.transport_source"
+                           [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                           [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                        </div>
+  
+                        <div class="form-group" *ngIf="purchaseData.transport_mode != ''">
+                          <label>Destination:</label>
+                          <input type="text" class="form-control" name="transport_destination" placeholder="Destination" [(ngModel)]="purchaseData.transport_destination"
+                           [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                           [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                        </div>
+  
+                        <div class="form-group" *ngIf="purchaseData.transport_mode != ''">
+                          <label *ngIf="purchaseData.transport_mode == 'Road'">Vehicle Number:</label>
+                          <label *ngIf="purchaseData.transport_mode == 'Air'">Flight Number:</label>
+                          <label *ngIf="purchaseData.transport_mode == 'Sea'">Vessel-Voyage Number:</label>
+                          <label *ngIf="purchaseData.transport_mode == 'Rail'">Train Number:</label>
+                          <input type="text" class="form-control" name="vehicle_number" [(ngModel)]="purchaseData.vehicle_number" placeholder="Vehicle Number"
+                           autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                           [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                        </div>
+                        <div class="form-group" *ngIf="purchaseData.transport_mode != ''">
+                          <label *ngIf="purchaseData.transport_mode == 'Road' || purchaseData.transport_mode == 'Rail'">LR Number:</label>
+                          <label *ngIf="purchaseData.transport_mode == 'Air' || purchaseData.transport_mode == 'Sea'">BE Number:</label>
+                          <input type="text" class="form-control" name="lr_number" [(ngModel)]="purchaseData.lr_number" placeholder="LR Number" autocomplete="off"
+                           [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                           [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" href="#tnc">Terms and Condition
+                        <i class="fa fa-caret-down" aria-hidden="true"></i>
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="tnc" class="panel-collapse collapse">
+                    <div class="form-group">
+                      <textarea spellcheck="false" class="form-control" name="company_tnc" [(ngModel)]="purchaseData.tnc" placeholder="" rows="3"
+                        [attr.maxlength]="500" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                        [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true"
+                        autocomplete="off" data-gramm_editor="false"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="panel-group">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" href="#declaration">Declaration
+                        <i class="fa fa-caret-down" aria-hidden="true"></i>
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="declaration" class="panel-collapse collapse">
+                    <div class="form-group">
+                      <textarea spellcheck="false" class="form-control" name="company_declaration" [(ngModel)]="purchaseData.declaration" placeholder=""
+                        rows="3" [attr.maxlength]="500" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                        [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true"
+                        autocomplete="off" data-gramm_editor="false"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-content">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Remark:</label>
+                <textarea spellcheck="false" placeholder="Remark (For internal use only)" data-gramm_editor="false" name="invoice_note" rows="3"
+                  class="form-control" [(ngModel)]="purchaseData.invoice_note" [attr.maxlength]="500" [attr.permitAlphabets]="true"
+                  [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+                  [attr.defaultValue]="" [attr.permitSpecial]="true"></textarea>
+              </div>
+            </div>
+            <div class="form-group col-lg-6">
+              <app-file-upload [path]="path" [link]="uploadedFileLink" (fileUploaded)="fileUploaded($event)"></app-file-upload>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-right">
+        <button [disabled]="!putCallable" type="submit" class="btn btn-success btn-fill btn-wd btn-loader">{{ !putCallable
+          ? 'Saving' : 'Save' }}
+          <i class="fa fa-circle-o-notch fa-spin" *ngIf="!putCallable"></i>
+        </button>
+
+      </div>
+    </form>
+  </div>
+
+  <button class="modal-btn hide btn btn-success" data-toggle="modal" data-target="#saveInvoice">Save</button>
+  <button class="newVendor hide btn btn-success" data-toggle="modal" data-target="#newVendor">Save</button>
+  <button class="newInventory hide btn btn-success" data-toggle="modal" data-target="#newInventory">Save</button>
+
+  <app-new-vendor (newVendorAdded)="createInvoiceVendor.newVendorAdded($event)"></app-new-vendor>
+  <app-new-inventory (newItemAdded)="createInvoiceInventory.newItemAdded($event)"></app-new-inventory>
+  <app-save-invoice [mailData]="mailData" [invoice_number]="this.purchaseData['purchase_number']" [invoice_id]="invoice_id"
+    [contact_person]="createInvoiceVendor.contact_person"></app-save-invoice>
+
+</div>

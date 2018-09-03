@@ -1,0 +1,14 @@
+.tranction-table{
+  width: 50%;
+  margin: 0 AUTO;
+}
+
+.tranction-table th, .tranction-table td{
+  text-align:center;
+}
+
+.voucher-created{
+  font-style: italic;
+  font-size: 12px;
+  font-weight: bold;
+}

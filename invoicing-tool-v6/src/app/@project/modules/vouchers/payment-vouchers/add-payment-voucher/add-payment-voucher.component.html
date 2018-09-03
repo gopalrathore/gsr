@@ -1,0 +1,143 @@
+<div class="main-content">
+  <div class="component-back-btn">
+    <a [routerLink]="['./../']">
+      <span class="ti-back-left"> Back</span>
+    </a>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="row">
+        <form #paymentVoucher="ngForm" class="validateForm" (ngSubmit)="paymentVoucherSubmit(paymentVoucher.valid)" [ngClass]="{submitted:paymentVoucher.submitted}">
+          <div class="col-lg-12 col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">Add new payment voucher</h4>
+                <p class="category">
+                  You can systematically record partial payments made by your clients by creating payment vouchers. You can also adjust a payment
+                  against multiple invoices.
+                </p>
+              </div>
+              <div class="card-content">
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label class="required-star">Choose Vendor</label>
+                    <p-autoComplete name="vendor_name" (onSelect)="vendorSelected()" [forceSelection]="true" [(ngModel)]="paymentVoucherData.vendor_first_name"
+                      [suggestions]="vendorNameAutocomplete.list" (completeMethod)="vendorNameAutocomplete.searchList($event)"
+                      [required]="true" [readonly]="vendorNameSelected" [required]="true" #vendorNameRef="ngModel"></p-autoComplete>
+                    <div class="form-error-msg" [hidden]="vendorNameRef.pristine && vendorNameRef.untouched">
+                      <p [hidden]="!paymentVoucher.hasError('required' , 'vendor_name')"> Cannot be empty </p>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="required-star">Payment Voucher Number
+                      <a rel="tooltip" title="Voucher Number Setting" class="invoice-setting btn-rotate" data-toggle="modal" data-target="#voucherNumber">
+                        <i class="ti-settings"></i>
+                      </a>
+                    </label>
+                    <input type="text" placeholder="Payment Voucher Number" [readonly]="voucherNumberAutomation" required class="form-control"
+                      name="payment_voucher_number" [(ngModel)]="paymentVoucherData.payment_voucher_number" (focusout)="paymentVoucherData.payment_voucher_number!='' && checkVoucherNumber()"
+                      #voucherNumberRef="ngModel" [attr.maxlength]="20" [attr.permitAlphabets]="true" [attr.permitSpace]="false"
+                      [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                      [attr.permitSpecial]="false">
+                    <button *ngIf="voucherNumberAutomation" class="enable-btn" (click)="clearVoucherNumber()">x</button>
+                    <div class="form-error-msg" [hidden]="voucherNumberRef.pristine && voucherNumberRef.untouched">
+                      <p [hidden]="!paymentVoucher.hasError('required' , 'payment_voucher_number')"> Cannot be empty </p>
+                    </div>
+                  </div>
+                  <div class="form-group col-lg-6">
+                    <label>Date of Payment:</label>
+                    <p-calendar name="payment_date" dateFormat="dd/mm/yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"
+                      [(ngModel)]="paymentVoucherData.payment_date"></p-calendar>
+                  </div>
+                  <div class="form-group col-lg-6">
+                    <label class="required-star">Voucher Date</label>
+                    <p-calendar name="receiving_date" #receivingDateRef="ngModel" dateFormat="dd/mm/yy" required [monthNavigator]="true" [yearNavigator]="true"
+                      yearRange="2000:2030" [(ngModel)]="paymentVoucherData.receiving_date"></p-calendar>
+                    <div class="form-error-msg" [hidden]="receivingDateRef.pristine && receivingDateRef.untouched">
+                      <p [hidden]="!paymentVoucher.hasError('required', 'receiving_date')"> Cannot be empty </p>
+                    </div>
+                  </div>
+                  <div class="form-group col-lg-4">
+                    <label class="required-star">Amount Paid</label>
+                    <input type="text" placeholder="Amount Paid" name="receiving_amount" [(ngModel)]="paymentVoucherData.receiving_amount" class="form-control"
+                      [required]="true" #receivingAmtRef="ngModel" (ngModelChange)="calTotal()" [attr.min]="0" [attr.max]="999999999"
+                      [attr.precision]="2" [attr.defaultValue]="0">
+                    <div class="form-error-msg" [hidden]="receivingAmtRef.pristine && receivingAmtRef.untouched">
+                      <p [hidden]="!paymentVoucher.hasError('required' , 'receiving_amount')"> Cannot be empty </p>
+                    </div>
+                  </div>
+                  <div class="form-group col-lg-2">
+                    <label>TDS Amount</label>
+                    <input type="text" placeholder="TDS amount" name="tds_amount" [(ngModel)]="paymentVoucherData.tds_amount" class="form-control"
+                      [required]="true" #tdsRef="ngModel" (ngModelChange)="calTotal()" [attr.min]="0" [attr.max]="999999999"
+                      [attr.precision]="2" [attr.defaultValue]="0">
+                    <div class="form-error-msg" [hidden]="tdsRef.pristine && tdsRef.untouched">
+                      <p [hidden]="!paymentVoucher.hasError('required' , 'tds_amount')"> Cannot be empty </p>
+                    </div>
+                  </div>
+                  <div class="form-group col-lg-6">
+                    <label>Total Amount to be Adjusted</label>
+                    <input type="text" readonly placeholder="Total Amount" name="total_amount" [(ngModel)]="totalAmount" class="form-control">
+
+                  </div>
+                </div>
+                <!-- </form> -->
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-content">
+                <div class="row">
+                  <div class="form-group col-lg-6">
+                    <label>Transaction Mode</label>
+                    <select class="form-control" name="transaction_detail_mode" [(ngModel)]="paymentVoucherData.transaction_detail_mode">
+                      <option value="Cash">Cash</option>
+                      <option value="Cheque">Cheque</option>
+                      <option value="Online">Online</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-lg-6">
+                    <label>Transaction ID</label>
+                    <input type="text" placeholder="Transaction ID" name="transaction_detail_id" [(ngModel)]="paymentVoucherData.transaction_detail_id"
+                      class="form-control" #transactionRef="ngModel" [attr.maxlength]="20" [attr.permitAlphabets]="true" [attr.permitSpace]="false"
+                      [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                      [attr.permitSpecial]="true">
+                    <div class="form-error-msg" [hidden]="transactionRef.pristine && transactionRef.untouched">
+                      <p [hidden]="!paymentVoucher.hasError('required' , 'transaction_detail_id')"> Cannot be empty </p>
+                    </div>
+                  </div>
+                  <div class="form-group col-lg-6" *ngIf="paymentVoucherData.transaction_detail_mode=='Other'">
+                    <label>Transaction Mode Other</label>
+                    <input type="text" placeholder="Transaction Mode Other" name="transaction_detail_mode_other" [(ngModel)]="paymentVoucherData.transaction_detail_mode_other"
+                      #transactionModRef="ngModel" class="form-control">
+                    <div class="form-error-msg" [hidden]="transactionModRef.pristine && transactionModRef.untouched">
+                      <p [hidden]="!paymentVoucher.hasError('required' , 'transaction_detail_mode_other')"> Cannot be empty </p>
+                    </div>
+                  </div>
+                  <div class="form-group col-lg-6">
+                    <label>Remark</label>
+                    <textarea spellcheck="false" data-gramm_editor="false" name="remark" rows="3" placeholder="Remark" [(ngModel)]="paymentVoucherData.remark"
+                      class="form-control" [attr.maxlength]="250" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                      [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true"></textarea>
+                  </div>
+                  <div class="form-group col-lg-6">
+                    <app-file-upload [path]="path" [link]="uploadedFileLink" (fileUploaded)="fileUploaded($event)"></app-file-upload>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              <button [disabled]="!putCallable" type="submit" class="btn btn-success btn-fill btn-wd btn-loader">{{ !putCallable ? 'Creating Voucher' : 'Create Voucher' }}
+                <i class="fa fa-circle-o-notch fa-spin" *ngIf="!putCallable"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-voucher-number-setting (formatChanged)="formatChanged($event)" [voucherNumberParam]="voucherNumberParam"></app-voucher-number-setting>
+
+<app-add-vendor (newVendorAdded)="newVendorAdded($event)"></app-add-vendor>

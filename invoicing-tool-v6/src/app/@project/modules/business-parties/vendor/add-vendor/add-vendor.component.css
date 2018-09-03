@@ -1,0 +1,9 @@
+.add-vendor .panel-group{
+    margin-bottom: 0;
+}
+.add-vendor .card-contact .card-content{
+    padding: 10px 30px 10px 30px;
+}
+.add-vendor .card-contact .card-content .panel{
+    margin-top: 0;
+}

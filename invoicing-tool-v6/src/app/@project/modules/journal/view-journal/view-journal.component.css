@@ -1,0 +1,33 @@
+/* .journalPreviewHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+} */
+.item_collapse::before{
+    margin-top: 10px;
+}
+.journalPreviewHeader h5{
+    
+}
+.journalPreviewHeader span{
+    font-weight: bold;
+}
+
+.journalPreviewHeaderAmt span{
+    padding: 8px 10px;
+    font-size: 16px;
+    border-color: #6bd098;
+    background-color: #6bd098;
+    border-radius: 20px;
+    font-weight: 600;
+}
+.journalPreviewHeaderTimestamp p{
+    font-style: italic;
+    font-size: 13px;
+    color: #666;
+    margin-top: 10px;
+}
+.journalPreviewHeaderNote h5{
+    margin-bottom: 0;
+}

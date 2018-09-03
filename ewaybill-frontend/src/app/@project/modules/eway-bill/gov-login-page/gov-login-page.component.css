@@ -1,0 +1,13 @@
+.login-form {
+    float: none;
+    margin: 0 auto;
+}
+
+.clearfix {
+    text-align: center;
+}
+
+.clearfix p {
+    margin-top: 10px;
+    font-size: 13px;
+}

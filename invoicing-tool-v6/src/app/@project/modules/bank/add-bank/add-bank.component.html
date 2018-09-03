@@ -1,0 +1,81 @@
+<div class="main-content">
+  <div style="font-size: 24px;  margin: 0px 3px 15px 15px; font-weight: bold;">
+    <a [routerLink]="['./../']">
+      <span class="ti-back-left"> Back</span>
+    </a>
+  </div>
+  <div class="container-fluid card">
+    <div class="card-header">
+      <h4 class="card-title">{{componentName}}</h4>
+      <p class="category"></p>
+    </div>
+    <div class="card-content">
+      <form #addBank="ngForm" class="validateForm" (ngSubmit)="bankSubmit(addBank.valid)" [ngClass]="{submitted:addBank.submitted}">
+        <div class="row">
+          <div class="col-md-3 col-sm-6 col-xs-12 form-group">
+            <label class="required-star">IFSC Code:</label>
+            <input type="text" name="ifsc" placeholder="eg:- BKID000061" class="form-control uppercase" [(ngModel)]="bank.ifsc" (ngModelChange)="checkIFSC()"
+              pattern="[A-Za-z]{4}[a-zA-Z0-9]{7}" #ifscRef="ngModel" [required]="true" ngModel [attr.maxlength]="11" [attr.permitAlphabets]="true"
+              [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true"
+              [attr.defaultValue]="" [attr.permitSpecial]="false">
+            <div class="form-error-msg" [hidden]="ifscRef.pristine && ifscRef.untouched">
+              <p [hidden]="!addBank.hasError('required' , 'ifsc')"> Cannot be empty </p>
+              <p *ngIf="!ifscValid && bank.ifsc.length>0"> Invalid IFSC Code </p>
+            </div>
+          </div>
+
+          <div *ngIf="ifscValid" class="col-md-5 col-sm-6 col-xs-12 form-group">
+            <label>Bank Name:</label>
+            <input type="text" name="bank_name" readonly placeholder="Name of Bank" [(ngModel)]="bank.bank_name" class="form-control"
+              ngModel maxlength="50">
+          </div>
+          <div *ngIf="ifscValid" class="col-md-4 col-sm-6 col-xs-12 form-group">
+            <label>Branch Name:</label>
+            <input type="text" style="text-transform: capitalize" class="form-control" readonly name="branch_name" placeholder="Name of Branch"
+              [(ngModel)]="bank.branch_name" ngModel maxlength="50">
+          </div>
+          <div class="clearfix"></div>
+
+          <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <label class="required-star">Account Number:</label>
+            <input type="text" name="account_number" placeholder="Account Number" class="form-control uppercase" [(ngModel)]="bank.account_number"
+              #accountNumRef="ngModel" [attr.maxlength]="20" [attr.permitAlphabets]="true" [attr.permitSpace]="false" [attr.permitUnderscore]="false"
+              [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false" required
+              ngModel>
+            <div class="form-error-msg" [hidden]="accountNumRef.pristine && accountNumRef.untouched">
+              <p [hidden]="!addBank.hasError('required' , 'account_number')"> Cannot be empty </p>
+            </div>
+
+          </div>
+
+
+
+          <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <label class="required-star">Account Type:</label>
+            <select class="form-control" name="account_type" [(ngModel)]="bank.account_type" required ngModel>
+              <option value="S">Saving</option>
+              <option value="C">Current</option>
+              <option value="OD">Over Draft</option>
+              <option value="CC">Cash Credit</option>
+              <option value="NER">NER</option>
+              <option value="CCD">Credit Card</option>
+              <option value="L">Loan</option>
+            </select>
+          </div>
+
+          <div class="col-md-12 col-sm-6 col-xs-12 form-group">
+            <label>Remarks:</label>
+            <textarea class="form-control" name="remarks" placeholder="For internal use only" [(ngModel)]="bank.remarks" rows="3" autocomplete="off"
+              ngModel spellcheck="false" data-gramm_editor="false" [attr.maxlength]="250" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+              [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer form-submit-btn">
+          <button [disabled]="!putCallable || !patchCallable" type="submit" class="btn btn-success btn-fill btn-wd btn-loader">{{!(putCallable && patchCallable)?'Saving':'Save'}}
+            <i class="fa fa-circle-o-notch fa-spin" *ngIf="!putCallable || !patchCallable"></i>
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>

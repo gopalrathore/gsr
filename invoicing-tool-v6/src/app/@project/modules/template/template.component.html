@@ -1,0 +1,150 @@
+<div class="main-content template">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="buttons">
+          <!-- <button class="btn btn-success btn-fill btn-wd">Save</button> -->
+          <!-- <button class="btn btn-info btn-fill btn-wd" (click)="PDFpreview()">Preview</button> -->
+        </div>
+        <p-accordion>
+          <p-accordionTab header="Upload Header">
+            <div class="file-upload" rel="tooltip" title="Only .png or .jpg files allowed">
+              <label for="upload" class="file-upload__label">Upload</label>
+              <input class="file-upload__input" type="file" (change)="fileChange($event,'upload_header')" placeholder="Upload file" accept=".jpg,.png,.jpeg">
+            </div>
+            <div class="preview-banner" *ngIf="previewImgLink!=''">
+              <img [src]="previewImgLink" alt="img">
+            </div>
+          </p-accordionTab>
+
+          <p-accordionTab *ngIf="false" header="Upload Signature">
+            <div class="file-upload" rel="tooltip" title="Only .png files allowed">
+              <label for="upload" class="file-upload__label">Upload</label>
+              <input class="file-upload__input" type="file" (change)="fileChange($event,'upload_signature')" placeholder="Upload file"
+                accept=".png">
+            </div>
+            <div class="preview-banner" *ngIf="previewSignLink!=''">
+              <img [src]="previewSignLink" alt="img">
+            </div>
+          </p-accordionTab>
+          <div *ngIf="false">
+            <!-- <p-accordionTab header="Header Font"> -->
+              <!-- <h5 class="sub-header">header font</h5> -->
+              <!-- <div class="option">
+                <p>Size: {{fontPDF}}</p> -->
+                <!-- <p-slider [(ngModel)]="sectionSetting.header_font.size" [style]="{'width':'200px'}" [animate]="true" [min]="6" [max]="16"></p-slider> -->
+                <!-- <p-slider [(ngModel)]="fontPDF" [style]="{'width':'200px'}" [animate]="true" [min]="6" [max]="200" (onChange)="PDFpreview()"></p-slider>
+              </div>
+              <div class="option">
+                <p>Font Family</p>
+                <select name="family" [(ngModel)]="sectionSetting.header_font.family" style="width:200px;" class="form-control">
+                  <option value="Courier">Courier</option>
+                  <option value="Helvetica">Helvetica</option>
+                  <option value="Times">Times New Roman</option>
+                </select>
+              </div>
+              <div class="option">
+                <p>Font Color:</p>
+                <p-colorPicker [style]="{'width':'200px'}" [(ngModel)]="sectionSetting.header_font.font_color"></p-colorPicker>
+              </div>
+              <div class="option">
+                <p>Font Style:</p>
+                <p-selectButton [options]="types" [(ngModel)]="sectionSetting.header_font.fpdf_style" multiple="multiple"></p-selectButton>
+              </div>
+
+            </p-accordionTab> -->
+            <!-- <p-accordionTab header="Item Key Font">
+              <div class="option">
+                <p>Size: {{sectionSetting.header_font.size}}</p>
+                <p-slider [(ngModel)]="sectionSetting.item_key_font.size" [style]="{'width':'200px'}" [animate]="true" [min]="6" [max]="16"></p-slider>
+              </div>
+              <div class="option">
+                <p>Font Family</p>
+                <select name="family" [(ngModel)]="sectionSetting.item_key_font.family" style="width:200px;" class="form-control">
+                  <option value="Courier">Courier</option>
+                  <option value="Helvetica">Helvetica</option>
+                  <option value="Times">Times New Roman</option>
+                </select>
+              </div>
+              <div class="option">
+                <p>Font Color:</p>
+                <p-colorPicker [style]="{'width':'200px'}" [(ngModel)]="sectionSetting.item_key_font.font_color"></p-colorPicker>
+              </div>
+              <div class="option">
+                <p>Font Style:</p>
+                <p-selectButton [options]="types" [(ngModel)]="sectionSetting.item_key_font.fpdf_style" multiple="multiple"></p-selectButton>
+              </div>
+            </p-accordionTab>
+            <p-accordionTab header="Item Value Font">
+              <div class="option">
+                <p>Size: {{sectionSetting.item_value_font.size}}</p>
+                <p-slider [(ngModel)]="sectionSetting.item_value_font.size" [style]="{'width':'200px'}" [animate]="true" [min]="6" [max]="16"></p-slider>
+              </div>
+              <div class="option">
+                <p>Font Family</p>
+                <select name="family" [(ngModel)]="sectionSetting.item_value_font.family" style="width:200px;" class="form-control">
+                  <option value="Courier">Courier</option>
+                  <option value="Helvetica">Helvetica</option>
+                  <option value="Times">Times New Roman</option>
+                </select>
+              </div>
+              <div class="option">
+                <p>Font Color:</p>
+                <p-colorPicker [style]="{'width':'200px'}" [(ngModel)]="sectionSetting.item_value_font.font_color"></p-colorPicker>
+              </div>
+              <div class="option">
+                <p>Font Style:</p>
+                <p-selectButton [options]="types" [(ngModel)]="sectionSetting.item_value_font.fpdf_style" multiple="multiple"></p-selectButton>
+              </div>
+            </p-accordionTab>
+ -->
+
+          </div>
+
+
+          <p-accordionTab header="Choose Colour">
+            <div class="option">
+              <p>Colors:</p>
+              <p-dropdown [options]="availableColor" [(ngModel)]="selectedCar2" [style]="{'width':'150px'}" filter="true">
+                  <ng-template let-item pTemplate="selectedItem">
+                    <span class="selected-invoice-color" style="display:inline-block;width:16px;vertical-align:middle;height: 16px;margin-right: 10px" [style.background-color]="item.value"></span>
+                      <!-- <img src="https://placehold.it/200x200" style="width:16px;vertical-align:middle" /> -->
+                      <span style="vertical-align:middle">{{item.label|uppercase}}</span>
+                  </ng-template>
+                  <ng-template let-color pTemplate="item">
+                      <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                        <span class="invoice-color" style="display:inline-block;width:24px;position:absolute;top:1px;left:5px;height: 24px" [style.background-color]="color.label"></span>
+                          <!-- <img src="https://placehold.it/200x200" style="width:24px;position:absolute;top:1px;left:5px"/> -->
+                          <div style="font-size:14px;float:right;margin-top:4px">{{color.label|uppercase}}</div>
+                      </div>
+                  </ng-template>
+              </p-dropdown>
+              <!-- <select name="colors" [(ngModel)]="colorSelected" style="width:200px;" class="form-control" (change)="changeColor()">
+                <option value="">Select Color</option>
+                <option *ngFor="let color of materialColors" [value]="color">{{color | uppercase}}</option>
+              </select> -->
+            </div>
+            <div class="color-list">
+              <div class="color-item" *ngFor="let color of hex" [style.background-color]='color'></div>
+            </div>
+
+            
+
+          </p-accordionTab>
+
+        </p-accordion>
+
+      </div>
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-content">
+            <div class="pdf embed-responsive embed-responsive-16by9">
+                <!-- <embed class="embed-responsive-item" [src]="pdfUrl" allowfullscreen /> -->
+                <div id="iframeContainer"></div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

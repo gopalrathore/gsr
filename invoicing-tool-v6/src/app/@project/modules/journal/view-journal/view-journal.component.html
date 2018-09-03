@@ -1,0 +1,104 @@
+<div class="main-content">
+  <section id="journalPreview">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+            <h4 class="title">Journals</h4>
+          <div class="card">
+            <div class="card-content">
+              <div class="row">
+                <div class="col-md-6 journalPreviewHeader">
+                  <h5> <span>Journal Date :</span> {{journal.journal_date|date}}</h5>
+                </div>
+                <div class="col-md-6 text-right journalPreviewHeaderAmt">
+                  <span class="badge badge-pill badge-success"> ₹ {{journal.journal_amount}}</span>                 
+                </div>
+                <div class="col-md-12 journalPreviewHeaderNote" *ngIf="journal.journal_notes!=null && journal.journal_notes!=''">
+                    <h5>Note : </h5>
+                    <p>{{journal.journal_notes}}</p>
+                </div>
+                <div class="col-md-12 text-right journalPreviewHeaderTimestamp">
+                  <p>Created on : {{journal.inserted_ts|date}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-content">
+              <div class="row">
+                <div class="col-md-12">
+                  <h5>Debit</h5>
+                  <div class="container-fluid">
+                    <div *ngFor="let debit of journal.debit_details; let i = index">
+                      <a class="row item_collapse" data-toggle="collapse" href="#debit-item{{i+1}}">
+                        <div class="col-md-6">
+                          <h5>Account Type: {{debit.account_type}}</h5>
+                        </div>
+                        <div class="col-md-6">
+                          <h5>Amount: ₹ {{debit.amount}}</h5>
+                        </div>
+                      </a>
+                      <div class="row">
+                        <div class="accordian-content collapse" id="debit-item{{i+1}}">
+                          <div class="col-md-12">
+                            <p *ngIf="debit.foreign_key_details.client_company">{{debit.account_type}} Name: {{debit.foreign_key_details.client_company}}</p>
+                            <p *ngIf="debit.foreign_key_details.vendor_company">{{debit.account_type}} Name: {{debit.foreign_key_details.vendor_company}}</p>
+                            <p *ngIf="debit.foreign_key_details.bank_name">{{debit.account_type}} Name: {{debit.foreign_key_details.bank_name}}</p>
+                            <p *ngIf="debit.account_type === 'tax'">{{debit.account_type | uppercase}} Type: {{debit.foreign_key|uppercase}} account</p>
+                            <p *ngIf="debit.account_type === 'expense'">{{debit.account_type | uppercase}} Type: {{debit.foreign_key|uppercase}} account</p>
+                          </div>
+                          <div class="col-md-12">
+                            <p>Note: {{debit.journal_debit_notes}}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-content">
+              <div class="row">
+                <div class="col-md-12">
+                  <h5>Credit</h5>
+                  <div class="container-fluid">
+                    <div *ngFor="let credit of journal.credit_details; let i = index">
+                      <a class="row item_collapse" data-toggle="collapse" href="#credit-item{{i+1}}">
+                        <div class="col-md-6">
+                          <h5>Account Type: {{credit.account_type}}</h5>
+                        </div>
+                        <div class="col-md-6">
+                          <h5>Amount: ₹ {{credit.amount}}</h5>
+                        </div>
+                      </a>
+                      <div class="row">
+                        <div class="accordian-content collapse" id="credit-item{{i+1}}">
+                          <div class="col-md-12">
+                              <p *ngIf="credit.foreign_key_details.client_company">{{credit.account_type}} Name: {{credit.foreign_key_details.client_company}}</p>
+                              <p *ngIf="credit.foreign_key_details.vendor_company">{{credit.account_type}} Name: {{credit.foreign_key_details.vendor_company}}</p>
+                              <p *ngIf="credit.foreign_key_details.bank_name">{{credit.account_type}} Name: {{credit.foreign_key_details.bank_name}}</p>
+                              <p *ngIf="credit.account_type === 'tax'">{{credit.account_type | uppercase}} Type: {{credit.foreign_key|uppercase}} account</p>
+                              <p *ngIf="credit.account_type === 'expense'">{{credit.account_type | uppercase}} Type: {{credit.foreign_key|uppercase}} account</p>
+                          </div>
+                          <div class="col-md-12">
+                            <p>Note: {{credit.journal_credit_notes}}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

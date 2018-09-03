@@ -1,0 +1,78 @@
+<div class="logo">
+        <a class="simple-text logo-mini">
+                <div class="logo-img">
+                        <img src="assets/img/circle_logo_500.png" />
+                </div>
+        </a>
+
+        <a class="simple-text logo-normal">
+                FRATE
+        </a>
+</div>
+
+
+<div class="sidebar-wrapper">
+        <div *ngIf="isNotMobileMenu()">
+                <ul class="nav nav-mobile-menu">
+                        <li>
+                                <a style="cursor:pointer" class="dropdown-toggle btn-magnify" data-toggle="dropdown" (click)="companyServiceService.logout()">
+                                        <i class="ti-power-off"></i>
+                                        <p>Logout</p>
+                                </a>
+                        </li>
+                </ul>
+        </div>
+        <ul class="nav">
+                <li routerLinkActive="active">
+                        <span class="quick-add">
+                                <a class="ti-plus" [routerLink]="['/ewaybill','generate-new-e-way-bill']"></a>
+                        </span>
+                        <a [routerLink]="['/ewaybill']">
+                                <i class="ti-truck"></i>
+                                <p>Generate E-Way bill</p>
+                        </a>
+
+                </li>
+                <li routerLinkActive="active">
+                        <a [routerLink]="['/dashboard']">
+                                <i class="ti-files"></i>
+                                <p>Generate bulk EWB</p>
+                        </a>
+
+                </li>
+                <li *ngIf="company.company_name!='qwerty' && company.company_name!='qwerty'">
+                        <a (click)="quickAdd('1')">
+                                <i class="ti-plus"></i>
+                                <p>Add GSTIN</p>
+                        </a>
+                </li>
+                <li *ngIf="company.company_name!='qwerty' && company.company_name!='qwerty'">
+                        <a (click)="quickAdd(2)">
+                                <i class="ti-location-pin"></i>
+                                <p>Add Branch</p>
+                        </a>
+                </li>
+
+                <li routerLinkActive="active">
+                        <a [routerLink]="['/settings']">
+                                <i class="ti-settings"></i>
+                                <p>Settings</p>
+                        </a>
+
+                </li>
+
+
+
+                <!-- <li routerLinkActive="active"> 
+                                    <a [routerLink]="['/support']">
+                                            <i class="ti-comment"></i>
+                                            <p>support</p>
+                                    </a>                        
+                                    
+                                </li> -->
+        </ul>
+        <div class="powered-by">
+                <p>Powered by: GST Edge</p>
+
+        </div>
+</div>

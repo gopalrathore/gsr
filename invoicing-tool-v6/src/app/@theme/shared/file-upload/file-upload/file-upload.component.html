@@ -1,0 +1,21 @@
+
+
+
+<div class="row" *ngIf="false">
+  <div class="col-md-6">
+      <label>{{title}}</label>
+
+      <div class="file-upload">
+      
+      
+      <label for="upload"  class="btn btn-fill btn-warning"> {{ !postCallable ? 'Attaching File' : 'Attach File' }}
+        <i class="fa fa-circle-o-notch fa-spin" *ngIf="!postCallable"></i>
+      </label>
+      <input class="file-upload__input" type="file" (change)="fileChange($event)" placeholder="Upload file" #inputFile>     
+      </div>
+  </div>
+  <div class="col-md-6" *ngIf="link!=undefined && link!=null && link!==''">
+      <label for="">File Uplod Link</label>
+      <a [href]="link" class="file_uploadLink" target="_blank">Preview Uploaded File</a>
+  </div>
+</div>

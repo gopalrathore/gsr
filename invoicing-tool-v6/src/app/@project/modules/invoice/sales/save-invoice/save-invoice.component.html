@@ -1,0 +1,78 @@
+<div id="saveInvoice" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" (click)="close()">&times;</button>
+        <h4 class="modal-title">Invoice Saved</h4>
+      </div>
+      <div class="modal-body">
+          <form #mailForm="ngForm">
+        <div class="row email-confirmation">
+           
+          <div class="form-check">
+            <label class="form-check-label">
+              <input class="form-check-input" name="mailInvoice" type="checkbox" (click)="trueMail()" [(ngModel)]="mailInvoice">
+              Mail this invoice
+            </label>
+          </div>
+          <button *ngIf="mailInvoice" type="input" class="pull-right btn btn-default" [disabled]="!mailForm.valid || !mailBtn" (click)="sendMail()">{{mailBtn?'Send':'Sending..'}}</button>
+        </div>
+          
+            <div [class.hidden]="!mailInvoice">
+              <div class="row" [class.hidden]="!mailInvoice">
+                  <div class="form-group col-md-12">
+                      <label>To:</label>
+                      <span class="ui-fluid">
+                          <p-autoComplete [(ngModel)]="mailObj.mailTo" name="mailTo" [suggestions]="filteredMailMultiple" (completeMethod)="filterMailMultiple($event)" styleClass="wid100"
+                              [minLength]="1" placeholder="Mail To" field="email" [multiple]="true">
+                          </p-autoComplete>
+                      </span>
+                    </div>
+                    <div class="form-group col-md-12">
+                      <label>CC:</label>
+                      <span class="ui-fluid">
+                          <p-autoComplete [(ngModel)]="mailObj.mailCC" name="mailCC" [suggestions]="filteredMailMultiple" (completeMethod)="filterMailMultiple($event)" styleClass="wid100"
+                              [minLength]="1" placeholder="Mail To" field="email" [multiple]="true">
+                          </p-autoComplete>
+                      </span>
+                    </div>
+                    <div class="form-group col-md-12">
+                      <label>BCC:</label>
+                      <span class="ui-fluid">
+                          <p-autoComplete [(ngModel)]="mailObj.mailBCC" name="mailBCC" [suggestions]="filteredMailMultiple" (completeMethod)="filterMailMultiple($event)" styleClass="wid100"
+                              [minLength]="1" placeholder="Mail To" field="email" [multiple]="true">
+                          </p-autoComplete>
+                      </span>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label>Reply To:</label>
+                      <input type="email" class="form-control" name="replyTo" [(ngModel)]="mailObj.replyTo" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label>Subject:</label>
+                      <input type="text" class="form-control" name="subject" [(ngModel)]="mailObj.subject" required>
+                    </div>
+              </div>
+                    
+                    
+                    <div class="form-group">
+                      <label>Body:</label>
+                      <textarea class="form-control" rows="3" name="body" [(ngModel)]="mailObj.body" required spellcheck="false" data-gramm_editor="false"></textarea>
+                    </div>
+                    
+          </div>
+                  </form>
+            
+
+          
+      </div>
+      <div class="modal-footer">
+          <a href="{{link+invoice_id}}" target="_blank" download="{{invoice_number}}.pdf" class="btn btn-default">Download</a>
+          <a (click)="preview()" class="btn btn-default">Preview</a>
+      </div>
+    </div>
+
+  </div>
+</div>

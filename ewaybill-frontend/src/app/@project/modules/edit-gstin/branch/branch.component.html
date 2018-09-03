@@ -1,0 +1,76 @@
+<div id="addBranch" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Branch</h4>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <form #editBranch="ngForm" class="validateForm" (ngSubmit)="branchSubmit(editBranch)" [ngClass]="{submitted:editBranch.submitted}">
+            <div class="modal-body">
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label class="required-star">Branch Name</label>
+                  <input type="text" class="form-control" #branchName="ngModel" placeholder="Branch Name" name="branch_name" maxlength="100"
+                    [(ngModel)]="addBranch.branch_name" required autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true"
+                    [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true"
+                    [attr.defaultValue]="" [attr.permitSpecial]="true">
+                  <div class="form-error-msg" [hidden]="branchName.pristine && branchName.untouched">
+                    <p [hidden]="!editBranch.hasError('required', 'branch_name')"> Cannot be empty </p>
+                    <p [hidden]="!editBranch.hasError('pattern', 'branch_name')"> Invalid Input </p>
+                  </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label class="required-star">Branch Address</label>
+                  <input type="text" #address="ngModel" class="form-control" required autocomplete="off" placeholder="Branch Address" [(ngModel)]="addBranch.branch_address"
+                    name="branch_address" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                    [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true">
+                  <div class="form-error-msg" [hidden]="address.pristine && address.untouched">
+                    <p [hidden]="!editBranch.hasError('required', 'branch_address')"> Cannot be empty </p>
+                    <p [hidden]="!editBranch.hasError('pattern', 'branch_address')"> Invalid Input </p>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label class="required-star">City</label>
+                  <input type="text" #city="ngModel" class="form-control" required autocomplete="off" placeholder="Branch City" [(ngModel)]="addBranch.branch_city"
+                    name="branch_city" [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="false"
+                    [attr.permitDash]="true" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false">
+                  <div class="form-error-msg" [hidden]="city.pristine && city.untouched">
+                    <p [hidden]="!editBranch.hasError('required', 'branch_city')"> Cannot be empty </p>
+                    <p [hidden]="!editBranch.hasError('pattern', 'branch_city')"> Invalid Input </p>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label class="required-star">Pincode</label>
+                  <input type="text" #pincode="ngModel" pattern="^[1-9][0-9]{5}$" class="form-control" required autocomplete="off" placeholder="Branch Pincode"
+                    [(ngModel)]="addBranch.branch_pincode" name="branch_pincode" [attr.maxlength]="6" [attr.permitAlphabets]="false"
+                    [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true"
+                    [attr.defaultValue]="" [attr.permitSpecial]="false">
+                  <div class="form-error-msg" [hidden]="pincode.pristine && pincode.untouched">
+                    <p [hidden]="!editBranch.hasError('required', 'branch_pincode')"> Cannot be empty </p>
+                    <p [hidden]="!editBranch.hasError('pattern', 'branch_pincode')"> Invalid Input </p>
+                  </div>
+                </div>
+                <!-- <div class="form-group col-md-6">
+                            <label class="required-star">State</label>
+                            <select disabled class="form-control" name="branch_state" [(ngModel)]="addBranch.branch_state" required>
+                                <option value="">Select State</option>
+                                  <option *ngFor="let state of state.data" [value]="state.state_code">{{state.state_name}}</option>
+                              </select>
+                          </div> -->
+
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success btn-fill">Save</button>
+              <button type="button" class="btn btn-fill btn-warning" data-dismiss="modal" (click)="close(editBranch)">Close</button>
+            </div>
+          </form>
+          <!-- <a class="btn btn-info-btn-wd">Add Branch</a> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

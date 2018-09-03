@@ -1,0 +1,347 @@
+<div class="main-content">
+    <div style="font-size: 24px;  margin: 0px 3px 15px 15px; font-weight: bold;">
+        <a [routerLink]="['./../']">
+            <span class="ti-back-left"> Back</span>
+        </a>
+    </div>
+    <form #profile="ngForm" class="validateForm" [ngClass]="{submitted:profile.submitted}">
+        <div class="card">
+            <div class="card-content">
+                <div class="card-title">
+                    <h4>Company primary details</h4>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="required-star">Name</label>
+                            <input type="text" class="form-control" name="company_name" [(ngModel)]="company.company_name" #profileCompanyNameRef="ngModel"
+                                [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                                [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false"
+                                placeholder="Name of company" required>
+                            <div class="form-error-msg" [hidden]="profileCompanyNameRef.pristine && profileCompanyNameRef.untouched">
+                                <p [hidden]="!profile.hasError('required' , 'company_name')">Cannot be empty </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="required-star">Company Email</label>
+                            <input type="email" class="form-control" name="company_email" [(ngModel)]="company.company_email" #profileCompanyEmail="ngModel"
+                                [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                                [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true"
+                                placeholder="yourmail@domain.com" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" email
+                                required>
+                            <div class="form-error-msg" [hidden]="profileCompanyEmail.pristine && profileCompanyEmail.untouched">
+                                <p [hidden]="!profile.hasError('required' , 'company_email')"> Cannot be empty </p>
+                                <p [hidden]="!profile.hasError('pattern' , 'company_email')"> Invalid Email </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Contact Number</label>
+                            <input type="text" placeholder="Contact Number" class="form-control" name="company_number" [(ngModel)]="company.company_number"
+                                [attr.maxlength]="16" [attr.permitAlphabets]="false" [attr.permitSpace]="false" [attr.permitUnderscore]="false"
+                                [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Industry Type</label>
+                            <input type="text" class="form-control" name="company_industry" placeholder="Industry Type" [(ngModel)]="company.company_industry"
+                                [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="false"
+                                [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>GST Registered</label>
+                            <select class="form-control" name="company_registered" [(ngModel)]="company.company_registered">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3" *ngIf="company.company_registered==1">
+                        <div class="form-group">
+                            <label [class.required-star]="company.company_registered==1"> GSTIN</label>
+                            <input type="text" name="company_gst_id" [ngModel]="company.company_gst_id | uppercase" (ngModelChange)="company.company_gst_id=$event"
+                                class="form-control" pattern="[0-9]{2}[A-Za-z]{3}[C,P,H,F,A,T,B,L,J,G,c,p,h,f,a,t,b,l,j,g]{1}[A-Za-z]{1}[0-9]{4}[A-Za-z]{1}[0-9]{1}[A-Za-z0-9]{1}[A-Z0-9a-z]{1}"
+                                (keyup)="select_company_type(company.company_gst_id)" maxlength="15" autocomplete="off" [required]="company.company_registered==1?true:false"
+                                #profileCompanyGstidRef="ngModel" placeholder="GST Number">
+                            <div class="form-error-msg" [hidden]="profileCompanyGstidRef.pristine && profileCompanyGstidRef.untouched">
+                                <p [hidden]="!profile.hasError('required' , 'company_gst_id')"> Cannot be empty </p>
+                                <p [hidden]="!profile.hasError('pattern' , 'company_gst_id')"> Invalid GST ID </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>GST Registration Type</label>
+                            <select class="form-control" name="company_gst_registration_type" [(ngModel)]="company.company_gst_registration_type">
+                                <option value="N">Normal</option>
+                                <option value="I">ISD</option>
+                                <option value="TD">TDS</option>
+                                <option value="T">TCS</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label> PAN</label>
+                            <input type="text" class="form-control uppercase" name="company_pan" [(ngModel)]="company.company_pan" placeholder="PAN"
+                                pattern="([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}" [attr.maxlength]="10" [attr.permitAlphabets]="true"
+                                [attr.permitSpace]="false" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true"
+                                [attr.defaultValue]="" [attr.permitSpecial]="false">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>TAN</label>
+                            <input type="text" class="form-control uppercase" name="company_tan" [(ngModel)]="company.company_tan" placeholder="TAN"
+                                [attr.maxlength]="10" [attr.permitAlphabets]="true" [attr.permitSpace]="false" [attr.permitUnderscore]="false"
+                                [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="false">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label> Identification Number</label>
+                            <input type="text" class="form-control uppercase" name="company_identification_number" [(ngModel)]="company.company_identification_number"
+                                placeholder="Company ID" [attr.maxlength]="21" [attr.permitAlphabets]="true" [attr.permitSpace]="false"
+                                [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                                [attr.permitSpecial]="false">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label> Website</label>
+                            <input type="text" name="company_website" [(ngModel)]="company.company_website" class="form-control" [attr.maxlength]="100"
+                                [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true"
+                                [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true" autocomplete="off"
+                                #websiteRef="ngModel" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
+                                placeholder="website@domain.com">
+                            <div class="form-error-msg" [hidden]="websiteRef.pristine && websiteRef.untouched">
+                                <p [hidden]="!profile.hasError('pattern' , 'company_website')">Invalid URL</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Have You Opted For Composition Scheme?</label>
+                            <select class="form-control" name="company_composition" [(ngModel)]="company.company_composition">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Services or Goods</label>
+                            <select class="form-control" name="SG" [(ngModel)]="company.SG">
+                                <option value="0">Services</option>
+                                <option value="1">Goods</option>
+                                <option value="3">Both</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Do you sell on ecommerce platform</label>
+                            <select class="form-control" name="sell_on_ecommerce" [(ngModel)]="company.sell_on_ecommerce">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="card">
+            <div class="card-content">
+                <div class="card-title">
+                    <h4>Company Located At</h4>
+                </div>
+                <div class="row">
+                    <div class="col-md-6" style="padding: 0;">
+                        <div class="col-md-12 form-group">
+                            <label class="required-star">Address</label>
+                            <input type="text" placeholder="Flat / House No. / Floor / Building" name="company_address" [(ngModel)]="company.company_address"
+                                [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                                [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true"
+                                class="form-control" autocomplete="off" required #companyAddRef="ngModel">
+                            <div class="form-error-msg" [hidden]="companyAddRef.pristine && companyAddRef.untouched">
+                                <p [hidden]="!profile.hasError('required', 'company_address')"> Cannot be empty </p>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="text" placeholder="Colony / Street / Locality" name="company_address_2" [(ngModel)]="company.company_address_2"
+                                [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true"
+                                [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true"
+                                class="form-control" autocomplete="off" required #companyAdd2Ref="ngModel">
+                            <div class="form-error-msg" [hidden]="companyAdd2Ref.pristine && companyAdd2Ref.untouched">
+                                <p [hidden]="!profile.hasError('required', 'company_address_2')"> Cannot be empty </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <input type="text" placeholder="City" name="company_address_3" [(ngModel)]="company.company_address_3" class="form-control"
+                                [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="false"
+                                [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false"
+                                autocomplete="off" required #companyAdd3Ref="ngModel">
+                            <div class="form-error-msg" [hidden]="companyAdd3Ref.pristine && companyAdd3Ref.untouched">
+                                <p [hidden]="!profile.hasError('required', 'company_address_3')"> Cannot be empty </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <input type="text" placeholder="PIN Code" name="company_address_4" pattern="^[1-9][0-9]{5}$" [(ngModel)]="company.company_address_4"
+                                class="form-control" autocomplete="off" [attr.maxlength]="6" [attr.permitAlphabets]="false" [attr.permitSpace]="false"
+                                [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                                [attr.permitSpecial]="false" required #companyPinRef="ngModel">
+                            <div class="form-error-msg" [hidden]="companyPinRef.pristine && companyPinRef.untouched">
+                                <p [hidden]="!profile.hasError('pattern', 'company_address_4')"> Invalid PIN Code </p>
+                                <p [hidden]="!profile.hasError('required', 'company_address_4')"> Cannot be empty </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="required-star">Country</label>
+                            <select name="company_country" [(ngModel)]="company.company_country" class="form-control" #companyCountryRef="ngModel" required>
+                                <option *ngFor="let country of countries.data" [value]="country.country_name">{{country.country_name}}</option>
+                            </select>
+                            <div class="form-error-msg" [hidden]="companyCountryRef.pristine && companyCountryRef.untouched">
+                                <p [hidden]="!profile.hasError('required', 'company_country')"> Cannot be empty </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group" *ngIf="company.company_country=='India'">
+                            <label class="required-star">State</label>
+                            <select name="company_state_code" [(ngModel)]="company.company_state_code" #companyStateCodeRef="ngModel" class="form-control"
+                                required>
+                                <option value="">Please Select State</option>
+                                <option *ngFor="let state of state.data" [value]="state.state_code">{{state.state_name}}</option>
+                            </select>
+                            <div class="form-error-msg" [hidden]="companyStateCodeRef.pristine && companyStateCodeRef.untouched">
+                                <p [hidden]="!profile.hasError('required', 'company_state_code')"> Cannot be empty </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group" *ngIf="company.company_country!='India'">
+                            <label class="required-star">State</label>
+                            <input type="text" name="company_state_name" placeholder="State" [(ngModel)]="company.company_state_name" class="form-control"
+                                [attr.maxlength]="50" [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="false"
+                                [attr.permitDash]="false" [attr.permitNumbers]="false" [attr.defaultValue]="" [attr.permitSpecial]="false"
+                                autocomplete="off" required #companyStateNameRef="ngModel">
+                            <div class="form-error-msg" [hidden]="companyStateNameRef.pristine && companyStateNameRef.untouched">
+                                <p [hidden]="!profile.hasError('required', 'company_state_name')"> Cannot be empty </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-content">
+                <div class="card-title">
+                    <h4> Primary Contact Details</h4>
+                </div>
+                <div class="row">
+                    <div class="col-md-6" style="padding: 0;">
+                        <label class="col-md-12">Your Name</label>
+                        <div class="col-md-2 form-group">
+                            <select [(ngModel)]="company.company_primary_contact_salutation" name="company_primary_contact_salutation" style="padding:0"
+                                class="form-control">
+                                <option value="Mr.">Mr.</option>
+                                <option value="Ms.">Ms.</option>
+                                <option value="Mrs.">Mrs.</option>
+                                <option value="Dr.">Dr.</option>
+                            </select>
+                        </div>
+                        <div class="col-md-5 form-group">
+                            <input placeholder="First Name" type="text" name="company_primary_contact_first_name" [(ngModel)]="company.company_primary_contact_first_name"
+                                class="form-control" #firstNameRef="ngModel" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true"
+                                [attr.permitSpace]="true" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false"
+                                [attr.defaultValue]="" [attr.permitSpecial]="false">
+                            <div class="form-error-msg" [hidden]="firstNameRef.pristine && firstNameRef.untouched">
+                                <p [hidden]="!profile.hasError('required' , 'company_primary_contact_first_name')"> Cannot be empty </p>
+                            </div>
+                        </div>
+                        <div class="col-md-5 form-group">
+                            <input type="text" name="company_primary_contact_last_name" placeholder="Last Name" [(ngModel)]="company.company_primary_contact_last_name"
+                                class="form-control" autocomplete="off" [attr.maxlength]="100" [attr.permitAlphabets]="true"
+                                [attr.permitSpace]="true" [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="false"
+                                [attr.defaultValue]="" [attr.permitSpecial]="false">
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label>Mobile Number</label>
+                        <input type="text" name="company_primary_contact_mobile" placeholder="Mobile Number" [(ngModel)]="company.company_primary_contact_mobile"
+                            class="form-control" [attr.maxlength]="16" [attr.permitAlphabets]="false" [attr.permitSpace]="false"
+                            [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                            [attr.permitSpecial]="false" autocomplete="off" #mobileRef="ngModel">
+                        <div class="form-error-msg" [hidden]="mobileRef.pristine && mobileRef.untouched">
+                            <p [hidden]="!profile.hasError('required' , 'company_primary_contact_mobile')"> Cannot be empty </p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label>Work Mobile Number</label>
+                        <input type="text" name="company_primary_contact_work_number" placeholder="Work Mobile Number" [(ngModel)]="company.company_primary_contact_work_number"
+                            class="form-control" [attr.maxlength]="16" [attr.permitAlphabets]="false" [attr.permitSpace]="false"
+                            [attr.permitUnderscore]="false" [attr.permitDash]="false" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                            [attr.permitSpecial]="false" autocomplete="off">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Email</label>
+                        <input type="email" name="company_primary_contact_email" placeholder="Email Address" [(ngModel)]="company.company_primary_contact_email"
+                            class="form-control" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [attr.maxlength]="100"
+                            [attr.permitAlphabets]="true" [attr.permitSpace]="true" [attr.permitUnderscore]="true" [attr.permitDash]="true"
+                            [attr.permitNumbers]="true" [attr.defaultValue]="" [attr.permitSpecial]="true" autocomplete="off"
+                            #companyemail="ngModel">
+                        <div class="form-error-msg" [hidden]="companyemail.pristine && companyemail.untouched">
+                            <p [hidden]="!profile.hasError('pattern', 'company_primary_contact_email')">Invalid Email</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label>Your Department Name</label>
+                        <input type="text" name="company_primary_contact_department" placeholder="Department Name" [(ngModel)]="company.company_primary_contact_department"
+                            class="form-control" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+                            [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                            [attr.permitSpecial]="true" autocomplete="off">
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label>Your Designation</label>
+                        <input type="text" name="company_primary_contact_designation" placeholder="Designation" [(ngModel)]="company.company_primary_contact_designation"
+                            class="form-control" [attr.maxlength]="100" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+                            [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                            [attr.permitSpecial]="true" autocomplete="off">
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea spellcheck="false" class="form-control" name="company_description" [(ngModel)]="company.company_description" rows="4"
+                                placeholder="Description" [attr.maxlength]="500" [attr.permitAlphabets]="true" [attr.permitSpace]="true"
+                                [attr.permitUnderscore]="true" [attr.permitDash]="true" [attr.permitNumbers]="true" [attr.defaultValue]=""
+                                [attr.permitSpecial]="true" data-gramm_editor="false"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="text-right">
+            <button type="button" [disabled]="!patchCallable" class="btn btn-success btn-fill btn-wd btn-loader" (click)="profileSubmit(profile.valid)">{{ !patchCallable ? 'Saving' : 'Save' }}
+                <i class="fa fa-circle-o-notch fa-spin" *ngIf="!patchCallable"></i>
+            </button>
+
+        </div>
+    </form>
+</div>

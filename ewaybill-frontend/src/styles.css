@@ -1,0 +1,694 @@
+
+body {
+  overflow: hidden;
+}
+
+.powered-by {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.powered-by p {
+  color: #fff;
+  font-size: 11px;
+}
+
+.govLogout {
+  color: #fc1746;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 992px) {
+  .modal-backdrop {
+      z-index: -1;
+  }
+}
+
+.action-btn {
+  padding: 0 6px !important;
+}
+
+.action-btn:first-of-type{
+  margin-right: 17px;
+}
+
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+.submitted input.ng-invalid, .submitted .p-autocomplete.ng-invalid > .ui-autocomplete > .ui-inputtext, .p-autocomplete.ng-invalid.ng-dirty > .ui-autocomplete > .ui-inputtext, .p-autocomplete.ng-invalid.ng-touched > .ui-autocomplete > .ui-inputtext, input.ng-invalid.ng-dirty, input.ng-invalid.ng-touched,
+.submitted textarea.ng-invalid, textarea.ng-invalid.ng-dirty, textarea.ng-invalid.ng-touched,
+.submitted select.ng-invalid, select.ng-invalid.ng-dirty, select.ng-invalid.ng-touched{
+  border-bottom: 1px solid red;
+}
+
+.error {
+  position: fixed;
+  right: 0;
+  top: 10%;
+  color: #fff;
+  border-radius: 0;
+  background: #595959;
+  width: 0;
+  overflow: hidden;
+  z-index: 999;
+}
+
+.tutorial-img {
+  width: 100%;
+}
+.tutorial-img img {
+  width: 100%;
+  height: auto;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.errorAnimation {
+  animation-name: error-come, error-go;
+  animation-duration: .4s, .4s;
+  animation-delay: 0s, 4s;
+  animation-fill-mode: forwards;
+}
+@keyframes error-come {
+  0% {
+      width: 0;
+  }
+  100% {
+      width: 200px;
+  }
+}
+@keyframes error-go {
+  0% {
+      width: 200px;
+  }
+  100% {
+      width: 0;
+  }
+}
+
+.ui-autocomplete, input.ui-inputtext {
+  width: 100% !important;
+}
+
+.ui-autocomplete .ui-autocomplete-input {
+  width: 200px;
+}
+
+.width {
+  width: 200px !important;
+}
+
+.inline-fields {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+.flex-inline p {
+  margin-bottom: 0;
+}
+.seperator {
+  margin: 0 10px;
+}
+
+.error p {
+  padding: 10px;
+  border-left: 2px solid red;
+  color: #fff;
+  width: 200px;
+  overflow: hidden;
+}
+
+.ui-autocomplete, .ui-calendar {
+  width: 100%;
+}
+
+.ewaybill-table input.ui-inputtext {
+  height: auto;
+  padding: 3px 7px;
+}
+
+.form-inline button[type="submit"] {
+  margin-top: 28px;
+}
+
+/* .ewaybill-table .ui-datatable .ui-datatable-thead>tr>th:nth-child(2) {
+  padding-top: 1.38em;
+  padding-bottom: 1.38em;
+} */
+
+
+
+input.ui-inputtext {
+  /* background-color: #F3F2EE; */
+  border: 1px solid #e8e7e3;
+  border-radius: 4px;
+  color: #66615b;
+  font-size: 14px;
+  padding: 7px 18px;
+  height: 40px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  width: 100%;
+}
+
+.ui-datepicker.ui-widget .ui-datepicker-calendar td a {
+  border: 0 none;
+  text-align: center;
+  padding: 8px;
+  border-radius: 0;
+  box-shadow: none;
+  height: auto;
+  width: auto;
+}
+
+.enable-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: #fff;
+  height: 40px;
+  border: 1px solid #d6d6d6;
+  border-left: none;
+  padding: 10px;
+}
+
+.table .action {
+  position: absolute;
+  right: 58px;
+  bottom: 49px;
+}
+.hide {
+  display: none;
+}
+
+.main-panel {
+  position: static;
+}
+
+.voucher-status, .intentory-status{
+font-style: italic;
+padding: 4px 12px;
+color: white;
+text-transform: uppercase;
+font-weight: bold;
+font-size: 11px;
+display: inline-block;
+border-radius: 50px;
+}
+.balanced-voucher{
+background-color: green;
+}
+
+.immbalanced-voucher{
+background-color: red;
+}
+
+div.dataTables_wrapper div.dataTables_length select{
+width: 87px;
+  height: 32px;
+}
+
+.component-back-btn{
+font-size: 24px;
+margin: 0px 3px 15px 15px;
+font-weight: bold;
+}
+
+/* input[required] {
+  border: 1px solid red !important;
+} */
+
+.table select {
+  padding: 10px 0;
+  width: 75px;
+}
+/* 
+::-webkit-scrollbar {
+  width: 0;
+  height: 2em
+} */
+
+/* .custom-close {
+  position: absolute;
+  top: -90%;
+  right: -45%;
+} */
+
+.required-star::after {
+content:"*";
+margin-left:5px;
+color:red;
+}
+.inline-fields label {
+  display: inline-block !important;
+}
+
+.fresh-table label {
+  display: inline;
+}
+
+/* label {
+  display: block;
+} */
+
+.prime-radio {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.radiobtn {
+  padding: 13px 0;
+}
+
+.nav .quick-add a {
+  color: #FFFFFF;
+}
+
+.nav li.active a {
+  color: #fc1746;
+}
+
+
+.pan {
+  text-transform: uppercase;
+  color: red;
+  font-size: 10px;
+  padding-left: 2px;
+  margin-bottom: 0;
+}
+.pan::before {
+  content: "PAN: ";
+  font-weight: bold;
+  
+}
+.total {
+  float: right;
+  text-align: right;
+  width: 50%;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+
+.total p .left {
+  text-align: right;
+  width: 55%;
+  display: inline-block;
+  margin-right: 20px;
+  font-weight: bold;
+}
+.total p .right {
+  text-align: left;
+  width: 30%;
+  display: inline-block;
+}
+.total-last {
+  border-top: 1px solid #000;
+}
+a {
+  cursor: pointer;
+}
+
+.item-edit {
+  height: 106px !important;
+}
+
+.rates {
+  position: absolute;
+}
+.rates p {
+  font-size: 11px;
+  margin-bottom: 0;
+}
+
+.tableItem{
+  position: relative;
+}
+
+.tableItem .enable-btn {
+  bottom: 33px;
+}
+
+.invoice-item tbody tr:last-of-type .enable-btn {
+  bottom: 12px;
+
+}
+
+
+/* preloader */
+.preloader-dots {
+  height: 50px;
+  width: 80px;
+  position: absolute;
+  left: 38%;
+  top: 31%;
+}
+
+.preloader-dots .dot {
+  display: inline-block;
+  background: #666;
+  height: 8px;
+  width: 8px;
+  opacity: 0.3;
+  border-radius: 50%;
+  animation: moveit 1.8s infinite;
+}
+
+.dot:nth-child(2) {
+  animation-delay: .15s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: .3s;
+}
+
+.dot:nth-child(4) {
+  animation-delay: .45s;
+}
+
+.dot:nth-child(5) {
+  animation-delay: .6s;
+}
+
+@keyframes moveit {
+  0% {
+    transform: translateY(0px);
+  }
+  35% {
+    transform: translateY(0px);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-20px);
+    opacity: 0.8;
+  }
+  70% {
+    transform: translateY(3px);
+    opacity: 0.8;
+  }
+  85% {
+    transform: translateY(-3px);
+  }
+}
+
+.invoice-setting {
+    border: none;
+    background: transparent;
+}
+
+.shipping-address {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/* Form validation */
+
+
+.form-error-msg{
+  position: relative;
+}
+.form-error-msg p{
+  position: absolute;
+  font-size: 11px;
+  color: red;
+  font-style:italic;
+  font-weight: bold;
+  right: 5px; 
+}
+
+.form-info-msg{
+  position: relative;
+}
+.form-info-msg p{
+  position: absolute;
+  font-size: 11px;
+  color: #000;
+  font-style:italic;
+  font-weight: bold;
+  right: 5px; 
+}
+
+.submitted .form-error-msg {
+  display: block !important;
+}
+
+.flex-inline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card .card-header {
+  padding: 20px 15px 20px;
+}
+
+.quick-add {
+  display: block;
+  position: absolute;
+  right: 12px;
+  top: 5px;
+  padding: 10px;
+  z-index: 999;
+}
+
+.table-fixed thead {
+  width: 97%;
+}
+.table-fixed tbody {
+  height: 230px;
+  overflow-y: auto;
+  width: 100%;
+}
+.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+  display: block;
+}
+.table-fixed tbody td, .table-fixed thead > tr> th {
+  float: left;
+  border-bottom-width: 0;
+}
+
+/* media queries for form submit button */
+@media (max-width:765px) {
+.form-submit-btn{
+      text-align: center;
+  }
+}
+@media (max-width:993px) {
+  .quick-add {
+      display: none;
+  }
+}
+
+.hot-key-notify{
+  border-radius: 25px;
+  padding: 5px 20px;
+  background-color: #54B07D;
+  margin-top: 5px;
+  color: #fff;
+  opacity: 0.8;
+  animation: hot-key-animate 0.5s linear forwards;
+  position: absolute;
+  top: -100px;  
+}
+
+@keyframes hot-key-animate{
+  to {
+      top: 0px;
+  }
+}
+.hot-div{
+  
+}
+/* Reports */
+
+.col-md-6>p>a>span> .intentory-status{
+  float: right;
+  padding: 0px 12px;
+  text-transform: none;
+  margin-right: -24px;
+}
+/* checkbox dropdown */
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+
+.applied{
+  display: inline-block;
+}
+.filter-chips{
+  background-color: #54B07D;
+  padding: 5px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  color: #fff;
+  transition: .5s;
+}
+.filter-chips:hover .delete-filter{
+  /* padding-right: 25px; */
+  margin-left: 8px;
+  opacity: 1;
+}
+.delete-filter{
+  opacity: 0;
+  transition: .5s;
+  cursor: pointer;
+}
+/* Client Tooltip */
+.fa-info-circle{
+  color: #68B3C8;
+} 
+/* Client Tooltip End */
+
+/* Reports Datatables */
+.reportsTable{
+  table-layout:fixed !important;
+}
+th.dt-center, td.dt-center { text-align: center; }
+
+/* Reports Datatables End */
+
+/* Dashboard Theme Setting */
+.custom-dropdown-menu .badge{
+  border: 3px solid #FFFFFF;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-block;
+  height: 28px;
+  margin-right: 5px;
+  position: relative;
+  width: 28px;
+}
+.custom-dropdown-menu{
+  list-style: none;
+  padding: 10px;
+}
+.custom-dropdown-menu li.header-title {
+  height: 30px;
+  line-height: 35px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+}
+.custom-dropdown-menu > li.adjustments-line > a {
+  padding-right: 0;
+  padding-left: 0;
+  border-bottom: 1px solid #ddd;
+  margin: 0;
+}
+.custom-dropdown-menu > li > a {
+  color: #66615b;
+  font-size: 14px;
+  padding: 10px 15px;
+  -moz-transition: none;
+  -o-transition: none;
+  -ms-transition: none;
+  transition: none;
+}
+.custom-theme .badge.active, .custom-theme .badge:hover {
+  border-color: #00bbff;
+}
+
+.custom-theme .badge-white {
+  background-color: #EBEBEB;
+}
+
+.custom-theme .badge-black {
+  background-color: #212120;
+}
+
+.custom-theme .badge-primary {
+  background-color: #7A9E9F;
+}
+
+.custom-theme .badge-info {
+  background-color: #68B3C8;
+}
+
+.custom-theme .badge-success {
+  background-color: #7AC29A;
+}
+
+.custom-theme .badge-warning {
+  background-color: #F3BB45;
+}
+
+.custom-theme .badge-danger {
+  background-color: #DD0330;
+}
+
+.custom-theme .badge-brown {
+  background-color: #66615B;
+}
+
+.custom-theme .badge-black {
+  background-color: #312f2c;
+}
+
+.table.table-striped.table-no-bordered.table-hover {
+  text-align: center;
+}
+
+.ui-paginator .ui-paginator-page.ui-state-active {
+  background: #312f2c;
+  color: #ffffff;
+  border-color: #312f2c;
+}
+
+.ui-datatable tbody>tr.ui-widget-content.ui-state-highlight {
+  background-color: #312f2c;
+}
+
+.ui-chkbox-box.ui-state-active {
+  background-color: #312f2c;
+  border: 1px solid #fff;
+}
