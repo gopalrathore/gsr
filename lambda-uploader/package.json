@@ -1,0 +1,26 @@
+{
+  "name": "aws-file-uploader",
+  "version": "1.0.0",
+  "description": "Upload files to aws S3",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha **/*.spec.js"
+  },
+  "author": "Gopal Rathore",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.282.1",
+    "file-type": "^8.1.0",
+    "moment": "^2.22.2",
+    "sha1": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/file-type": "^5.2.1",
+    "@types/jasmine": "^2.8.8",
+    "@types/node": "^10.5.1",
+    "@types/sha1": "^1.1.1",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.17.5",
+    "typescript": "^3.0.1"
+  }
+}
